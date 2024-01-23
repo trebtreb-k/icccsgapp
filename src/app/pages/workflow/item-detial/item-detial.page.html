@@ -1,0 +1,164 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+
+    <ion-title>รายละเอียดเอกสาร</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen="true" *ngIf="status === 'LOADING'">
+  <section class="skeleton">
+    <br />
+    <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+    <ion-skeleton-text animated style="width: 70%"></ion-skeleton-text>
+    <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+    <br />
+  </section>
+
+  <section class="skeleton">
+    <br />
+    <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+    <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+    <br />
+  </section>
+
+  <section class="skeleton">
+    <br />
+    <br />
+    <div class="row">
+      <ion-avatar slot="start">
+        <ion-skeleton-text animated></ion-skeleton-text>
+      </ion-avatar>
+      <ion-avatar slot="start">
+        <ion-skeleton-text animated></ion-skeleton-text>
+      </ion-avatar>
+      <ion-avatar slot="start">
+        <ion-skeleton-text animated></ion-skeleton-text>
+      </ion-avatar>
+    </div>
+    <br />
+    <br />
+  </section>
+
+  <section class="skeleton">
+    <br />
+    <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+    <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+    <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+    <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+    <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+    <br />
+  </section>
+</ion-content>
+
+<ion-content fullscreen="true" *ngIf="status === 'OK'">
+  <section class="header">
+    <h2><strong>Workflow : </strong> {{ state?.workflow_id || '' }}</h2>
+    <h3><strong>Document : </strong> {{ state?.doc_id || '' }}</h3>
+    <p><strong>วันที่ลา </strong> {{ state?.show_date || '' }} <strong> ({{ state?.time_count || '' }})</strong></p>
+  </section>
+
+  <section class="reason">
+    <div class="reason__description">
+      <p><strong>เหตุผล : </strong> {{ state?.absent_reason || '' }}</p>
+    </div>
+    <div class="reason__attachfiles">
+      <img [src]="attachFiles" onError="this.src='assets/images/workflow/nopicture.png'" alt="" (click)="onViewImage(attachFiles)" />
+    </div>
+  </section>
+
+  <section class="status">
+    <div class="status__step">
+      <!-- // -------------------------------------------- // -->
+
+      <div [ngClass]="{'status__item': true, disable: statusCheck?.person?.disable}">
+        <div class="status__item--icon">
+          <ion-icon [name]="statusCheck?.person?.icon" [color]="statusCheck?.person?.color"></ion-icon>
+          <!-- <p *ngIf="!statusCheck?.person?.disable">{{ statusCheck?.person?.value }}</p> -->
+          <p>{{ statusCheck?.person?.value }}</p>
+        </div>
+        <div class="status__item--image">
+          <img [src]="statusData?.person?.image" onError="this.src='assets/images/workflow/user-default.svg'" alt="" />
+        </div>
+        <div class="status__item--text">
+          <p>{{ statusData?.person?.name }}</p>
+          <p>( {{ statusData?.person?.duty }} )</p>
+        </div>
+      </div>
+
+      <!-- // -------------------------------------------- // Arrow -->
+
+      <div [ngClass]="{'status__item': true, disable: statusCheck?.approver?.disable}">
+        <ion-icon class="arrow" name="arrow-forward-outline"></ion-icon>
+      </div>
+
+      <!-- // -------------------------------------------- // -->
+
+      <div [ngClass]="{'status__item': true, disable: statusCheck?.approver?.disable}">
+        <div class="status__item--icon">
+          <ion-icon [name]="statusCheck?.approver?.icon" [color]="statusCheck?.approver?.color"></ion-icon>
+          <!-- <p *ngIf="!statusCheck?.approver?.disable">{{ statusCheck?.approver?.value }}</p> -->
+          <p>{{ statusCheck?.approver?.value }}</p>
+        </div>
+        <div class="status__item--image">
+          <img [src]="statusData?.approver?.image" onError="this.src='assets/images/workflow/user-default.svg'" alt="" />
+        </div>
+        <div class="status__item--text">
+          <p>{{ statusData?.approver?.name }}</p>
+          <p>( {{ statusData?.approver?.duty }} )</p>
+        </div>
+      </div>
+
+      <!-- // -------------------------------------------- // Arrow -->
+
+      <div [ngClass]="{'status__item': true, disable: statusCheck?.officer?.disable}">
+        <ion-icon class="arrow" name="arrow-forward-outline"></ion-icon>
+      </div>
+
+      <!-- // -------------------------------------------- // -->
+
+      <div [ngClass]="{'status__item': true, disable: statusCheck?.officer?.disable}">
+        <div class="status__item--icon">
+          <ion-icon [name]="statusCheck?.officer?.icon" [color]="statusCheck?.officer?.color"></ion-icon>
+          <!-- <p *ngIf="!statusCheck?.officer?.disable">{{ statusCheck?.officer?.value }}</p> -->
+          <p>{{ statusCheck?.officer?.value }}</p>
+        </div>
+        <div class="status__item--image">
+          <img [src]="statusData?.officer?.image" onError="this.src='assets/images/workflow/user-default.svg'" alt="" />
+        </div>
+        <div class="status__item--text">
+          <p>{{ statusData?.officer?.name }}</p>
+          <p>( {{ statusData?.officer?.duty }} )</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="statis">
+    <div class="statis__label">
+      <h3>ข้อมูลสถิติสะสมทั้งปี</h3>
+      <p>( ข้อมูลถึงวันที่ {{ statisLastProcess }} )</p>
+    </div>
+
+    <div class="statis__data">
+      <div class="statis__data__item">
+        <p class="first">ประเภทการลา</p>
+        <p>วัน</p>
+        <p>ชั่วโมง</p>
+        <p>นาที</p>
+      </div>
+      <div class="statis__data__item body" *ngFor="let data of statisData">
+        <p class="first">{{ data.description }}</p>
+        <p [ngClass]="{ zero: data.amount_dd === 0 ? true : false }">{{ data.amount_dd }}</p>
+        <p [ngClass]="{ zero: data.amount_hh === 0 ? true : false }">{{ data.amount_hh }}</p>
+        <p [ngClass]="{ zero: data.amount_mm === 0 ? true : false }">{{ data.amount_mm }}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="cancel" *ngIf="state?.step_id === '10'">
+    <button class="btn btn-danger" (click)="onCancelWorkflow()">ยกเลิกใบลา</button>
+  </section>
+</ion-content>

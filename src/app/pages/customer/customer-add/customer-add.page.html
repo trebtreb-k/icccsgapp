@@ -1,0 +1,51 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+
+    <ion-title>{{title}} <br/>{{titleDay}}</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button (click)="selectDate()">
+        <ion-icon slot="icon-only" name="options-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen="true">
+  <section class="section__list">
+    <div class="section__list__total">
+      <p>ทั้งหมด</p>
+      <p class="right">แสดง {{ customers.length | number }} จาก {{ customersInit.length | number }} รายการ</p>
+    </div>
+
+    <div class="section__list__item">
+      <ion-list lines="none">
+        <ion-item *ngFor="let customer of customers">
+          <ion-checkbox color="dark" slot="start" (ionChange)="checkEvent(customer)"></ion-checkbox>
+          <ion-avatar slot="start">
+            <img [src]="customer.gender === 'M' ? 'assets/images/avatar-male.svg' : 'assets/images/avatar-female.svg'" />
+          </ion-avatar>
+          <ion-label class="info">
+            <h2 *ngIf="customer.nickname">{{ customer?.nickname }}</h2>
+            <p *ngIf="customer.first_name">{{ customer?.first_name }} {{ customer?.last_name }}</p>
+            <p *ngIf="customer.birthday_full">วันเกิด {{ customer?.birthday_full }}</p>
+          </ion-label>
+          <div slot="end">
+            <div class="hisher-info">
+              <img [src]="customer?.img_card" alt="" />
+              <p>{{ customer?.hisher_id }}</p>
+            </div>
+          </div>
+        </ion-item>
+      </ion-list>
+    </div>
+  </section>
+</ion-content>
+
+<ion-footer class="ion-no-border">
+  <button class="btn btn-primary" [disabled]="!customersSelected.length" (click)="onAddCustomer()">เพิ่ม</button>
+</ion-footer>

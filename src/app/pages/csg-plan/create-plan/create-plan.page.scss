@@ -1,0 +1,183 @@
+.imgSave {
+  max-width: 20px;
+}
+.imgCancel {
+  max-width: 20px;
+}
+
+.item-native {
+  background-color: white !important;
+}
+
+// ion-item::part(native) {
+//   //WRITE ALL YOUR CSS RULES HERE
+//   // padding-left: unset;
+//   background-color: rgba(255, 255, 255, 0.874) !important;
+//   /** and lots more **/
+// }
+
+
+::ng-deep .days-btn {
+  &.next-month-day {
+    opacity: 0 !important;
+  }
+}
+::ng-deep .days-btn {
+  &.last-month-day {
+    opacity: 0 !important;
+  }
+}
+.calendar {
+  margin: 8px;
+  padding: 8px;
+  // background: #000;
+  border-radius: 8px;
+  // position: absolute;
+  z-index: 999;
+  margin-bottom: -10px;
+  // background-color: #000000 !important;
+
+}
+
+ion-header {
+  --ion-background-color: #ffffff;
+
+  ion-toolbar {
+    --border-color: transparent;
+    --border-style: none !important;
+
+    ion-title {
+      font-size: 1rem;
+      font-weight: 600;
+    }
+  }
+}
+
+ion-content {
+  --ion-background-color: #f5f5f5;
+  // ion-item {
+  //   z-index: 998;
+  // }
+  // section {
+  //   ion-button {
+  //     z-index: 998;
+  //   }
+  // }
+
+  .card-list {
+    margin: 8px;
+    padding: 8px;
+
+
+    ion-list {
+      ion-item {
+        --background: #ffffff;
+        --highlight-color-focused: transparent;
+        border-radius: 10px;
+        margin-bottom: 6px;
+        box-shadow: 0 1.2em 1.5em -0.9em #eeeeee;
+
+        ion-thumbnail {
+          --border-radius: 4px;
+          padding: 8px;
+        }
+
+        ion-label {
+          p {
+            margin: 0;
+
+            &.label {
+              color: #111111;
+              font-size: 0.9rem;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: normal;
+              margin: 4px 0;
+            }
+
+            &.price {
+              color: #111111;
+              font-size: 0.8rem;
+              font-weight: 600;
+              margin: 4px 0;
+
+              span {
+                color: red;
+                font-size: 1rem;
+              }
+            }
+
+            &.ot {
+              text-align: right;
+            }
+          }
+        }
+      }
+    }
+  }
+  .textRight{
+    float: right;
+  }
+
+  ion-thumbnail{
+    margin-top: 0px;
+    // padding: 1px !important;
+  }
+
+
+}
+
+.popover-content.sc-ion-popover-md {
+  top: 0px !important;
+}
+
+.border-radius-25{
+  border-radius: 25px;
+}
+
+
+hr.dashed {
+  border-top: 3px dashed #bbb;
+}
+
+.text-topic{
+  margin-left: 15px;
+  margin-right: 10px;
+  margin-bottom: -3px;
+  border-bottom: 2px solid #0000004a;
+}
+
+.mt-10{
+  margin-top: 25px;
+}
+
+ion-checkbox {
+  --size: 25px;
+  --background-checked: #2c46bd;
+}
+
+ion-checkbox::part(container) {
+  border-radius: 6px;
+  border: 2px solid #2c46bd;
+}
+
+
+.ion-color-white {
+  --ion-color-base: var(--ion-color-white, #fff) !important;
+  --ion-color-base-rgb: var(--ion-color-white-rgb, 61, 194, 255) !important;
+  --ion-color-contrast: var(--ion-color-white-contrast, rgb(1, 1, 1)) !important;
+  --ion-color-contrast-rgb: var(--ion-color-white-contrast-rgb, 255, 255, 255) !important;
+  --ion-color-shade: var(--ion-color-white-shade, #36abe0) !important;
+  --ion-color-tint: var(--ion-color-white-tint, #50c8ff) !important;
+  border-radius: 25px;
+}
+
+// .calendar-create-plan small {
+//   color: #000000 !important;
+//   font-weight: 600 !important;
+//   bottom: -12px;
+//   font-size: 13px !important;
+//   line-height: 2.4;
+// }
+
+

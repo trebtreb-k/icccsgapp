@@ -1,0 +1,181 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>    
+    <ion-title>Verify Pincode</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content class="body" fullscreen="true" >
+  <div class="header-banner">
+    <ion-row style="margin-top: -10px;">
+      <ion-col>
+          <div class="ion-text-center">
+            <h5>M Y &nbsp;&nbsp;  P I N C O D E</h5>
+          </div>              
+      </ion-col>
+    </ion-row>
+
+    <ion-row padding style="margin-top: 0px;">
+        <ion-col col-1></ion-col>
+        <ion-col>
+            <div class="pincode" [ngClass]="{'pincode_inactive': !pincode[0], 'pincode_active': pincode[0]}"></div>
+        </ion-col>
+        <ion-col>
+            <div class="pincode" [ngClass]="{'pincode_inactive': !pincode[1], 'pincode_active': pincode[1]}"></div>
+        </ion-col>
+        <ion-col>
+            <div class="pincode" [ngClass]="{'pincode_inactive': !pincode[2], 'pincode_active': pincode[2]}"></div>
+        </ion-col>
+        <ion-col>
+            <div class="pincode" [ngClass]="{'pincode_inactive': !pincode[3], 'pincode_active': pincode[3]}"></div>
+        </ion-col>
+        <ion-col>
+            <div class="pincode" [ngClass]="{'pincode_inactive': !pincode[4], 'pincode_active': pincode[4]}"></div>
+        </ion-col>
+        <ion-col>
+            <div class="pincode" [ngClass]="{'pincode_inactive': !pincode[5], 'pincode_active': pincode[5]}"></div>
+        </ion-col>
+        <ion-col col-1></ion-col>
+    </ion-row>
+    <ion-row style="margin-top: -10px;">
+      <ion-col>
+          <div class="ion-text-center">
+            <h4 class="text-red" *ngIf="invalidPincode==true">PIN CODE ไม่ถูกต้อง</h4>
+          </div>
+          
+      </ion-col>
+    </ion-row>    
+  </div>
+
+</ion-content>
+
+<ion-footer class="ion-no-border">
+
+  <div class="menu-pincode">
+    <ion-grid class="grid-pincode">    
+      <ion-row>
+          <ion-col >
+            <div class="ion-text-center">
+              <div class="icon-menu-circle">
+                 <ion-button (click)="inputPincode('1')">
+                    <h2>1</h2>
+                 </ion-button>
+              </div>
+            </div>      
+          </ion-col>
+          <ion-col >
+            <div class="ion-text-center">
+              <div class="icon-menu-circle">
+                <ion-button (click)="inputPincode('2')">
+                  <h2>2</h2>
+                </ion-button>
+              </div>
+            </div>      
+          </ion-col>
+          <ion-col >
+            <div class="ion-text-center">
+              <div class="icon-menu-circle">
+                <ion-button (click)="inputPincode('3')">
+                  <h2>3</h2>
+                </ion-button>
+              </div>
+            </div>      
+          </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col >
+          <div class="ion-text-center">
+            <div class="icon-menu-circle">
+              <ion-button (click)="inputPincode('4')">
+                <h2>4</h2>
+              </ion-button>
+            </div>
+          </div>      
+        </ion-col>
+        <ion-col >
+          <div class="ion-text-center">
+            <div class="icon-menu-circle">
+              <ion-button (click)="inputPincode('5')">
+                <h2>5</h2>
+              </ion-button>
+            </div>
+          </div>      
+        </ion-col>
+        <ion-col >
+          <div class="ion-text-center">
+            <div class="icon-menu-circle">
+              <ion-button (click)="inputPincode('6')">
+                <h2>6</h2>
+              </ion-button>
+            </div>
+          </div>      
+        </ion-col>
+      </ion-row>      
+
+      <ion-row>
+        <ion-col >
+          <div class="ion-text-center">
+            <div class="icon-menu-circle">
+              <ion-button (click)="inputPincode('7')">
+                <h2>7</h2>
+              </ion-button>
+            </div>
+          </div>      
+        </ion-col>
+        <ion-col >
+          <div class="ion-text-center">
+            <div class="icon-menu-circle">
+              <ion-button (click)="inputPincode('8')">
+                <h2>8</h2>
+              </ion-button>
+            </div>
+          </div>      
+        </ion-col>
+        <ion-col >
+          <div class="ion-text-center">
+            <div class="icon-menu-circle">
+              <ion-button (click)="inputPincode('9')">
+                <h2>9</h2>
+              </ion-button>
+            </div>
+          </div>      
+        </ion-col>
+      </ion-row>   
+
+      <ion-row>
+        <ion-col >
+          <div class="ion-text-center">
+            <div class="icon-menu-circle">
+              <ion-button (click)="fingerPrint()">
+                <img class="icon-menu" src="assets/images/pincode/fingerprint.svg" alt="">
+              </ion-button>
+            </div>
+          </div>      
+        </ion-col>
+        <ion-col >
+          <div class="ion-text-center">
+            <div class="icon-menu-circle">
+              <ion-button (click)="inputPincode('0')">
+                <h2>0</h2>
+              </ion-button>
+            </div>
+          </div>      
+        </ion-col>
+        <ion-col >
+          <div class="ion-text-center">
+            <div class="icon-menu-circle">                
+              <ion-button (click)="deletePincode()">
+                <img class="icon-menu" src="assets/images/pincode/backspace-arrow.svg" alt="">
+              </ion-button>
+            </div>
+          </div>      
+        </ion-col>
+      </ion-row>   
+
+    </ion-grid>
+  </div>
+</ion-footer>    

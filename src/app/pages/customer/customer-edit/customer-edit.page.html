@@ -1,0 +1,111 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+
+    <ion-title>แก้ไขข้อมูลลูกค้า</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen="true">
+  <form class="form" [formGroup]="formCustomer">
+    <div class="form__item">
+      <div class="form__item--label">ชื่อเล่น</div>
+      <input class="form__item--input" type="text" placeholder="ชื่อเล่น" formControlName="nickname" />
+    </div>
+    <div class="form__item">
+      <div class="form__item--label">คำนำหน้าชื่อ</div>
+      <ion-select class="form__item--select" placeholder="คำนำหน้าชื่อ" interface="action-sheet" formControlName="prefix">
+        <ion-select-option value="นาย">นาย</ion-select-option>
+        <ion-select-option value="นาง">นาง</ion-select-option>
+        <ion-select-option value="นางสาว">นางสาว</ion-select-option>
+      </ion-select>
+    </div>
+    <div class="form__item">
+      <div class="form__item--label">ชื่อจริง</div>
+      <input
+        [ngClass]="{'form__item--input': true, invalid: formCustomer.get('firstname')?.invalid}"
+        type="text"
+        placeholder="ชื่อจริง"
+        formControlName="firstname"
+      />
+    </div>
+    <div class="form__item">
+      <div class="form__item--label">นามสกุล</div>
+      <input class="form__item--input" type="text" placeholder="นามสกุล" formControlName="lastname" />
+    </div>
+    <div class="form__item">
+      <div class="form__item--label">เพศ</div>
+      <ion-select
+        [ngClass]="{'form__item--select': true, invalid: formCustomer.get('gender')?.invalid}"
+        placeholder="เพศ"
+        interface="action-sheet"
+        formControlName="gender"
+      >
+        <ion-select-option value="F">หญิง</ion-select-option>
+        <ion-select-option value="M">ชาย</ion-select-option>
+      </ion-select>
+    </div>
+    <div class="form__item">
+      <div class="form__item--label">วันเกิด</div>
+      <ion-icon name="calendar-outline" class="form__item--icon right"></ion-icon>
+      <ion-datetime
+        class="form__item--datetime"
+        placeholder="วันเกิด"
+        displayFormat="DD MMMM YYYY"
+        pickerFormat="DD MMMM YYYY"
+        formControlName="birthday"
+      ></ion-datetime>
+    </div>
+    <div class="form__item">
+      <div class="form__item--label">รหัสสมาชิก His&Her</div>
+      <input class="form__item--input" type="text" placeholder="รหัสสมาชิก His&Her" formControlName="hisher_id" />
+    </div>
+
+    <br />
+
+    <div class="form__item">
+      <div class="form__item--label">ช่องทางติดต่อ</div>
+    </div>
+    <div class="form__item">
+      <div class="form__item--image">
+        <img src="assets/images/customer/call.svg" alt="" />
+      </div>
+      <input
+        [ngClass]="{'form__item--input': true, icon: true, invalid: formCustomer.get('phone')?.invalid}"
+        type="tel"
+        maxlength="10"
+        placeholder="เบอร์โทรศัพท์"
+        formControlName="phone"
+      />
+    </div>
+    <div class="form__item">
+      <div class="form__item--image">
+        <img src="assets/images/customer/email.svg" alt="" />
+      </div>
+      <input class="form__item--input icon" type="email" placeholder="อีเมล" formControlName="email" />
+    </div>
+    <div class="form__item">
+      <div class="form__item--image">
+        <img src="assets/images/customer/facebook.svg" alt="" />
+      </div>
+      <input class="form__item--input icon" type="text" placeholder="บัญชี Facebook" formControlName="facebook_id" />
+    </div>
+    <div class="form__item">
+      <div class="form__item--image">
+        <img src="assets/images/customer/line.svg" alt="" />
+      </div>
+      <input class="form__item--input icon" type="text" placeholder="บัญชี Line" formControlName="line_id" />
+    </div>
+
+    <br />
+
+    <div class="form__item">
+      <div class="form__item--label">รายละเอียดเพิ่มเติม</div>
+      <ion-textarea class="form__item--textarea" placeholder="รายละเอียดเพิ่มเติม" rows="6" formControlName="description"></ion-textarea>
+    </div>
+
+    <button class="btn btn-primary" [disabled]="!formCustomer.valid" (click)="onSaveEditCustomer()">บันทึก</button>
+  </form>
+</ion-content>

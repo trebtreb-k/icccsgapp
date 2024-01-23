@@ -1,0 +1,134 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{title}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [scrollEvents]="true" (ionScrollEnd)="logScrollEnd($event)">
+
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content
+      pullingIcon="arrow-dropdown"
+      refreshingSpinner="circles">        
+    </ion-refresher-content>
+  </ion-refresher>
+
+  <div *ngIf="type==='PRIVACY'" style="text-align:center; margin-top:10px">
+    <img src="assets/images/png/privacy.png" style="width:50px">
+  </div>
+  <div *ngIf="type==='CONTRACT'" style="text-align:center; margin-top:10px">
+    <img src="assets/images/png/contract.png" style="width:50px">
+  </div>  
+  <div *ngIf="type==='CONSENT'" style="text-align:center; margin-top:10px">
+    <img src="assets/images/png/consent.png" style="width:50px">
+  </div>  
+
+  <ion-list class="data-list" *ngFor="let data of datas">
+   
+
+    <ion-card style="margin-top:-5px">
+      <ion-card-header style="background-color:#ffffff;">
+        <ion-card-title [innerHTML]="data.privacy_title"></ion-card-title>
+        <!-- <ion-card-subtitle>{{item.send_date}}</ion-card-subtitle>               -->
+      </ion-card-header>
+      
+      <ion-card-content>
+        <!-- <p style="color:black">{{item.notify_body}}</p> -->
+        <div [innerHTML]="data.privacy_content_thai"></div>   
+
+        <div style="text-align:center" *ngIf="(data.type!=='CONSENT' && this.privacy_notice_url!=='')" (click)="viewPolicy(privacy_notice_url)">
+          <img src="assets/images/png/pdf.png" style="width:50px" >
+          <p [innerHTML]="privacy_notice_title"></p>
+        </div>
+
+        <ion-list *ngIf="data.show_checkbox_flag==='Y'">
+
+          <ion-item *ngIf="data.type!=='CONSENT'">
+            <ion-checkbox color="primary" [(ngModel)]="data.isItemChecked" (ionChange)="checkConsent($event, data)"></ion-checkbox>
+            <ion-label class="ion-text-wrap" [innerHTML]="data.consent_caption" style="margin-left:5px"></ion-label>
+          </ion-item>
+
+          <!-- <ion-item *ngIf="data.type==='CONSENT'">  -->
+           
+            <ion-grid *ngIf="data.type==='CONSENT'"> 
+
+            
+              <ion-row>
+                <ion-col size="6">
+                  <ion-item>
+                    <ion-checkbox color="primary" [(ngModel)]="data.isItemChecked" (ionChange)="checkConsent($event, data)"></ion-checkbox>
+                    <ion-label class="ion-text-wrap" style="margin-left:5px">ยินยอม</ion-label>
+                  </ion-item>
+                </ion-col>
+                <ion-col size="6">
+                  <ion-item>
+                    <ion-checkbox color="primary" [(ngModel)]="data.isItemNotChecked" (ionChange)="checkConsentNot($event, data)"></ion-checkbox>
+                    <ion-label class="ion-text-wrap" style="margin-left:5px">ไม่ยินยอม</ion-label>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
+            </ion-grid> 
+            
+
+
+     
+           
+
+          <!-- </ion-item> -->
+        </ion-list>
+
+        <ion-note *ngIf="data.disagree_message" style="--color:#ff0000">{{data.disagree_message}}</ion-note >
+
+      </ion-card-content>    
+    </ion-card>
+
+  </ion-list>
+
+
+
+  <ion-card style="margin-top:0px" *ngIf="showCheckAll===true">
+    <!-- <ion-card-header style="background-color:#ffffff;">
+      <ion-card-title>ยินยอมเงื่อนไขทั้งหมด</ion-card-title>
+    </ion-card-header> -->
+    
+    <ion-card-content>      
+      <ion-item>
+        <ion-checkbox color="primary" [(ngModel)]="isItemCheckedAll"  (ionChange)="checkConsentAll($event)"></ion-checkbox>
+        <ion-label class="ion-text-wrap" style="margin-left:5px; font-size:1.2rem">ยินยอมเงื่อนไขทั้งหมด</ion-label>
+      </ion-item>
+    </ion-card-content>    
+  </ion-card>
+
+
+
+  <ion-toolbar>
+    <div class="footer-button-border">    
+      <div class="footer-button" style="text-align: center; padding-left:10px;padding-right:10px">
+        <ion-button color="primary" (click)="agreePrivacyPolicy()" expand="full" shape="round" style="height:50px" disabled={{buttonDisabled}}>
+          <!-- <ion-icon src="assets/imgs/png/checked.svg"></ion-icon> -->
+          <img src="assets/images/png/checked-green-64.png" style="width:28px">
+          <p>&nbsp;&nbsp;{{button_label}}&nbsp;</p>
+        </ion-button>
+      </div>
+    </div>
+  </ion-toolbar>
+
+  <br/>
+
+</ion-content>
+
+
+
+<!-- 
+<ion-footer>
+  <ion-toolbar>
+    <div class="footer-button-border">
+      <div class="footer-button" style="text-align: center;">
+        <ion-button color="dark" fill="clear" (click)="agreePrivacyPolicy()"  [disabled]="buttonDisabled">
+          <ion-icon src="assets/imgs/icons/check-green.svg"></ion-icon>
+          <p>I Agree</p>
+        </ion-button>
+      </div>
+    </div>
+  </ion-toolbar>
+</ion-footer> -->

@@ -1,0 +1,227 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <!-- <ion-title (click)="back()"><ion-icon name="arrow-back-outline"></ion-icon> CSG Plan</ion-title> -->
+    <!-- <ion-title>CSG Plan</ion-title> -->
+    <ion-title>แพลนงาน</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen="true">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content>
+    </ion-refresher-content>
+  </ion-refresher>
+
+  <div class="card-list">
+
+    <ion-list lines="none">
+
+      <ion-item-sliding>
+        <ion-label>ขั้นตอนการอนุมัติ</ion-label>
+
+        <section class="status" (click)="status_plan === 'X' ? '' : status_plan === 'N' ? '' : approverDetail(monthCreate,empId)">
+          <div class="status__step">
+            <!-- // -------------------------------------------- // -->
+
+            <!-- <div [ngClass]="{'status__item': true, disable: status_plan === 'N' ? false : true, bb: true}"> -->
+            <div [ngClass]="{'status__item': true, disable: status_plan === 'X' ? true : false, bb: true}">
+              <div class="status__item--image">
+                <ion-icon [name]="status_plan === 'X' ? 'time' : status_plan === 'N' ? 'time' : 'checkmark-circle'" [color]="status_plan === 'X' ? 'warning' : status_plan === 'N' ? 'warning' : 'success'"></ion-icon>
+                <!-- <ion-icon name="checkmark-circle" color="success"></ion-icon> -->
+                <!-- <ion-icon name="create-outline" color="primary"></ion-icon> -->
+              </div>
+              <label>{{g1_desc}}</label>
+            </div>
+
+
+            <!-- // -------------------------------------------- // Arrow -->
+
+            <div [ngClass]="{'status__item': true, disable: true}">
+              <ion-icon class="arrow" name="arrow-forward-outline"></ion-icon>
+            </div>
+
+            <!-- // -------------------------------------------- // -->
+
+            <!-- <div [ngClass]="{'status__item': true, disable: status_plan === 'A' ? false : status_plan === 'W' ? false : true, bb: true}"> -->
+            <!-- <div [ngClass]="{'status__item': true, disable: status_plan === 'A' ? false : status_plan === 'W' ? false : true, bb: true}"> -->
+            <div [ngClass]="{'status__item': true, disable: status_plan === 'X' ? true : status_plan === 'N' ? true : false, bb: true}">
+              <div class="status__item--image">
+                <!-- <ion-icon name="time" color="warning"></ion-icon> -->
+                <!-- <ion-icon [name]="status_plan === 'A' ? 'time' : status_plan === 'W' ? 'time' : status_plan === 'X' ? 'time' : 'checkmark-circle'" [color]="status_plan === 'N' ? 'warning' : status_plan === 'W' ? 'warning' :status_plan === 'X' ? 'warning' : 'success'"></ion-icon> -->
+                <ion-icon [name]="status_plan === 'S' ? 'checkmark-circle' : 'time' " [color]="status_plan === 'N' ? 'warning' : status_plan === 'W' ? 'warning' :status_plan === 'S' ? 'success' : 'warning'"></ion-icon>
+              </div>
+                <label>{{g2_desc}}</label>
+            </div>
+
+            <!-- // -------------------------------------------- // Arrow -->
+
+            <div [ngClass]="{'status__item': true, disable: true}">
+              <ion-icon class="arrow" name="arrow-forward-outline"></ion-icon>
+            </div>
+
+            <!-- // -------------------------------------------- // -->
+
+            <!-- <div [ngClass]="{'status__item': true, disable: status_plan === 'S' ? false : true, bb: true}"> -->
+            <div [ngClass]="{'status__item': true, disable: status_plan === 'S' ? false : true, bb: true}">
+              <div class="status__item--image">
+                <!-- <ion-icon [name]="status_plan === 'X' ? 'time' : 'checkmark-circle'" [color]="status_plan === 'X' ? 'warning' : 'success'"></ion-icon> -->
+                <ion-icon [name]="status_plan === 'S' ? 'checkmark-circle' : 'time' " [color]="status_plan === 'S' ? 'success' : 'warning'"></ion-icon>
+              </div>
+                <label>{{g3_desc}}</label>
+            </div>
+
+
+          </div>
+        </section>
+
+
+      </ion-item-sliding >
+    </ion-list>
+
+
+  </div>
+
+
+
+  <!-- <div [ngClass]="{'status__item': true, disable: statusCheck?.officer?.disable}">
+              <ion-icon class="arrow" name="arrow-forward-outline"></ion-icon>
+            </div> -->
+
+            <!-- [(ngModel)]="testDate" <ion-segment-button  layout="icon-top" value="WAIT" [ngStyle]="{'background-color': 'red'}"></ion-segment-button> -->
+
+
+
+  <div class="calendar calendar-plan">
+
+
+    <ion-calendar *ngIf="loadData"  [type]="type" [(ngModel)]="startDate"  [options]="optionsMulti" (monthChange)="getEventForMonths($event)" [format]="'DD-MM-YYYY'">
+    </ion-calendar>
+  </div>
+
+  <!-- <ion-list lines="none"> (change)="getEventDate($event)"-->
+  <!-- <ion-list-header>
+      <ion-label><strong>สรุปข้อมูลประจำเดือน</strong></ion-label>
+    </ion-list-header>
+    <ion-item *ngFor="let item of dataOtH">
+
+        OT(ชม.น.) = {{item.hour}}.{{item.minute}}.
+    </ion-item> -->
+  <!-- <ion-item>
+        วันหยุดประจำสัปดาห์: 2 วัน Holiday: 2 วัน เหลือ: 0 วัน
+    </ion-item> -->
+
+  <!-- </ion-list> -->
+
+
+  <div class="card-list">
+    <ion-list lines="none">
+      <ion-item-sliding *ngFor="let v of values">
+        <ion-item>
+          <ion-thumbnail slot="start">
+            <img [src]="v.image" />
+          </ion-thumbnail>
+          <ion-label>
+            <p class="label"><B>{{ v.date }}</B> <span class="textRight">{{v.value}}</span></p>
+            <p class="label">{{ v.custname }}</p>
+            <p class="label">{{ v.counterid }} {{v.countername}}</p>
+            <p class="label" *ngIf="v.workfrom">เวลาปฏิบัติงาน <span class="textRight">{{v.workfrom}} - {{v.workto}}</span></p>
+            <p class="label" *ngIf="v.otfrom">เวลาทำ OT <span class="textRight">{{v.otfrom}} - {{v.otto}}</span></p>
+            <p class="label c-red"  *ngIf='v.worktype === "LE" && v.satusleave !== "Y"'> *กรุณาสร้างใบลาเข้าระบบ WorkFlow {{v.status_leave}}</p>
+          </ion-label>
+          <!-- <ion-label slot="end" *ngIf="v.stateOt != 'N'"> -->
+          <p *ngIf="v.stateOt != 'N'" slot="end" class="ot">OT</p>
+          <!-- </ion-label> -->
+        </ion-item>
+
+        <ion-item-options *ngIf="v.typecancel === 'Y' && status_plan === 'N'">
+          <ion-item-option color="danger" (click)="presentAlert(v)">ยกเลิก</ion-item-option>
+        </ion-item-options>
+        <ion-item-options *ngIf="v.typecancel === 'N' && status_plan === 'N'">
+          <ion-item-option color="danger" disabled="">ยกเลิกไม่ได้</ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding >
+    </ion-list>
+
+
+  </div>
+
+
+
+
+  <!-- <ion-footer class="ion-no-border" *ngIf="statusWorkspace === 'COMPLETED'">
+    <div class="section__completed">
+      <ng-lottie
+        [width]="lottiefiles.completedData.width"
+        [height]="lottiefiles.completedData.height"
+        [options]="lottiefiles.completedData.options"
+      ></ng-lottie> -->
+
+      <!-- <h6 style="margin-top:-15px" [ngClass]="{in:result.type=='I', out:result.type=='O' }">{{result.title}} !</h6>
+
+      <p>{{result.ship_no}} {{result.ship_name}}</p>
+      <p>{{result.counter_id}} {{result.counter_name}}</p>
+      <p>{{result.time_stamp}}</p> -->
+<!--
+      <p class="countdown">
+        กำลังกลับสู่หน้าแรก -->
+        <!-- <strong>
+          <countdown [config]="{ leftTime: countdownCompleted, format: 's' }" (event)="completedCountdown($event)"></countdown>
+        </strong> -->
+        <!-- วินาที
+      </p> -->
+    <!-- </div>
+  </ion-footer> -->
+
+
+
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+
+    <ion-fab-button *ngIf="status_plan === 'N' " class="fl mr-5 dt2" (click)="presentAlert2()">
+      <ion-icon name="send-outline"></ion-icon>
+    </ion-fab-button>
+
+    <ion-fab-button class="fl dt2" (click)="createPlan()">
+      <ion-icon name="create-outline"></ion-icon>
+    </ion-fab-button>
+
+
+
+    <!-- <ion-fab-button>
+      <ion-icon name="chevron-up-circle"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list side="top">
+      <ion-fab-button (click)="createPlan()">
+        <ion-icon name="create-outline"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button *ngIf="status_plan != 'S' && status_plan != 'X' " (click)="presentAlert2()">
+        <ion-icon name="send-outline"></ion-icon>
+      </ion-fab-button>
+    </ion-fab-list> -->
+
+
+  </ion-fab>
+
+  <!-- <ion-fab horizontal="end" vertical="bottom" slot="fixed">
+    <ion-fab-button>
+      <ion-icon md="create-outline" ios="chevron-create-outline"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list class="ll" side="top" style="margin-left: -55px; border-radius: 0 !important">
+      <ion-fab-button color="light" style="width: 120px; height: 120px; border-radius: 0 !important">
+        <ion-icon name="logo-facebook"></ion-icon>
+        เลือกวันทำงาน
+      </ion-fab-button>
+
+      <ion-fab-button color="light">
+        <ion-icon name="logo-twitter"></ion-icon>
+        เลือกวันหยุด
+      </ion-fab-button>
+    </ion-fab-list>
+  </ion-fab> -->
+</ion-content>
+
+
+

@@ -1,0 +1,43 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="secondary">
+      <ion-button (click)="dismiss()">
+        <ion-icon slot="icon-only" name="close-outline" color="dark"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{ props?.level === '1' ? 'เลือกรายชื่อผู้รับผิดชอบ' : 'เลือกรายชื่อผู้อนุมัติ' }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen>
+  <section class="search">
+    <form class="form" [formGroup]="formSearch">
+      <div class="form__item">
+        <input class="form__item--input" type="text" placeholder="ค้นหารายชื่อ" formControlName="search" (keyup)="keySearch($event)" />
+      </div>
+    </form>
+  </section>
+
+  <section *ngIf="approvers.length === 0">
+    <p class="notfound">ไม่พบข้อมูล</p>
+  </section>
+
+  <section *ngIf="approvers.length > 0">
+    <ion-grid>
+      <p class="total">ทั้งหมด {{ approvers.length | number }} / {{ approversInit.length | number }} รายการ</p>
+      <ion-row class="list animated zoomIn" *ngFor="let approver of approvers">
+        <ion-col size="2.5" class="thumbnail">
+          <img [src]="approver.image" onError="this.src='assets/images/avatar-male.svg'" />
+        </ion-col>
+        <ion-col class="name">
+          <h2 class="title">{{ approver.emp_name }}</h2>
+          <p class="posi">{{ approver.posi_desc }}</p>
+          <p class="dept">{{ approver.dept_desc }}</p>
+        </ion-col>
+        <ion-col size="2" class="edit" (click)="selected(approver)">
+          <p>เลือก</p>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </section>
+</ion-content>

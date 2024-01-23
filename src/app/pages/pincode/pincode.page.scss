@@ -1,0 +1,115 @@
+ion-header {
+    ion-toolbar {
+        --ion-text-color:  #ffafa9;
+    }
+}
+
+.body {
+    background:#82aeff
+}
+
+.header-banner{
+ //   height:150px;
+ //   min-height:150px;
+    height: 100%;
+    background: #f7928b;
+    color: #ffffff;
+}
+
+
+
+.pincode{
+    border-radius: 50%;
+    margin-left: 5px !important;
+    background-color: #ffffff;
+    width:25px;
+    height:25px;
+}
+.pincode_inactive{
+    border-radius: 50%;
+    margin-left: 5px !important;
+    background-color: #ffffff;
+    width:25px;
+    height:25px;
+}
+.pincode_active{
+    border-radius: 50%;
+    margin-left: 5px !important;
+    background-color:#ee0f8a;//# #000000;
+    width:25px;
+    height:25px;
+}
+.icon-menu{
+    width: 40px !important;
+    margin-top:12px;
+}
+
+.keyboard-pin{
+    position: fixed;
+    background-color:#fafafa;
+    bottom: 0px;
+    width: 100%;
+}
+.btn-pin{
+    background-color:#ffffff !important;
+    color:  #000000;
+    padding: 5px;
+    border-radius: 12px;
+    height: 80px;
+}
+.btn-pin:active{
+    background-color:#d9d9ff !important;
+    color: #000000;
+}
+
+.text-red{
+   color: #ff0000;
+}
+
+
+div.menu-pincode{
+    margin-bottom: 0px;
+    display: flex;
+    // flex-direction: column;
+    justify-content: space-around;
+    align-items: center;    
+    ion-grid{
+
+        ion-col{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;    
+            .icon-menu-circle{     
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+    
+                background: #f6f6f6;
+                height: 80px;
+                width: 80px;
+                border-radius: 50%;
+                ion-button{
+                    --background: #f6f6f6;
+                    --background-activated: #c0c0c0;
+                    --border-radius: 50%;
+                    shape: round;   
+                    height: 80px;
+                    width: 80px;
+                    color: #000000;                           
+                }
+            }
+            .icon-menu{
+                display: block;
+                margin: 0 auto !important;
+                width: 30px;
+                height: 30px;
+                margin-left: 5px;
+                margin-top: 5px;
+            }
+                
+        }
+    
+    }
+}

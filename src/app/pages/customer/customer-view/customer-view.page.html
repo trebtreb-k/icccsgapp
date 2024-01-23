@@ -1,0 +1,105 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button (click)="editProfile()">
+        <ion-icon slot="icon-only" size="large" name="create-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-title>ลูกค้า</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen="true">
+  <div class="card" *ngIf="state">
+    <!-- <ion-icon name="create-outline" size="large" (click)="editProfile()"></ion-icon> -->
+
+    <div class="circular--portrait">
+      <img [src]="state.img_member" (error)="getAvatar($event, state)"alt="" (click)="onViewImage(state.img_member)" /> <!-- [src]="state?.gender === 'M' ? 'assets/images/avatar-male.svg' : 'assets/images/avatar-female.svg'" alt="" />-->
+    </div>
+
+    <p class="nickname">{{ state?.nickname }}</p>
+    <p class="fullname">{{ state?.first_name }} {{ state?.last_name }}</p>
+
+    <p *ngIf="state?.hh_id" class="id">His&Her ID: {{ state?.hh_id }}</p>
+    <p *ngIf="!state?.hh_id" class="id">ไม่พบหมายเลขสมาชิก His&Her</p>
+    <p *ngIf="state?.birthday" class="fullname">วันเกิด : {{ state?.birthday }}</p>
+
+    <!-- <div class="star">
+      <ion-icon name="star-outline" color="dark"></ion-icon>
+      <ion-icon name="star-outline" color="dark"></ion-icon>
+      <ion-icon name="star-outline" color="dark"></ion-icon>
+      <ion-icon name="star-outline" color="dark"></ion-icon>
+      <ion-icon name="star-outline" color="dark"></ion-icon>
+    </div> -->
+
+    <form *ngIf="formRating" [formGroup]="formRating">
+      <rating id="rating-1" formControlName="rate" [readonly]="false" size="default" (rateChange)="onRateChange($event,state?.customer_id)">
+      </rating>
+    </form>
+
+    <ion-list lines="none">
+      <ion-list-header>
+        <ion-label><strong>ช่องทางติดต่อ</strong></ion-label>
+      </ion-list-header>
+      <ion-item (click)="callPhone(!state?.phone ? null : state?.phone)">
+        <ion-thumbnail slot="start">
+          <img src="assets/images/customer/call.svg" />
+        </ion-thumbnail>
+        <ion-label>
+          <h2>{{ !state?.phone ? '-' : state?.phone }}</h2>
+        </ion-label>
+      </ion-item>
+
+      <ion-item (click)="sendEmail(!state?.email ? null : state?.email)">
+        <ion-thumbnail slot="start">
+          <img src="assets/images/customer/email.svg" />
+        </ion-thumbnail>
+        <ion-label>
+          <h2>{{ !state?.email ? '-' : state?.email }}</h2>
+        </ion-label>
+      </ion-item>
+
+      <ion-item (click)="callFB(!state?.facebook ? null : state?.facebook)">
+        <ion-thumbnail slot="start">
+          <img src="assets/images/customer/facebook.svg" />
+        </ion-thumbnail>
+        <ion-label>
+          <h2>{{ !state?.facebook ? '-' : state?.facebook }}</h2>
+        </ion-label>
+      </ion-item>
+
+      <ion-item (click)="callLine(!state?.line_id ? null : state?.line_id)">
+        <ion-thumbnail slot="start">
+          <img src="assets/images/customer/line.svg" />
+        </ion-thumbnail>
+        <ion-label>
+          <h2>{{ !state?.line_id ? '-' : state?.line_id }}</h2>
+        </ion-label>
+      </ion-item>
+      <ion-list-header>
+        <ion-label><strong>ที่อยู่</strong></ion-label>
+      </ion-list-header>
+      <div *ngIf="!state?.address1" [innerHTML]="'<di>-</div>'"></div>
+      <div *ngIf="state?.address1">
+        {{state?.address1}} {{state?.address2}} <br />
+        {{state?.sub_district}} {{state?.district}} จังหวัด {{state?.province}} {{state?.postcode}}
+      </div>
+      <ion-list-header>
+        <ion-label><strong>ข้อมูลเพิ่มเติม</strong></ion-label>
+      </ion-list-header>
+      <div *ngIf="!state?.description" [innerHTML]="'<p>-</p>'"></div>
+      <div *ngIf="state?.description" [innerHTML]="state?.description"></div>
+    </ion-list>
+
+    <p></p>
+
+    <ion-button class="btn-action" [disabled]="!state?.hh_id" shape="round" expand="full" (click)="viewHistoryPurchase(state?.customer_id)">
+      ดูประวัติการซื้อ
+      <ion-icon name="cart"></ion-icon>
+    </ion-button>
+  </div>
+</ion-content>

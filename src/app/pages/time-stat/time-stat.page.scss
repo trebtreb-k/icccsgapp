@@ -1,0 +1,62 @@
+
+  .calendar {
+    margin: 8px;
+    padding: 8px;
+    background: #ffffff;
+    border-radius: 8px;
+  }
+
+  .card-list {
+    margin: 8px;
+
+    ion-list {
+      ion-item {
+        --background: #ffffff;
+        --highlight-color-focused: transparent;
+        border-radius: 10px;
+        margin-bottom: 6px;
+        box-shadow: 0 1.2em 1.5em -0.9em #eeeeee;
+
+        ion-thumbnail {
+          --border-radius: 4px;
+          padding: 8px;
+        }
+
+        ion-label {
+          p {
+            margin: 0;
+
+            &.label {
+              color: #111111;
+              font-size: 0.9rem;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: normal;
+              margin: 4px 0;
+            }
+
+            &.price {
+              color: #111111;
+              font-size: 0.8rem;
+              font-weight: 600;
+              margin: 4px 0;
+
+              span {
+                color: red;
+                font-size: 1rem;
+              }
+            }
+
+            &.ot {
+              text-align: right;
+            }
+          }
+        }
+      }
+    }
+  }
+
+
+  .titleStat {
+    background-color: #ffafa9 !important;
+  }

@@ -1,0 +1,177 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+
+    <ion-title>รายได้</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen="true">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content>
+    </ion-refresher-content>
+  </ion-refresher>
+
+
+  <ion-toolbar>
+    <ion-segment scrollable [(ngModel)]="current" (ionChange)="segmentChange($event)">
+      <ion-segment-button value="ALL">
+        <ion-label>ภาพรวม </ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="LIST">
+        <ion-label>รายเดือน</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+
+  <div class="segment__main" [ngSwitch]="current">
+    <div class="segment__primary" *ngSwitchCase="'ALL'">
+      <div class="section__calendar">
+        <ion-icon class="calendar__icon" name="chevron-back-outline" (click)="backCalendar()"></ion-icon>
+        <p>เดือน {{ currentCalendar.text }}</p>
+        <ion-icon
+          [ngClass]="{'calendar__icon': true, 'disable': disableNextCalendar }"
+          name="chevron-forward-outline"
+          (click)="nextCalendar()"
+        ></ion-icon>
+      </div>
+
+      <section class="handle__error" *ngIf="incomeData === 0">
+        <ng-lottie
+          [width]="lottiefiles.warning.width"
+          [height]="lottiefiles.warning.height"
+          [options]="lottiefiles.warning.options"
+        ></ng-lottie>
+
+        <p>ไม่พบข้อมูล</p>
+      </section>
+
+      <section *ngIf="incomeData > 0">
+        <div class="section__chart">
+          <div class="section__chart--value">
+            <p>{{ incomeData && 'รายได้ทั้งหมด' || 'ไม่พบข้อมูล' }}</p>
+            <p class="value">{{ incomeData | number }}</p>
+          </div>
+
+          <chart
+            class="section__chart--doughnut"
+            [type]="incomeTypeChart"
+            [data]="incomeDataChart"
+            [options]="incomeOptionsChart"
+          ></chart>
+        </div>
+
+        <div class="section__progress" *ngFor="let data of incomeProgress">
+          <div class="section__progress--label">
+            <p>{{ data.incomecode }} ({{ (data.amountpay/incomeData) * 100 | number:'1.2-2' }}%)</p>
+            <p>{{ data.amountpay | number }}</p>
+          </div>
+          <ion-progress-bar [class]="data.incomecode" [value]="((data.amountpay/incomeData) * 100) / 100"></ion-progress-bar>
+        </div>
+
+        <hr class="hr--style" />
+
+        <div class="section__chart">
+          <h3>รายละเอียดรายได้</h3>
+
+          <div class="section__chart--value">
+            <p>เดือน {{ detialDate }}</p>
+          </div>
+
+          <chart
+            class="section__chart--bar"
+            [type]="detialTypeChart"
+            [data]="detialDataChart"
+            [options]="detialOptionsChart"
+          ></chart>
+        </div>
+
+        <hr class="hr--style" style="margin-top:20px;margin-bottom:10px"/>
+
+        <ion-list>
+          <ion-item *ngFor="let data of dailyDatas" >
+            <ion-row style="width:100%;height:auto;margin-top:-12px;margin-bottom: 25px;font-size:0.8rem">
+              <ion-col size="4">
+                <p class="center">{{ data.date }}</p>
+              </ion-col>
+              <ion-col size="8" style="padding:0;">
+                  <ion-row *ngIf="data.commission>=0"  style="width:100%;" [ngClass]="{'color_black': data.commission>0, 'color_gray' : data.commission==0 }"> 
+                    <ion-col size="6" style="height:20px">
+                      <p style="text-align: right;">Commission</p>
+                    </ion-col>       
+                    <ion-col size="6" style="height:20px">
+                      <p style="text-align: right;">{{data.commission | number}}</p>
+                    </ion-col> 
+                  </ion-row>
+                  <ion-row *ngIf="data.incentive>=0"  style="width:100%;height:20px" [ngClass]="{'color_black': data.incentive>0, 'color_gray' : data.incentive==0 }">       
+                    <ion-col size="6">
+                      <p style="text-align: right;" >Incentive</p>
+                    </ion-col>       
+                    <ion-col size="6">
+                      <p style="text-align: right;">{{data.incentive | number}}</p>
+                    </ion-col> 
+                  </ion-row>
+                  <ion-row *ngIf="data.holiday>=0" style="width:100%;height:20px" [ngClass]="{'color_black': data.holiday>0, 'color_gray' : data.holiday==0 }">       
+                    <ion-col size="6">
+                      <p style="text-align: right;">Holiday</p>
+                    </ion-col>       
+                    <ion-col size="6">
+                      <p style="text-align: right;">{{data.holiday | number}}</p>
+                    </ion-col> 
+                  </ion-row>
+               
+                  <ion-row *ngIf="data.ot>=0" style="width:100%;height:20px"  [ngClass]="{'color_black': data.ot>0, 'color_gray' : data.ot==0 }">       
+                    <ion-col size="6">
+                      <p style="text-align: right;">OT</p>
+                    </ion-col>       
+                    <ion-col size="6">
+                      <p style="text-align: right;">{{data.ot | number}}</p>
+                    </ion-col> 
+                  </ion-row>
+                  
+              </ion-col>              
+            </ion-row>
+          </ion-item>
+        </ion-list>
+
+
+      </section>
+
+
+    </div>
+
+    <div class="segment__secondary" *ngSwitchCase="'LIST'">
+      <ion-row>
+        <ion-col>
+          <p class="label center">วันที่จ่าย</p>
+        </ion-col>
+        <ion-col>
+          <p class="label center">รายรับสุทธิ</p>
+        </ion-col>
+        <ion-col size="1"></ion-col>
+      </ion-row>
+
+      <br />
+
+      <ion-list>
+        <ion-item *ngFor="let data of summaryData" (click)="viewDetail(data)">
+          <ion-row style="width:100%">
+            <ion-col size="5">
+              <p class="center">{{ data._period }}</p>
+            </ion-col>
+            <ion-col size="5">
+              <p style="text-align: right;">{{ data.income | number }}</p>
+            </ion-col>
+            <ion-col size="2" style="text-align: right;">
+              <ion-icon name="document-text-outline" style="font-size: 1.2rem;"></ion-icon>
+            </ion-col>
+          </ion-row>
+        </ion-item>
+      </ion-list>
+
+    </div>
+  </div>
+</ion-content>
+

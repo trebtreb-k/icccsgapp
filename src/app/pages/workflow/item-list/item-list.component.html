@@ -1,0 +1,36 @@
+<section>
+  <div class="timedate">
+    <div class="timedate__icon">
+      <ion-icon name="calendar-outline"></ion-icon>
+    </div>
+
+    <div class="timedate__text">
+      <p>
+        <strong>วันที่ลา</strong> {{ param?.show_date }} น.
+        <strong> ({{ param?.time_count }})</strong>
+      </p>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="content__txt">
+      <p><strong>ประเภท: </strong>{{ param?.absent_name }}</p>
+      <p><strong>เหตุผล: </strong>{{ param?.absent_reason }}</p>
+    </div>
+
+    <div class="content__status">
+      <ion-icon *ngIf="param?.workflow_status === 'WAIT'" name="time" color="warning"></ion-icon>
+      <p *ngIf="param?.workflow_status === 'WAIT'">รอการอนุมัติ</p>
+
+      <ion-icon *ngIf="param?.workflow_status === 'APPROVE'" name="checkmark-circle" color="success"></ion-icon>
+      <p *ngIf="param?.workflow_status === 'APPROVE'">ผ่านการอนุมัติ</p>
+
+      <ion-icon *ngIf="param?.workflow_status === 'CANCEL'" name="close-circle" color="danger"></ion-icon>
+      <p *ngIf="param?.workflow_status === 'CANCEL'">ยกเลิก</p>
+
+      <ion-icon *ngIf="param?.workflow_status === 'NOTAPPROVE'" name="close-circle" color="danger"></ion-icon>
+      <p *ngIf="param?.workflow_status === 'CANCEL'">ไม่ผ่านอนุมัติ</p>
+
+    </div>
+  </div>
+</section>

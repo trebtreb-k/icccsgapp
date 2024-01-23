@@ -1,0 +1,100 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+
+    <ion-title>รายละเอียดรายได้ของวันที่ {{ state?.period }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen="true">
+  <p class="title">ใบแจ้งเงินเดือน Pay Slip</p>
+  <p class="title">บริษัท ไอ.ซี.ซี.อินเตอร์เนชั่นแนล จำกัด(มหาชน)</p>
+
+
+
+  <div class="card animated fadeIn delay-1s">
+    <ion-grid>
+      <ion-row>
+        <ion-col class="left">
+          <p>รหัส</p>
+          <p *ngIf="nameLth <= 20">ชื่อ</p>
+          <p *ngIf="nameLth > 20" style="min-height: 50px">ชื่อ</p>
+          <p>เลขบัตรประชาชน</p>
+          <p>เลขที่บัญชี</p>
+          <p>ประจำงวด</p>
+          <p>วันที่จ่าย</p>
+        </ion-col>
+        <ion-col class="right">
+          <p>{{detail?.empid}}</p>
+          <p *ngIf="nameLth <= 20">{{profile?.name}}</p>
+          <p *ngIf="nameLth > 20" style="min-height: 50px">{{profile?.name}}</p>
+          <p>{{detail?.idcard}}</p>
+          <p>{{detail?.bankaccount}}</p>
+          <p>{{detail?.period}}</p>
+          <p>{{detail?.paydate}}</p>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+  <div class="card animated fadeIn delay-1s" *ngFor="let item of cardHeader ; let i = index;">
+    <p class="title">{{item?.groupdesc}}</p>
+    <ion-grid>
+      <ion-row *ngFor="let desc of item.groupdata">
+        <ion-col class="left" size="8">
+          <p>{{desc.inoutdesc}}</p>
+        </ion-col>
+        <ion-col class="right">
+          <p>{{desc.amount | number}}</p>
+        </ion-col>
+      </ion-row>
+      <div *ngIf="i === 0" class="line-style-horizental"></div>
+      <div *ngIf="i === 1" class="line-style-horizental"></div>
+      <ion-row *ngIf="i === 0">
+        <ion-col class="left" size="8">
+          <p *ngIf="i === 0"><strong>{{sumG2[0].groupdesc}}</strong></p>
+        </ion-col>
+        <ion-col class="right">
+          <p *ngIf="i === 0"><strong>{{sumG2[0].groupdata[0].amount | number}}</strong></p>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="i === 1">
+        <ion-col class="left" size="8">
+          <p *ngIf="i === 1"><strong>{{sumG4[0].groupdesc}}</strong></p>
+        </ion-col>
+        <ion-col class="right">
+          <p *ngIf="i === 1"><strong>{{sumG4[0].groupdata[0].amount | number}}</strong></p>
+        </ion-col>
+      </ion-row>
+      <div *ngIf="i === 1" class="line-style-horizental"></div>
+      <ion-row *ngIf="i === 1">
+        <ion-col class="left" size="8">
+          <p *ngIf="i === 1"><strong>{{sumG5[0].groupdesc}}</strong></p>
+        </ion-col>
+        <ion-col class="right">
+          <p *ngIf="i === 1"><strong>{{sumG5[0].groupdata[0].amount | number}}</strong></p>
+        </ion-col>
+      </ion-row>
+      <hr *ngIf="i === 0" class="style2" />
+      <hr *ngIf="i === 1" class="style2" />
+    </ion-grid>
+  </div>
+
+
+</ion-content>
+
+
+<ion-footer>
+  <ion-toolbar>
+    <div class="footer-button-border">
+      <div class="footer-button">
+        <ion-button color="dark" fill="clear" (click)="alertConfirmRequestSlip()">
+          <ion-icon src="assets/images/incomes/printer.svg"></ion-icon>
+          &nbsp;&nbsp;&nbsp;<p>ขอสลิปเงินเดือน <small>(สามารถขอย้อนหลังได้ 12 เดือน)</small></p>
+        </ion-button>
+      </div>
+    </div>
+  </ion-toolbar>
+</ion-footer>

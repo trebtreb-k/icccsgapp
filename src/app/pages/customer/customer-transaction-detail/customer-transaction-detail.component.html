@@ -1,0 +1,94 @@
+<ion-content fullscreen>
+  <ion-header class="ion-no-border">
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-button (click)="dismiss()">
+          <ion-icon slot="icon-only" size="large" name="arrow-back-outline"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-title>{{ header?.docno }}</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div class="card-body">
+    <ion-list lines="none">
+      <ion-item>
+        <ion-grid>
+          <ion-row class="bill-header">
+            <ion-col class="text-left">
+              <p class="main">RECEIPT.</p>
+              <p class="sub">Date.</p>
+            </ion-col>
+            <ion-col class="text-right">
+              <p class="main">{{ header?.docno }}</p>
+              <p class="sub">{{ header?.transdate }}</p>
+            </ion-col>
+          </ion-row>
+
+          <ion-row class="bill-header-title">
+            <ion-col>
+              <p>{{ header?.ship_name }}</p>
+            </ion-col>
+          </ion-row>
+
+          <div class="line-style-horizental"></div>
+
+          <ion-row class="bill-body" *ngFor="let x of body">
+            <ion-col size="7" class="label">
+              <p class="main">{{ x?.itemcode }}</p>
+              <p class="sub">{{ x?.item_name }}</p>
+            </ion-col>
+            <ion-col class="qty">
+              <p>{{ x?.qty | number }}</p>
+            </ion-col>
+            <ion-col class="value">
+              <p>{{ x?.total_price | number }}</p>
+            </ion-col>
+          </ion-row>
+
+          <div class="line-style-horizental"></div>
+
+          <ion-row class="bill-footer">
+            <ion-col class="label">
+              <p>ITEMS</p>
+              <p>TOTAL</p>
+              <p>DISCOUNT</p>
+              <p>NET AMOUT</p>
+            </ion-col>
+            <ion-col class="value">
+              <p>{{ footer?.items | number }}</p>
+              <p>{{ footer?.total | number }}</p>
+              <p>{{ footer?.discount | number }}</p>
+              <p>{{ footer?.netamout | number }}</p>
+            </ion-col>
+          </ion-row>
+
+          <div class="line-style-horizental"></div>
+
+          <ion-row class="bill-info">
+            <ion-col class="label">
+              <p>Hisher ID.</p>
+              <p>Hisher Name</p>
+            </ion-col>
+            <ion-col class="value">
+              <p>{{ body[0]?.member_id }}</p>
+              <p>{{ body[0]?.member_name }}</p>
+            </ion-col>
+          </ion-row>
+
+          <ion-row class="bill-qrcode">
+            <ion-col>
+              <ngx-qrcode [value]="body[0].docno" qrc-class="aclass" qrc-errorCorrectionLevel="L"> </ngx-qrcode>
+            </ion-col>
+          </ion-row>
+
+          <!-- <ion-row>
+            <ion-col>
+              <button class="btn btn-primary" (click)="dismiss()">ปิด</button>
+            </ion-col>
+          </ion-row> -->
+        </ion-grid>
+      </ion-item>
+    </ion-list>
+  </div>
+</ion-content>

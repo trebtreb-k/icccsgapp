@@ -1,0 +1,25 @@
+
+ion-header {
+    ion-toolbar {
+        --background: #ffafa9;
+        --ion-text-color:  #ffffff;
+    }
+}
+
+ 
+ion-footer{
+    ion-toolbar{
+        ion-icon {
+            width :40px;
+        }
+        p{
+            font-size: 0.8rem;
+        }
+    }
+}
+
+
+ion-button{
+    --background: #f7928b !important;
+}
+ 

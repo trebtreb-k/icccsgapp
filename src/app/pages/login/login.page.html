@@ -1,0 +1,21 @@
+<ion-content fullscreen="true">
+  <div class="container">
+    <p class="name--app">ICC CSG APP</p>
+    <p class="name--label">ลงชื่อเข้าสู่ระบบ</p>
+
+    <form class="form" [formGroup]="formAuthen">
+      <div class="form__item">
+        <input class="form__item--input" type="text" placeholder="รหัสผู้ใช้งาน" formControlName="username" />
+      </div>
+      <div class="form__item">
+        <input class="form__item--input" type="password" placeholder="รหัสผ่าน" formControlName="password" />
+      </div>
+
+      <button class="btn btn-primary" [disabled]="!formAuthen.valid" (click)="login()">ลงชื่อเข้าใช้งาน</button>
+    </form>
+
+    <p><span (click)="forgotPassword()">ลืมรหัสผ่าน</span> | <span (click)="newRegister()">ลงทะเบียนใหม่</span></p>
+
+    <p class="name--version">Version {{version}}</p>
+  </div>
+</ion-content>

@@ -1,0 +1,48 @@
+div.card {
+  background: #fdfdfd;
+  border-radius: 12px;
+  padding: 4px 28px 4px 28px;
+  margin: 12px;
+  box-shadow: 0 1.2em 1.2em #eeeeee;
+}
+
+p.title {
+  color: #2b2b2b;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.1px;
+  margin-top: 6px;
+  text-align: center;
+}
+
+ion-col.left {
+  p {
+    color: #2b2b2b;
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-top: 0.1px;
+  }
+}
+ion-col.right {
+  p {
+    color: #2b2b2b;
+    text-align: end;
+    font-size: 0.9rem;
+    margin-top: 0.1px;
+  }
+}
+.line-style-horizental {
+  width: 100%;
+  display: block;
+  margin: 0 auto;
+  background: #dddddd;
+  height: 1.5px;
+}
+
+hr.style2 {
+  width: 100%;
+  display: block;
+  border-top: 3px double #a5a4a4;
+  margin-top: 0em;
+}
+

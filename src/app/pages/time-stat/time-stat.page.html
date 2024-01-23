@@ -1,0 +1,206 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+
+    <ion-title>สถิติการทำงาน</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen="true">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content>
+    </ion-refresher-content>
+  </ion-refresher>
+
+  <div>
+    <ion-segment [(ngModel)]="timeStat" mode="md">
+      <ion-segment-button value="dailyStat">
+        <h6>รายวัน</h6>
+      </ion-segment-button>
+      <ion-segment-button value="monthlyStat">
+        <h6>สถิติเดือน</h6>
+      </ion-segment-button>
+      <ion-segment-button value="yearlyStat">
+        <h6>สถิติสะสมปี</h6>
+      </ion-segment-button>
+    </ion-segment>
+  </div>
+
+
+  <div [ngSwitch]="timeStat">
+    <div *ngSwitchCase="'dailyStat'">
+
+      <div class="calendar">
+        <ion-calendar [type]="type"  [options]="optionsMulti"  (change)="getEventForDays($event)"  (monthChange)="getEventForMonths($event)" [format]="'DD-MM-YYYY'">
+        </ion-calendar>
+      </div>
+    
+    
+      <div style="text-align:center">
+        <h6>ข้อมูลวันที่ {{dateSelect}}</h6>
+      </div>
+      
+      <div *ngIf="loaded===false" style="text-align: center;">
+        <img src="./assets/images/loading/loading-spinner-transparent.svg" style="width:80px">
+      </div>
+    
+      <!-- </ion-list> -->
+      <div class="card-list">
+        <ion-list lines="none">
+          <ion-item *ngFor="let data of loadData">
+            <ion-thumbnail slot="start" style="padding:0; text-align: center;">          
+              
+              <img [src]="data.image" style="width:40px;height:40px"/>   
+              <p style="font-size:0.7rem;margin-top:-7px;text-align:center;color:#818181">{{data.source_id}}</p>       
+            </ion-thumbnail>
+            
+            <ion-label> 
+              <!-- <p class="label">{{ data.trandate }}</p> -->
+              <p class="label">{{ data.cust_id }} {{ data.cust_name }}</p>
+              <p class="label">{{ data.counter_id }} &nbsp;{{data.counter_name}}</p>
+              <!-- <div style="text-align: right;">
+                <div style="float:right;width:100px">Out: {{(data.time_out=='')?'&nbsp;&nbsp;&nbsp;&nbsp;':data.time_out}}</div>
+                <div style="float:right;width:100px">In: {{data.time_in}}</div>
+              </div> -->
+              <div style="display:flex; flex-direction: row;">
+                  <div style="flex-basis: 55%;">
+                    <p style="width:95px">{{ data.tran_date }}</p>
+                  </div>
+                  <div style="display:flex; justify-content: flex-end">
+                    <p style="width: 80px;color:#008c00">IN: {{(data.time_in=='')?'': data.time_in.substring(0,2)+':'+data.time_in.substring(2,4)}}</p>
+                    <p style="width: 80px;color:#ff0000">OUT: {{(data.time_out=='')?'':data.time_out.substring(0,2)+':'+data.time_out.substring(2,4)}}</p>
+                  </div>
+              </div>
+            </ion-label>
+    
+          </ion-item>
+        </ion-list>
+      </div>
+            
+    </div>
+
+    <div *ngSwitchCase="'monthlyStat'">
+
+          
+      <div>
+        <ion-grid class="calendar-header">
+          <ion-row>
+            <ion-col size="2">
+              <ion-button fill="clear" size="small" (click)="prevMonth()">
+                <ion-icon name="arrow-back"></ion-icon>
+              </ion-button>
+            </ion-col>
+            <ion-col size="8">
+              <div class="ion-text-center" style="margin-top: 5px">{{viewTitleMonth}}</div>
+            </ion-col>
+            <ion-col size="2">
+              <div class="ion-text-right">
+                <ion-button fill="clear" size="small" (click)="nextMonth()">
+                  <ion-icon name="arrow-forward"></ion-icon>
+                </ion-button>
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </div>
+
+      <div *ngIf="loadingMonth===true" style="text-align: center;">
+        <img src="./assets/images/loading/loading-spinner-transparent.svg" style="width:80px">
+      </div>
+
+      <ion-card *ngFor="let i of loadDataMonthly">
+        <ion-card-header class="titleStat">
+          <ion-card-title class="ion-text-center"><h5>{{ i.dateadjust_t }}</h5></ion-card-title>
+        </ion-card-header>
+
+        <ion-card-content style="background:#ffffff">
+          <ion-grid>
+            <ion-row>
+              <ion-col size="4" style="color:#484848">วันที่</ion-col>
+              <ion-col class="data-row" style="color:#000000">{{ i.dateadjust_t }}</ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="4" style="color:#484848">ประเภท</ion-col>
+              <ion-col class="data-row" style="color:#000000">{{ i.description }}</ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="4" style="color:#484848">วัน.ชม.นาที</ion-col>
+              <ion-col class="data-row" style="color:#000000">{{ i.amtadj }}</ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="4" style="color:#484848">จำนวนครั้ง</ion-col>
+              <ion-col class="data-row" style="color:#000000">{{ i.cntlate }}</ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-card-content>
+      </ion-card>
+    </div>
+
+    <div *ngSwitchCase="'yearlyStat'">
+          
+      <div>
+        <ion-grid class="calendar-header">
+          <ion-row>
+            <ion-col size="2">
+              <ion-button fill="clear" size="small" (click)="prevYear()">
+                <ion-icon name="arrow-back"></ion-icon>
+              </ion-button>
+            </ion-col>
+            <ion-col size="8">
+              <div class="ion-text-center" style="margin-top: 5px">{{viewTitleYear}}</div>
+            </ion-col>
+            <ion-col size="2">
+              <div class="ion-text-right">
+                <ion-button fill="clear" size="small" (click)="nextYear()">
+                  <ion-icon name="arrow-forward"></ion-icon>
+                </ion-button>
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </div>
+
+      <div *ngIf="loadingYear===true" style="text-align: center;">
+        <img src="./assets/images/loading/loading-spinner-transparent.svg" style="width:80px">
+      </div>
+
+      <ion-card>
+        <ion-card-header class="titleStat">
+          <ion-card-title class="ion-text-center">
+            <h5 *ngIf="date_yearly_adjust_vacation_year && date_yearly_adjust_vacation_day">
+              สิทธิพักร้อน ปี {{ date_yearly_adjust_vacation_year }} = {{ date_yearly_adjust_vacation_day}} วัน
+            </h5>
+
+            <h5>ข้อมูลสถิติสะสมทั้งปีถึงวันที่ {{data_yearly_adjust_period}}</h5>
+          </ion-card-title>
+        </ion-card-header>
+
+        <ion-card-content style="background:#ffffff">
+          <ion-list style="background:#ffffff">
+            <ion-item *ngFor="let i of loadDataYearly" style="--background:#ffffff">
+              <ion-grid>
+                <ion-row>
+                  <ion-col size="4" style="color:#484848">ประเภท</ion-col>
+                  <ion-col class="data-row">{{ i.description }}</ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col size="4" style="color:#484848">วัน.ชม.นาที</ion-col>
+                  <ion-col class="data-row">{{ i.amount }}</ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col size="4" style="color:#484848">จำนวนครั้ง</ion-col>
+                  <ion-col class="data-row">{{ i.dayofyear }}</ion-col>
+                </ion-row>
+              </ion-grid>
+            </ion-item>
+          </ion-list>
+        </ion-card-content>
+      </ion-card>
+    </div>
+
+  </div>
+
+
+</ion-content>

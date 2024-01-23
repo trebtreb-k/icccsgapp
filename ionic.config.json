@@ -1,0 +1,7 @@
+{
+  "name": "icccsg",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}

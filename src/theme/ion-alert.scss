@@ -1,0 +1,82 @@
+// * ++++++++++++++ BOX ++++++++++++++ * //
+.alert__box--basic {
+  .alert-title {
+    font-size: 1rem;
+    color: #1d1d1d;
+  }
+  .alert-message {
+    font-size: 0.9rem;
+    color: #4d4d4d;
+  }
+}
+
+.alert__box--dark {
+  .alert-title {
+    color: #1d1d1d;
+  }
+}
+
+.alert__box--info {
+  .alert-title {
+    color: #1497ee;
+  }
+}
+
+.alert__box--danger {
+  .alert-title {
+    color: #ee1414;
+  }
+}
+
+// * ++++++++++++++ BUTON ++++++++++++++ * //
+
+.alert__button--dark {
+  span {
+    color: #1d1d1d;
+  }
+}
+
+.alert__button--info {
+  span {
+    color: #1497ee;
+  }
+}
+
+.alert__button--danger {
+  span {
+    color: #ee1414;
+  }
+}
+
+.alert__button--danger2 {
+    background-color: #ee1414 !important;
+    border-radius: 8px !important;
+    width: 120px !important;
+    span {
+      color: #ffffff;
+      justify-content: center !important;
+    }
+}
+
+.alert__button--success2 {
+  background-color: #149e01 !important;
+  border-radius: 8px !important;
+  width: 120px !important;
+
+  span {
+    color: #ffffff;
+    justify-content: center !important;
+  }
+}
+
+.alert__button--primary2 {
+  background-color: #0000ff !important;
+  border-radius: 8px !important;
+  width: 120px !important;
+
+  span {
+    color: #ffffff;
+    justify-content: center !important;
+  }
+}
+

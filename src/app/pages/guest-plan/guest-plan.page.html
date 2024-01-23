@@ -1,0 +1,77 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+
+    <ion-title>My Plan</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen="true">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content>
+    </ion-refresher-content>
+  </ion-refresher>
+
+
+  <div class="calendar">
+    <ion-calendar *ngIf="loadData" [type]="type" [options]="optionsMulti" (monthChange)="getEventForMonths($event)" [format]="'DD-MM-YYYY'">
+    </ion-calendar>
+  </div>
+
+  <!-- <ion-list lines="none"> (change)="getEventDate($event)"-->
+  <!-- <ion-list-header>
+      <ion-label><strong>สรุปข้อมูลประจำเดือน</strong></ion-label>
+    </ion-list-header>
+    <ion-item *ngFor="let item of dataOtH">
+
+        OT(ชม.น.) = {{item.hour}}.{{item.minute}}.
+    </ion-item> -->
+  <!-- <ion-item>
+        วันหยุดประจำสัปดาห์: 2 วัน Holiday: 2 วัน เหลือ: 0 วัน
+    </ion-item> -->
+
+  <!-- </ion-list> -->
+  <div class="card-list">
+    <ion-list lines="none">
+      <ion-item *ngFor="let v of values">
+        <ion-thumbnail slot="start">
+          <img [src]="v.image" />
+        </ion-thumbnail>
+        <ion-label>
+          <p class="label">{{ v.title }}</p>
+          <p class="label">{{ v.value }} {{v.regfrom}}-{{v.regto}}</p>
+          <p class="label">{{ v.custname }}</p>
+        </ion-label>
+        <!-- <ion-label slot="end" *ngIf="v.stateOt != 'N'"> -->
+        <p *ngIf="v.stateOt != 'N'" slot="end" class="ot">OT</p>
+        <!-- </ion-label> -->
+      </ion-item>
+    </ion-list>
+  </div>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="createPlan()">
+      <ion-icon name="create-outline"></ion-icon>
+      <!-- <ion-icon name="add"></ion-icon> -->
+    </ion-fab-button>
+  </ion-fab>
+
+  <!-- <ion-fab horizontal="end" vertical="bottom" slot="fixed">
+    <ion-fab-button>
+      <ion-icon md="create-outline" ios="chevron-create-outline"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list class="ll" side="top" style="margin-left: -55px; border-radius: 0 !important">
+      <ion-fab-button color="light" style="width: 120px; height: 120px; border-radius: 0 !important">
+        <ion-icon name="logo-facebook"></ion-icon>
+        เลือกวันทำงาน
+      </ion-fab-button>
+
+      <ion-fab-button color="light">
+        <ion-icon name="logo-twitter"></ion-icon>
+        เลือกวันหยุด
+      </ion-fab-button>
+    </ion-fab-list>
+  </ion-fab> -->
+</ion-content>

@@ -1,0 +1,225 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+
+    <ion-title>ลงชื่อเข้า/ออกงาน</ion-title>
+
+
+    <ion-buttons slot="end">
+      <ion-button (click)="refreshMap()">
+        <ion-icon slot="icon-only" name="refresh" color="dark"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen="true">
+
+  <div class="section__location">
+    <div class="section__location_current_latlong">
+      <ion-row>
+        <ion-col size="4">
+          Current location
+        </ion-col>
+        <ion-col size="8">
+          {{currentLocation}}
+        </ion-col>
+      </ion-row>  
+    </div>
+    <!-- yod hide 31-03-2022
+    <div class="section__location--map">  
+      <div #map id="map">
+        <div class="section__location--content" *ngIf="statusMap === 'LOADING'">
+          <ng-lottie
+            [width]="lottiefiles.loadingMap.width"
+            [height]="lottiefiles.loadingMap.height"
+            [options]="lottiefiles.loadingMap.options"
+          ></ng-lottie>
+        </div>
+
+        <div class="section__location--content" *ngIf="statusMap === 'NOT_FOUND'">
+          <ng-lottie
+            [width]="lottiefiles.warningMap.width"
+            [height]="lottiefiles.warningMap.height"
+            [options]="lottiefiles.warningMap.options"
+          ></ng-lottie>
+          <p>ไม่พบตำแหน่งของท่าน กรุณาลองใหม่อีกครั้ง</p>
+          <p class="sub">( ตรวจสอบเครื่องของท่าน เปิดบริการหาตำแหน่งที่ตั้งแล้วหรือยัง )</p>
+        </div>
+      </div>      
+    </div>-->
+  </div>
+</ion-content>
+
+<ion-footer class="ion-no-border" *ngIf="statusWorkspace === 'OK'">
+  <!---
+  <ion-grid>
+    <ion-row *ngFor="let location of workspaceLocation">
+
+        <ion-col size="3">
+          <div class="section__info--image">
+            <img src="https://cdn.pixabay.com/photo/2015/03/11/12/31/buildings-668616_960_720.jpg" alt="" />
+          </div>
+        </ion-col>
+        <ion-col size="9">
+          <p>{{location.title }}</p>
+          <p>{{location.subTitle }}</p>
+        </ion-col>
+    </ion-row>
+  </ion-grid>
+  -->
+
+  <div class="section__content">
+
+      
+
+    <div class="section__timeout">      
+      <div class="section__timeout--check">
+        <ion-checkbox style="margin-top :11px;" color="dark" slot="start" (ionChange)="checkEventAll($event)"></ion-checkbox>     
+        <p style="margin-top:-0px">All</p>
+      </div>
+      <div class="section__timeout--text">
+        <p *ngIf="workspaceLocation.length===0">ไม่พบตำแหน่ง Location</p>
+        <p>
+          หมดเวลา
+          <strong>
+            <countdown [config]="{ leftTime: countdownExpire, format: 's' }" (event)="expireCountdown($event)"></countdown>
+          </strong>
+          วินาที
+        </p>    
+      </div>
+      <div class="section__timeout--button">
+        <button class="btn btn-primary" style="padding:15px;height:55px" [disabled]="!locationsSelected.length" (click)="alertModeAction()">Check In/Out</button>
+      </div>
+    </div>
+
+
+
+
+
+    <div class="section__info" *ngFor="let location of workspaceLocation; let i = index">
+
+      <div class="section__info--check">
+        <ion-checkbox color="dark" slot="start" [checked]="isCheck(location) >= 0" (ionChange)="checkEvent(location, $event)"></ion-checkbox>     
+      </div>
+      <div class="section__info--imageText"  (click)="alertModeCheckInOut(location)">
+        <div class="img-text">
+          <p>{{location.brandName.substring(0,18)}}</p>
+        </div>
+      </div>
+      <div class="section__info--text"  (click)="alertModeCheckInOut(location)">
+        <p>{{location.title}}</p>
+        <p>{{location.subTitle}}</p>
+        <p>{{location.counterId}}</p>
+        <p>{{location.brandName}}</p>
+      </div>
+
+    </div>
+
+    <!--
+    <div class="section__info" *ngFor="let location of workspaceLocation" (click)="alertModeCheckInOut(location)">
+      <div class="section__info--imageText" >
+        <div class="img-text">
+          <p>{{location.brandName.substring(0,18)}}</p>
+        </div>
+      </div>
+      <div class="section__info--text">
+        <p>{{location.title}}</p>
+        <p>{{location.subTitle}}</p>
+        <p>{{location.brandName}}</p>
+      </div>
+    </div>
+    -->
+
+    <!--
+    <div class="section__timeout">
+      
+      <div class="section__timeout--check">
+        <ion-checkbox style="margin-top:20px" color="dark" slot="start" (ionChange)="checkEventAll($event)"></ion-checkbox>     
+        <p style="margin-top:-4px">All</p>
+      </div>
+
+      <div class="section__timeout--text">
+        <p *ngIf="workspaceLocation.length===0">ไม่พบตำแหน่ง Location</p>
+        <p>
+          หมดเวลา
+          <strong>
+            <countdown [config]="{ leftTime: countdownExpire, format: 's' }" (event)="expireCountdown($event)"></countdown>
+          </strong>
+          วินาที
+        </p>    
+      </div>
+      <div class="section__timeout--button">
+        <button class="btn btn-primary" [disabled]="!locationsSelected.length" (click)="alertModeAction()">Action</button>
+      </div>
+    </div>
+    -->
+  </div>
+
+
+</ion-footer>
+
+<ion-footer class="ion-no-border" *ngIf="statusWorkspace === 'LOADING'">
+  <div class="section__loading">
+    <ng-lottie
+      [width]="lottiefiles.loadData.width"
+      [height]="lottiefiles.loadData.height"
+      [options]="lottiefiles.loadData.options"
+    ></ng-lottie>
+  </div>
+</ion-footer>
+
+<ion-footer class="ion-no-border" *ngIf="statusWorkspace === 'NOT_FOUND'">
+  <div class="section__notfound">
+    <p>พิกัดของท่านไม่ตรงกับพิกัดที่กำหนด</p>
+    <p>กรุณาปิด/เปิด GPS</p>
+    <p>โปรดลองใหม่อีกครั้ง !</p>
+
+    <button class="btn-refresh" (click)="refresh()">Refresh</button>
+  </div>
+</ion-footer>
+
+<ion-footer class="ion-no-border" *ngIf="statusWorkspace === 'POSTING'">
+  <div class="section__completed">
+    <ng-lottie
+      [width]="lottiefiles.waiting.width"
+      [height]="lottiefiles.waiting.height"
+      [options]="lottiefiles.waiting.options"
+    ></ng-lottie>
+
+    <h6 style="margin-top:15px" [ngClass]="{in:result.type=='I', out:result.type=='O' }">{{result.title}} !</h6>
+
+    <p>{{result.ship_no}} {{result.ship_name}}</p>
+    <p>{{result.counter_id}} {{result.counter_name}}</p>
+    <p>{{result.time_stamp}}</p>
+
+  </div>
+</ion-footer>
+
+
+<ion-footer class="ion-no-border" *ngIf="statusWorkspace === 'COMPLETED'">
+  <div class="section__completed">
+    <ng-lottie
+      [width]="lottiefiles.completedData.width"
+      [height]="lottiefiles.completedData.height"
+      [options]="lottiefiles.completedData.options"
+    ></ng-lottie>
+
+    <h6 style="margin-top:-15px" [ngClass]="{in:result.type=='I', out:result.type=='O' }">{{result.title}} !</h6>
+
+    <p>{{result.ship_no}} {{result.ship_name}}</p>
+    <p>{{result.counter_id}} {{result.counter_name}}</p>
+    <p>{{result.time_stamp}}</p>
+
+    <p class="countdown">
+      กำลังกลับสู่หน้าแรก
+      <strong>
+        <countdown [config]="{ leftTime: countdownCompleted, format: 's' }" (event)="completedCountdown($event)"></countdown>
+      </strong>
+      วินาที
+    </p>
+  </div>
+</ion-footer>
+

@@ -1,0 +1,124 @@
+ion-header {
+  --ion-background-color: #ffffff;
+
+  ion-toolbar {
+    --background: #ffffff;
+    --border-color: transparent;
+    --border-style: none !important;
+
+    ion-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+  }
+}
+
+ion-content {
+  --ion-background-color: #ffffff;
+
+  ion-grid {
+    ion-row {
+      color: #111111;
+      background: #fdfdfd;
+      box-shadow: 0 1em 0.8em -0.7em #eeeeee;
+      border-radius: 2px;
+      margin: 0 0 16px 0;
+      padding: 10px 0;
+
+      ion-col.thumbnail {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        img {
+          width: 50px;
+          height: 50px;
+          border-radius: 50%;
+          object-fit: cover;
+        }
+      }
+
+      ion-col.name {
+        display: flex;
+        flex-direction: column;
+        width: 100px;
+
+        h2.title {
+          font-size: 0.9rem;
+          line-height: 26px;
+          font-weight: 600;
+          margin: 0;
+        }
+
+        h2.none {
+          color: #adadad;
+          font-size: 0.8rem;
+          font-style: italic;
+          line-height: 26px;
+          font-weight: 400;
+          margin: 0;
+        }
+
+        p.posi {
+          color: #b80000;
+          font-size: 0.8rem;
+          font-weight: 500;
+          line-height: 26px;
+          margin: 0;
+        }
+
+        p.dept {
+          color: #424242;
+          font-size: 0.8rem;
+          font-weight: 500;
+          line-height: 26px;
+          margin: 0;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+      }
+
+      ion-col.edit {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        ion-icon {
+          font-size: 1.4rem;
+        }
+
+        p {
+          color: #1f75f7;
+          font-size: 0.9rem;
+        }
+      }
+    }
+  }
+
+  .notfound {
+    font-size: 1rem;
+    font-weight: 500;
+    text-align: center;
+    margin: 50px 10px;
+  }
+
+  .total {
+    font-size: 0.8rem;
+    text-align: right;
+    margin: 10px 20px;
+  }
+
+  section.search {
+    .form {
+      padding: 5px 25px;
+      .form__item {
+        input.form__item--input {
+          border: 2px solid #3d3d3d;
+        }
+      }
+    }
+  }
+}

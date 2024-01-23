@@ -1,0 +1,98 @@
+<!-- <ion-list>
+  <ion-list-header>MENU</ion-list-header>
+  <ion-item button>Create-Plan</ion-item>
+  <ion-item button>OT-Plan</ion-item>
+  <ion-item button>Holiday-Plan</ion-item>
+  <ion-item lines="none" detail="false" button Click="dismissPopover()">Close</ion-item>
+</ion-list> -->
+<!-- <ion-header translucent>
+  <ion-toolbar>
+    <ion-title>{{ props?.type === 'shop' ? 'เลือกร้านค้า' : props?.type === 'counter' ? 'เลือกเคาน์เตอร์' : props?.type === 'timetype' ? 'เลือกช่วงเวลาปฎิบัติงาน' : ''}}</ion-title>
+  </ion-toolbar>
+</ion-header> -->
+
+<ion-content>
+  <ion-list *ngIf="props.type === 'shop'">
+    <!-- <ion-list-header>
+      Recent Conversations
+    </ion-list-header> -->
+    <div *ngIf="!dataShopCounterAPI" style="width: 100%; text-align: center">
+      <ion-spinner name="dots"></ion-spinner>
+    </div>
+    <ion-item button *ngFor="let dataSC of dataShopCounterAPI" (click)="meClicked($event, dataSC, 'shop')">
+      <ion-label>
+        <h2>{{ dataSC.custid }} {{ dataSC.custname }}</h2>
+      </ion-label>
+    </ion-item>
+    <!-- <ion-item>
+      <ion-label position="floating">
+        <ion-icon name="add-outline"></ion-icon>
+        กำหนดร้านค้าเอง</ion-label
+      >
+      <ion-input [ngClass]="{ BB: selectedIndex == 1 }" (ionChange)="inputTextShop($event)"></ion-input>
+      <ion-button *ngIf="otherShop" color="primary" style="width: 100%; height: 50px" (click)="addNewShopCounter('shop')"
+        >เลือกรหัสร้านค้านี้</ion-button
+      >
+    </ion-item> -->
+  </ion-list>
+
+  <ion-list *ngIf="props.type === 'counter' && props.dataCounter !== 'ไม่มีรหัสร้านค้านี้'">
+    <!-- <ion-list-header>
+      Recent Conversations
+    </ion-list-header> -->
+
+    <ion-item button *ngFor="let dataCounters of dataCounterAPI" (click)="meClicked($event, dataCounters, 'counter')">
+      <ion-label>
+        <h2>{{ dataCounters.counterid }} {{ dataCounters.countername }}</h2>
+      </ion-label>
+    </ion-item>
+    <!-- <ion-item> -->
+      <!-- <ion-label>
+        <h2>อื่นๆ</h2>
+      </ion-label> -->
+      <!-- <ion-item> -->
+      <!-- <ion-label position="floating">
+        <ion-icon name="add-outline"></ion-icon>
+        กำหนดเคาน์เตอร์เอง</ion-label
+      > -->
+      <!-- <ion-input [ngClass]="{ BB: selectedIndexC == 1 }" (ionChange)="inputTextCounter($event)"></ion-input>
+      <ion-button *ngIf="otherCounters" color="primary" style="width: 100%; height: 50px" (click)="addNewShopCounter('counter')"
+        >เลือกเคาน์เตอร์นี้</ion-button
+      > -->
+      <!-- </ion-item> -->
+      <!-- <ion-searchbar showCancelButton="always"></ion-searchbar> -->
+    <!-- </ion-item> -->
+  </ion-list>
+
+
+  <ion-list *ngIf="props.type === 'timetype'">
+    <ion-item button *ngFor="let dataTimeType of dataTimeTypeAPI" (click)="meClicked($event, dataTimeType, 'timetype')">
+      <ion-label>
+        <h2>{{ dataTimeType.time_type }} ({{ dataTimeType.time_from }}-{{ dataTimeType.time_to }})</h2>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ion-list *ngIf="props.type === 'worktype'">
+    <!-- <ion-item button *ngFor="let dataWorkType of dataWorkTypeAPI" (click)="meClicked($event, dataWorkType, 'worktype')">
+      <ion-label>
+        <h2>-</h2>
+      </ion-label>
+
+    </ion-item> -->
+    <ion-item button *ngFor="let dataWorkType of dataWorkTypeAPI" (click)="meClicked($event, dataWorkType, 'worktype')">
+      <ion-label>
+        <div style="background-color: #{{dataWorkType.work_color}}; width: 20px; height: 20px; border-radius: 50%"><span style="margin-left: 25px;">{{dataWorkType.work_dexc}}</span></div>
+      </ion-label>
+
+      <!-- <ion-select-option value="W">วันทำงานปกติ</ion-select-option> -->
+    </ion-item>
+  </ion-list>
+  <!-- <ion-list> -->
+    <ion-item (click)="closedPopover()">
+      <ion-label>
+        <h2>ปิด</h2>
+      </ion-label>
+    </ion-item>
+  <!-- </ion-list> -->
+</ion-content>

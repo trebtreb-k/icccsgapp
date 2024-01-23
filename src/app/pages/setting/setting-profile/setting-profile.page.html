@@ -1,0 +1,91 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+
+    <ion-title>Settings Profile</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content>
+    </ion-refresher-content>
+  </ion-refresher>
+
+  <div *ngIf="stepName === 'VIEW'">
+
+    <ion-card class="title">
+      <ion-card-header>
+        <ion-card-title>{{ user?.name }}</ion-card-title>
+        <ion-card-content>{{ user?.dept_desc }}</ion-card-content>
+
+      </ion-card-header>
+    </ion-card>
+
+    <ion-card>
+      <ion-item style="background-color: #ffffff;">
+          <div class="item-row">
+              <p class="item-col-label">รหัส</p>
+              <p class="item-col-value">{{ user?.emp_id}}</p>
+          </div>
+      </ion-item>
+
+      <!-- แก้ไขเพิ่มเติม 04/04/2565 -->
+      <ion-item *ngIf="userType=='EMPLOYEE'">
+        <div class="item-row">
+            <p class="item-col-label">วันเกิด</p>
+            <p class="item-col-value">{{ user?.birthday}}</p>
+        </div>
+      </ion-item>
+      <ion-item *ngIf="userType=='EMPLOYEE'">
+          <div class="item-row">
+              <p class="item-col-label">วันที่เริ่มงาน</p>
+              <p class="item-col-value"> {{ user?.date_start}}</p>
+          </div>
+      </ion-item>
+      <ion-item *ngIf="userType=='EMPLOYEE'">
+          <div class="item-row">
+              <p class="item-col-label">ที่อยู่</p>
+              <p class="item-col-value"> {{ user?.address}}</p>
+          </div>
+      </ion-item>
+      <!-- จบแก้ไขเพิ่มเติม 04/04/2565 -->
+
+      <ion-item>
+        <div class="item-row">
+            <p class="item-col-label">อีเมล์</p>
+            <p class="item-col-value">{{ user?.email}}</p>
+            <p class="item-col-edit" (click)="alertEditValue('email','text','อีเมล์',user?.email)">เปลี่ยน</p>
+        </div>
+      </ion-item>
+      <ion-item >
+        <div class="item-row">
+            <p class="item-col-label">มือถือ</p>
+            <p class="item-col-value">{{ user?.mobile_phone}}</p>
+            <p class="item-col-edit" (click)="alertEditValue('mobile_phone','number','เบอร์มือถือ',user?.mobile_phone)">เปลี่ยน</p>
+        </div>
+      </ion-item>
+    </ion-card>
+
+ </div><!-- VIEW //-->
+
+  <!-- * ############# FORM_VERIFY_OTP ############# * -->
+  <div *ngIf="stepName === 'FORM_VERIFY_OTP'" >
+
+    <div class="header">
+      <p>ระบบได้ส่งรหัส OTP ไปยังเบอร์โทรศัพท์</p>
+      <p><strong>{{ new_mobile.mobile_phone }}</strong></p>
+      <p>รหัสอ้างอิง : {{ new_mobile.ref_code }}</p>
+    </div>
+    <form class="form" [formGroup]="formVerifyOtp">
+      <div class="form__item">
+        <input class="form__item--input" type="tel" placeholder="รหัส OTP" formControlName="otp" />
+      </div>
+      <button class="btn btn-primary" [disabled]="!formVerifyOtp.valid" (click)="submitVerifyOtp()">ยืนยัน</button>
+    </form>
+  </div>
+
+</ion-content>

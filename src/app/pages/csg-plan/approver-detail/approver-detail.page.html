@@ -1,0 +1,36 @@
+
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+      <!-- <ion-back-button ></ion-back-button> -->
+    </ion-buttons>
+    <ion-title>Approver Detail</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content fullscreen="true">
+  <div class="card-list">
+    <ion-list  lines="none" >
+      <!-- <ion-item-sliding [ngClass]="{'status__item': true, disable: true}"> -->
+      <ion-item-sliding *ngFor="let v of values">
+        <ion-item >
+          <ion-thumbnail>
+            <img style="border-radius: 50%" onerror="this.src='assets/images/avatar-male.svg'" src='https://iccapp-minio.icc.co.th:9000/icchrapp/profile/{{v.approve_id}}/{{v.approve_id}}.jpg'>
+          </ion-thumbnail>
+          <ion-label >
+            <p class="label"><B>ผู้อนุมัติลำดับที่</B> <span class="textRight">{{v.approve_no}}</span></p>
+            <p class="label">{{v.approve_name}}</p>
+            <p class="label">{{ v.approve_date}}</p>
+          </ion-label>
+        </ion-item>
+      </ion-item-sliding >
+    </ion-list>
+
+
+    <!-- <ion-item-sliding [ngClass]="{'status__item': true, disable: status_plan === 'X' ? true : false, bb: true}"></ion-item-sliding> -->
+  </div>
+
+</ion-content>
+

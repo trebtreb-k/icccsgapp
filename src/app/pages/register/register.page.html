@@ -1,0 +1,116 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+
+    <ion-title>ลงทะเบียนใหม่</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen="true">
+  <!-- * ############# FORM_VERIFY_MEMBER ############# * -->
+  <div *ngIf="step === 'FORM_VERIFY_MEMBER'">
+    <div class="header">
+      <p>กรุณาใส่ข้อมูลให้ถูกต้องเพื่อตรวจสอบสิทธิ์</p>
+      <p>ระบบจะส่งรหัส OTP ไปทางเบอร์โทรศัพท์ที่ท่านใส่</p>
+    </div>
+    <form class="form" [formGroup]="formVerifyMember">
+      <div class="form__item">
+        <input class="form__item--input" type="tel" minlength="5" maxlength="10" placeholder="รหัสผู้ใช้งาน" formControlName="emp_id" />
+        <p class="form__item--invalid" *ngIf="formVerifyMember.get('emp_id')?.invalid">* กรุณาใส่รหัสผู้ใช้งาน !! (อย่างน้อย 5 ตัวอักษร)</p>
+      </div>      
+      <div class="form__item">
+        <input
+          class="form__item--input"
+          type="tel"
+          maxlength="10"
+          placeholder="เบอร์โทรศัพท์"
+          formControlName="mobile_phone"
+        />
+        <p class="form__item--invalid" *ngIf="formVerifyMember.get('mobile_phone')?.invalid">* กรุณาใส่หมายเลขเบอร์โทรศัพท์ !!</p>
+      </div>
+      <div class="form__item">
+        <input class="form__item--input" type="tel" maxlength="13" placeholder="หมายเลขอ้างอิง" formControlName="id_card" />
+        <!-- <p class="form__item--invalid" *ngIf="formVerifyMember.get('id_card')?.invalid">* หมายเลขอ้างอิงไม่ถูกต้อง !!</p> -->
+      </div>
+      
+      <button class="btn btn-primary" [disabled]="!formVerifyMember.valid" (click)="submitVerifyMember()">ยืนยัน</button>
+    </form>
+  </div>
+
+  <!-- * ############# FORM_VERIFY_OTP ############# * -->
+  <div *ngIf="step === 'FORM_VERIFY_OTP'">
+    <div class="header">
+      <p>ระบบได้ส่งรหัส OTP ไปยังเบอร์โทรศัพท์</p>
+      <p><strong>{{ mobile.text }}</strong></p>
+      <p>รหัสอ้างอิง : {{ ref }}</p>
+    </div>
+    <form class="form" [formGroup]="formVerifyOtp">
+      <div class="form__item">
+        <input class="form__item--input" type="tel" placeholder="รหัส OTP" formControlName="otp" />
+      </div>
+      <button class="btn btn-primary" [disabled]="!formVerifyOtp.valid" (click)="submitVerifyOtp()">ยืนยัน</button>
+    </form>
+  </div>
+
+  <!-- * ############# FORM_NEW_MEMBER ############# * -->
+  <div *ngIf="step === 'FORM_NEW_MEMBER'">
+    <div class="header">
+      <p>กรอกแบบฟอร์มให้ครบถ้วน</p>
+      <p>เพื่อสมัครเข้าใช้งานแอปพลิเคชัน</p>
+    </div>
+
+    <div class="line-style"></div>
+
+    <form class="form" [formGroup]="formNewMember">
+      <div class="row-info">
+        <div class="col-label">
+          <img src="https://image.flaticon.com/icons/png/512/1946/1946429.png" alt="" />
+        </div>
+        <div class="col-value">
+          <p>{{ empInfo?.name || '' }}</p>
+        </div>
+      </div>
+      <div class="row-info">
+        <div class="col-label">
+          <img src="https://image.flaticon.com/icons/png/512/244/244210.png" alt="" />
+        </div>
+        <div class="col-value">
+          <p>{{ mobile.text || '' }}</p>
+        </div>
+      </div>
+
+      <br />
+
+      <div class="form__item">
+        <input class="form__item--input" type="email" placeholder="อีเมล" formControlName="email" />
+        <p class="form__item--invalid" *ngIf="formNewMember.get('email')?.invalid">* อีเมลให้ถูกต้อง !!</p>
+      </div>
+
+      <div class="form__item">
+        <input
+          class="form__item--input"
+          type="password"
+          placeholder="กำหนดรหัสผ่าน (อย่างน้อย 6 ตัวอักษร)"
+          formControlName="password"
+        />
+      </div>
+
+      <div class="form__item">
+        <input
+          class="form__item--input"
+          type="password"
+          placeholder="ยืนยันรหัสผ่านอีกครั้ง"
+          formControlName="confirmPassword"
+        />
+
+        <p class="form__item--invalid" *ngIf="!formNewMember.valid && formNewMember.get('confirmPassword').value">
+          * รหัสผ่านไม่ถูกต้องหรือรหัสผ่านไม่ตรงกัน !!
+        </p>
+      </div>
+
+      <button class="btn btn-primary" [disabled]="!formNewMember.valid" (click)="submitNewMember()">ยืนยัน</button>
+    </form>
+  </div>
+</ion-content>

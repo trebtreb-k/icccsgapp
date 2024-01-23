@@ -1,0 +1,50 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+
+    <ion-title>ลูกค้า</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button (click)="selectDate()">
+        <ion-icon slot="icon-only" name="options-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list lines="none" class="searchbar animated slideInDown">
+    <ion-item>
+      <ion-searchbar debounce="500" (ionInput)="searchTrans($event)" placeholder="ค้นหา " animated></ion-searchbar>
+    </ion-item>
+  </ion-list>
+
+  <div class="show-text">
+    <p>{{ filter }}</p>
+
+    <p>แสดง {{ headers?.length | number }} จาก {{ initHeaders?.length | number }} รายการ</p>
+  </div>
+
+  <div class="card-list">
+    <div class="not-found animated fadeIn delay-1s" *ngIf="headers.length === 0">
+      <img src="assets/images/customer/search.svg" alt="" />
+      <p>ไม่พบใบเสร็จ</p>
+    </div>
+    <ion-list class="animated fadeIn" lines="none" *ngIf="headers.length > 0">
+      <ion-item-sliding *ngFor="let header of headers">
+        <ion-item (click)="selectTrans(header)">
+          <ion-thumbnail slot="start">
+            <img src="assets/images/customer/receipt.png"/>  <!--https://image.flaticon.com/icons/svg/1546/1546478.svg-->
+          </ion-thumbnail>
+          <ion-label>
+            <h3>ใบเสร็จ &nbsp; &nbsp;{{ header?.docno }}</h3>
+            <h3>ร้านค้า &nbsp; &nbsp; {{ header?.storeid }} | {{ header?.ship_name }}</h3>
+            <p>ซื้อเมื่อ&nbsp;&nbsp;&nbsp;&nbsp; {{ header?.transdate }}</p>
+          </ion-label>
+        </ion-item>
+      </ion-item-sliding>
+    </ion-list>
+  </div>
+</ion-content>

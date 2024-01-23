@@ -1,0 +1,38 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+
+    <ion-title>Settings</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-content fullscreen="true">
+
+    <section>
+
+      <div class="menus">
+        <div class="topic">
+          <div class="mark"></div>
+          <h3>เมนู</h3>
+        </div>
+        <div class="menus__container">
+          <div class="menus__container__item" *ngFor="let menu of menus" (click)="openPage(menu.type, menu.link, menu.redirect)">
+            <div class="menus__container__item--logo">
+              <img [src]="menu.logo" alt="" />
+
+            </div>
+            <div class="menus__container__item--title">
+              <p>{{ menu.title }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+  </ion-content>
+

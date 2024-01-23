@@ -1,0 +1,11 @@
+.form__item {
+  margin: 8px 0;
+
+  .form__item--input,
+  .form__item--textarea,
+  .form__item--select,
+  .form__item--datetime {
+    font-size: 0.9rem;
+    background-color: #ffffff;
+  }
+}

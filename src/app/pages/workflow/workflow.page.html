@@ -1,0 +1,98 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+
+    <ion-title>ใบลา</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen="true">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content refreshingSpinner="crescent"></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="onCreate()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <!-- <section class="header">
+    <p class="header__label">สร้างเอกสารใบลา</p>
+
+    <div class="header__menu">
+      <div class="header__menu__item" *ngFor="let menu of menus" (click)="onCreate(menu)">
+        <div class="header__menu__item--logo">
+          <img [src]="menu.logo" [alt]="menu.title" />
+        </div>
+
+        <div class="header__menu__item--title">
+          <p>{{ menu.title }}</p>
+        </div>
+      </div>
+    </div>
+  </section> -->
+
+  <section class="content">
+    <p class="content__label">รายการใบลาของฉัน</p>
+
+    <ion-toolbar>
+      <ion-segment [(ngModel)]="current">
+        <ion-segment-button layout="icon-top" value="WAIT">
+          <ion-icon name="time" color="warning"></ion-icon>
+          <ion-label>รอการอนุมัติ </ion-label>
+        </ion-segment-button>
+        <ion-segment-button layout="icon-top" value="APPROVE">
+          <ion-icon name="checkmark-circle" color="success"></ion-icon>
+          <ion-label>ผ่านการอนุมัติ</ion-label>
+        </ion-segment-button>
+        <ion-segment-button layout="icon-top" value="NOTAPPROVE">
+          <ion-icon name="close-circle" color="danger"></ion-icon>
+          <ion-label>ไม่ผ่านอนุมัติ</ion-label>
+        </ion-segment-button>  
+      </ion-segment>
+    </ion-toolbar>
+
+    <div [ngSwitch]="current">
+      <div *ngSwitchCase="'WAIT'">
+        <br />
+        <div class="notfound" *ngIf="a1.length === 0">
+          <ng-lottie
+            [width]="lottiefiles.noDocument.width"
+            [height]="lottiefiles.noDocument.height"
+            [options]="lottiefiles.noDocument.options"
+          ></ng-lottie>
+          <p>ไม่พบเอกสาร</p>
+        </div>
+        <app-item-list *ngFor="let item of a1" [param]="item" (click)="onDetial(item)"> </app-item-list>
+      </div>
+      <div *ngSwitchCase="'APPROVE'">
+        <br />
+        <div class="notfound" *ngIf="c1.length === 0">
+          <ng-lottie
+            [width]="lottiefiles.noDocument.width"
+            [height]="lottiefiles.noDocument.height"
+            [options]="lottiefiles.noDocument.options"
+          ></ng-lottie>
+          <p>ไม่พบเอกสาร</p>
+        </div>
+        <app-item-list *ngFor="let item of c1" [param]="item" (click)="onDetial(item)"></app-item-list>
+      </div>
+      <div *ngSwitchCase="'NOTAPPROVE'">
+        <br />
+        <div class="notfound" *ngIf="g1.length === 0">
+          <ng-lottie
+            [width]="lottiefiles.noDocument.width"
+            [height]="lottiefiles.noDocument.height"
+            [options]="lottiefiles.noDocument.options"
+          ></ng-lottie>
+          <p>ไม่พบเอกสาร</p>
+        </div>
+        <app-item-list *ngFor="let item of g1" [param]="item" (click)="onDetial(item)"></app-item-list>
+      </div>
+    </div>
+    
+  </section>
+</ion-content>

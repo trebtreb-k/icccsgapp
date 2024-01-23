@@ -1,0 +1,124 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Create Plan</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-card>
+    <ion-item (click)="popoverShopMenu('shop')">
+      <ion-label>
+        <b>ร้านค้า</b>
+        <span style="float: right">
+          <span *ngIf="!saveData.shop.name" style="color: darkgray"> กรุณาเลือกร้านค้า </span>
+          {{saveData.shop.name}}
+        </span>
+      </ion-label>
+    </ion-item>
+  </ion-card>
+  <ion-card *ngIf="custidMenu&&custidMenu!=='ไม่มีรหัสร้านค้านี้'">
+    <ion-item (click)="popoverShopMenu('counter')">
+      <ion-label>
+        <b>เคาน์เตอร์</b>
+        <span style="float: right">
+          <span *ngIf="!saveData.counter.name" style="color: darkgray">กรุณาเลือกเคาน์เตอร์</span>
+          {{saveData.counter.name}}
+        </span>
+      </ion-label>
+    </ion-item>
+  </ion-card>
+
+  <ion-card>
+    <ion-item>
+      <ion-label>ประเภทวันที่เลือก</ion-label>
+      <div style="background-color: green; width: 20px; height: 20px; border-radius: 50%" *ngIf="status=='W'"></div>
+      <div style="background-color: #d61c4b; width: 20px; height: 20px; border-radius: 50%" *ngIf="status=='O'"></div>
+      <div style="background-color: #ff4500; width: 20px; height: 20px; border-radius: 50%" *ngIf="status=='H'"></div>
+      <ion-select interface="popover" value="W" (ionChange)="changeBT($event)">
+        <ion-select-option value="W">วันทำงานปกติ</ion-select-option>
+        <ion-select-option value="O">วันหยุดงาน</ion-select-option>
+        <ion-select-option value="H">Holiday</ion-select-option>
+      </ion-select>
+    </ion-item>
+  </ion-card>
+
+  <div style="height: 400px">
+    <div
+      style="
+        background-color: white;
+        position: relative;
+        z-index: 999;
+        display: flex;
+        justify-content: flex-end;
+        width: 93%;
+        margin-left: 15px;
+      "
+    >
+      <ion-button *ngIf="status=='W'" (click)="allSelect()" color="primary">เลือกวันทำงานทั้งหมด</ion-button>
+      <ion-button *ngIf="status=='W'" (click)="reStartDays()" color="danger">เคลียร์ค่า</ion-button>
+
+      <div *ngIf="status=='O'">
+        <ion-label
+          >เหลือวันหยุดงานอีก <span style="margin-left: 3px; color: #d61c4b; font-size: large">{{this.countSpecial}}</span> วัน</ion-label
+        >
+      </div>
+      <div *ngIf="status=='H'">
+        <ion-label
+          >เหลือวัน Holiday อีก <span style="margin-left: 3px; color: #ff4500; font-size: large">{{this.countHoliday}}</span> วัน</ion-label
+        >
+      </div>
+    </div>
+    <div class="calendar">
+      <ion-calendar
+        *ngIf="loadDataHoliday"
+        [type]="type"
+        [options]="optionsMulti2"
+        [format]="'DD-MM-YYYY'"
+        (monthChange)="getHolidayForMonths($event)"
+        (change)="onChange2($event)"
+      ></ion-calendar>
+    </div>
+  </div>
+
+  <div style="height: 50px"></div>
+
+  <ion-tabs>
+    <ion-tab-bar slot="bottom" style="border-width: 0px 0px 0px 0px">
+      <ion-tab-button (click)="cancelPlan()" style="border-radius: 2%; width: 100%; box-shadow: 1px 7px 6px rgb(0, 0, 0)">
+        <img class="imgCancel" src="assets/images/csg-plan/cancel.svg" />
+        <ion-label>ยกเลิก</ion-label>
+      </ion-tab-button>
+      <ion-tab-button (click)="presentAlertConfirm()"
+        style="border-radius: 2%; margin-left: 5px; box-shadow: 1px 7px 6px rgb(0, 0, 0)"
+      >
+        <img class="imgSave" src="assets/images/csg-plan/save.svg" />
+        <ion-label>บันทึกการสร้าง</ion-label>
+      </ion-tab-button>
+    </ion-tab-bar>
+  </ion-tabs>
+  <div style="height: 50px"></div>
+
+
+</ion-content>
+
+
+<ion-footer>
+  <ion-toolbar style="text-align: center">
+  
+    <ion-button (click)="cancelPlan()">
+      <ion-icon name="close-circle-outline" style="color:#d61c4b"></ion-icon>
+      <ion-label> ยกเลิก</ion-label>
+    </ion-button>
+    <ion-button (click)="presentAlertConfirm()" style="margin-left: 5px;">
+      <ion-icon name="checkmark-circle-outline" style="color:#08a838"></ion-icon>
+      <ion-label> บันทึกการสร้าง</ion-label>
+    </ion-button>
+ 
+
+  </ion-toolbar>
+</ion-footer>
+

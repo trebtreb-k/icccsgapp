@@ -1,0 +1,64 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+
+    <ion-title>Direct to Customer</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen="true">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content>
+    </ion-refresher-content>
+  </ion-refresher>
+
+
+  <div class="calendar">
+    <ion-calendar [type]="type"  [options]="optionsMulti"  (change)="getEventForDays($event)"  (monthChange)="getEventForMonths($event)" [format]="'DD-MM-YYYY'">
+    </ion-calendar>
+  </div>
+
+  <div style="text-align:center">
+    <h6 *ngIf="affiliate_id!==''">Affiliate ID {{affiliate_id}}</h6>
+    <h6>ข้อมูลวันที่ {{dateSelect}}</h6>
+  </div>
+
+  <div *ngIf="loaded===false" style="text-align: center;">
+    <img src="./assets/images/loading/loading-spinner-transparent.svg" style="width:80px">
+  </div>
+
+  <!-- </ion-list> -->
+  <div class="card-list">
+    <ion-list lines="none">
+      <ion-item *ngFor="let data of loadData">
+        <ion-thumbnail slot="start">
+          <img [src]="data.image" />
+        </ion-thumbnail>
+        <ion-label>
+          <p class="label">Order No. {{ data.order_id }}</p>
+          <p class="label">{{ data.brand }} {{ data.product_sku }}</p>
+          <p class="label" style="color:rgb(88, 88, 88)">{{ data.product_name }}</p>
+          <div style="display:flex; flex-direction: row;">
+              <div style="flex-basis: 30%">
+                <p>Amount: {{ data.netprice | number }}</p>
+              </div>
+              <div style="flex-basis: 10%">
+                <p>&nbsp;</p>
+              </div>
+              <div style="flex-basis: 30%">
+                <p>Estimate: {{ data.incentive_expect }}</p>
+              </div>
+              <div style="flex-basis: 30%">
+                <p>Incentive: {{ data.incentive_complete }}</p>
+              </div>
+
+          </div>
+        </ion-label>
+
+      </ion-item>
+    </ion-list>
+  </div>
+
+</ion-content>

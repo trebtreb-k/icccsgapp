@@ -1,0 +1,103 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+
+    <ion-title>สแกนเข้า/ออกงาน</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen="true">
+
+  <section *ngIf="status === 'BEGIN'">
+
+    <div class="menus">
+      <div class="topic">
+        <div class="mark"></div>
+        <h3>เมนู</h3>
+      </div>
+      <div class="menus__container">
+        <div class="menus__container__item" *ngFor="let menu of menus" (click)="checkInOut(menu.type)">
+          <div [ngClass]="{'menus__container__item--logo':true, in:menu.type=='I', out:menu.type=='O' }">
+            <img [src]="menu.logo" alt="" />
+          </div>
+          <div class="menus__container__item--title">
+            <p>{{ menu.title }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="key_manual==true && key_manual_type!==''">
+        <ion-content class="ion-padding" style="height:200px">
+          <ion-item>
+            <ion-label position="stacked">Enter QR Code</ion-label>
+            <ion-input type="text" placeholder="คีย์โค๊ด" [(ngModel)]="qrcode_text" style="text-transform: uppercase;"></ion-input>
+          </ion-item>
+          <button  *ngIf="key_manual_type=='I'" class="btn btn-success" (click)="checkInOutManual('I')">ยืนยัน</button>
+          <button  *ngIf="key_manual_type=='O'" class="btn btn-danger" (click)="checkInOutManual('O')">ยืนยัน</button>
+        </ion-content>
+      </div>
+    </div>
+
+  </section>
+
+
+
+
+  <section class="section__loading" *ngIf="status === 'LOADING'">
+    <ng-lottie
+      [width]="lottiefiles.loading.width"
+      [height]="lottiefiles.loading.height"
+      [options]="lottiefiles.loading.options"
+    ></ng-lottie>
+  </section>
+
+  <section class="section__completed" *ngIf="status === 'COMPLETED'">
+    <ng-lottie
+      [width]="lottiefiles.completed.width"
+      [height]="lottiefiles.completed.height"
+      [options]="lottiefiles.completed.options"
+    ></ng-lottie>
+
+    <h1 [ngClass]="{in:result.type=='I', out:result.type=='O' }">{{result.title}} !</h1>
+
+    <h2>{{result.ship_no}} {{result.ship_name}}</h2>
+    <h2>{{result.counter_id}} {{result.counter_name}}</h2>
+
+    <h3>{{result.time_stamp}}</h3>
+  </section>
+
+  <section class="section__completed" *ngIf="status === 'ERROR'">
+    <ng-lottie
+      [width]="lottiefiles.warning.width"
+      [height]="lottiefiles.warning.height"
+      [options]="lottiefiles.warning.options"
+    ></ng-lottie>
+
+    <h1 [ngClass]="{out: true }">ลงชื่อไม่สำเร็จ !!!</h1>
+
+    <h2>โปรดลองใหม่อีกครั้ง</h2>
+  </section>
+</ion-content>
+
+<ion-footer class="ion-no-border" *ngIf="status === 'COMPLETED' || status === 'ERROR'">
+  <p>
+    กำลังกลับสู่หน้าแรก
+    <strong>
+      <countdown [config]="{ leftTime: countdownCompleted, format: 's' }" (event)="completedCountdown($event)"></countdown>
+    </strong>
+    วินาที
+  </p>
+</ion-footer>
+
+
+
+<ion-footer class="ion-no-border" *ngIf="status !== 'COMPLETED' && status !== 'ERROR'">
+    <ion-list>
+      <ion-item>
+        <ion-label>Mode : {{key_manual_title}}</ion-label>
+        <ion-toggle ng-model="customText" [(ngModel)]="key_manual" (ionChange)="updateScanModeConfig()"></ion-toggle>
+      </ion-item>
+    </ion-list>
+</ion-footer>

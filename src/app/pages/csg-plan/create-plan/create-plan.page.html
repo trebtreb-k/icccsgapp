@@ -1,0 +1,293 @@
+
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <!-- <ion-back-button (click)="back()"></ion-back-button> -->
+      <ion-back-button ></ion-back-button>
+    </ion-buttons>
+    <!-- <ion-title>Create Plan</ion-title> -->
+    <ion-title>สร้างแพลนงาน</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content fullscreen="true">
+
+  <div class="text-topic">เลือกร้านค้า-เคาน์เตอร์</div>
+
+  <ion-card class="border-radius-25" style="color: darkgray !important;">
+    <ion-item (click)="popoverShopMenu('shop')" color="white">
+      <ion-label>
+        ร้านค้า
+        <span style="float: right">
+          <span *ngIf="!saveData.shop.name" style="color: darkgray"> กรุณาเลือกร้านค้า </span>
+          {{saveData.shop.name}}
+        </span>
+      </ion-label>
+    </ion-item>
+  </ion-card>
+
+  <ion-card class="border-radius-25">
+    <ion-item (click)="popoverShopMenu('counter')" color="white">
+      <ion-label>
+        เคาน์เตอร์
+        <span style="float: right">
+          <span *ngIf="!saveData.counter.name" style="color: darkgray">กรุณาเลือกเคาน์เตอร์</span>
+          {{saveData.counter.name}}
+        </span>
+      </ion-label>
+    </ion-item>
+  </ion-card>
+
+  <!-- <div style="height: 50px"></div> -->
+  <div class="text-topic mt-10">เลือกประเภทวันที่จะใช้</div>
+  <!-- <hr align= "center" size= "1" width= "90%" top="-100" color= "#FF0000"> -->
+    <!-- <ion-card class="border-radius-25">
+      <ion-item>
+        <ion-label>ประเภทวันที่เลือก</ion-label>
+        <div style="background-color: green; width: 20px; height: 20px; border-radius: 50%" *ngIf="status=='W'"></div>
+        <div style="background-color: #d61c4b; width: 20px; height: 20px; border-radius: 50%" *ngIf="status=='O'"></div>
+        <div style="background-color: #ff4500; width: 20px; height: 20px; border-radius: 50%" *ngIf="status=='H'"></div>
+        <ion-select interface="popover" [interfaceOptions]="{ cssClass: 'popoverMenu' }" value="W" (ionChange)="changeBT($event)">
+          <ion-select-option value="W">วันทำงานปกติ</ion-select-option>
+          <ion-select-option value="O">วันหยุดงาน</ion-select-option>
+          <ion-select-option value="H">Holiday</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-card> -->
+
+    <ion-card class="border-radius-25" id="sss">
+      <ion-item (click)="popoverShopMenu('worktype')" color="white">
+        <ion-label>
+          ประเภทวันที่เลือก
+          <span *ngIf="saveData.worktype.value" style="float: right">
+            <div  style="background-color: #{{saveData.worktype.color}}; width: 20px; height: 20px; border-radius: 50%; float: left;"></div> <span style="margin-left: 10px;">{{saveData.worktype.name}}</span>
+          </span>
+        </ion-label>
+      </ion-item>
+    </ion-card>
+
+    <div class="text-topic mt-10" *ngIf="saveData.worktype.value !== 'V1' && saveData.worktype.value !== 'LE'">ช่วงเวลาที่ปฎิบัติงาน</div>
+    <!-- <ion-card class="border-radius-25">
+      <ion-item (click)="popoverShopMenu('timetype')">
+        <ion-label>
+          ช่วงเวลาที่ปฎิบัติงาน
+          <span style="float: right">
+            <span *ngIf="!saveData.timetype.name" style="color: darkgray">กรุณาเลือกช่วงปฎิบัติงาน</span>
+            {{saveData.timetype.name}}
+          </span>
+        </ion-label>
+      </ion-item>
+    </ion-card> -->
+    <ion-card *ngIf="saveData.worktype.value !== 'V1' && saveData.worktype.value !== 'LE'" style="background-color: #fff0;border-radius: 25px;">
+      <!-- <ion-grid> -->
+        <ion-row>
+          <ion-col>
+            <ion-item color="white">
+              <ion-label>เริ่มงาน : </ion-label>
+              <ion-datetime
+              displayFormat="HH:mm"
+              minuteValues="0,15,30,45"
+              [value]="timeFrom"
+              (ionChange)="timeFromClick($event)"
+              >
+            </ion-datetime>
+            </ion-item>
+          </ion-col>
+
+          <ion-col>
+            <ion-item color="white">
+              <ion-label>สิ้นสุดงาน : </ion-label>
+              <ion-datetime
+              displayFormat="HH:mm"
+              minuteValues="0,15,30,45"
+              [value]="timeTo"
+              [min]="timeFrom"
+              (ionChange)="timeToClick($event)"
+              >
+            </ion-datetime>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      <!-- </ion-grid> -->
+
+    </ion-card>
+
+  <!-- <ion-card> -->
+    <ion-item *ngIf="saveData.worktype.value !== 'V1' && saveData.worktype.value !== 'LE'">
+      <!-- <ion-checkbox slot="start" (ionChange)="checkEvent($event)" [disabled]="!saveData.timetype.value"></ion-checkbox> -->
+      <ion-checkbox slot="start" [checked]="eventcheck.detail.checked === true" (ionChange)="checkEvent($event)" [disabled]="!timeFrom" ></ion-checkbox>
+      <ion-label>เพิ่มช่วงเวลาปฏิบัติงาน OT</ion-label>
+    </ion-item>
+
+  <!-- </ion-card> -->
+
+
+  <ion-card *ngIf="check === true && saveData.worktype.value !== 'V1' && check === true && saveData.worktype.value !== 'LE'" style="background-color: #fff0; border-radius: 25px;">
+    <!-- <ion-grid> -->
+      <ion-row>
+        <ion-col>
+          <ion-item color="white">
+            <ion-label>เริ่ม OT : </ion-label>
+            <ion-datetime
+            displayFormat="HH:mm"
+            minuteValues="0,15,30,45"
+            [min]="timeTo"
+            [value]="timeTo"
+            (ionChange)="timeOTFromClick($event)"
+            >
+          </ion-datetime>
+          </ion-item>
+        </ion-col>
+
+        <ion-col>
+          <ion-item color="white">
+            <ion-label>สิ้นสุด OT : </ion-label>
+            <ion-datetime
+            displayFormat="HH:mm"
+            minuteValues="0,15,30,45"
+            [value]="otTo"
+            [min]="timeTo"
+            (ionChange)="timeOTToClick($event)"
+            >
+          </ion-datetime>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    <!-- </ion-grid> -->
+
+  </ion-card>
+  <div style="height: 10px"></div>
+
+
+  <!-- <ion-card *ngIf="counterMenu&&counterMenu!=='ไม่มีรหัสเคาน์เตอร์นี้'">
+    <ion-item (click)="popoverShopMenu('timetype')">
+      <ion-label>ช่วงเวลาที่ปฎิบัติงาน</ion-label>
+      <ion-select interface="popover" value="W1" (ionChange)="changeBT2($event)">
+        <ion-select-option value="W1">W1 (8.00 - 17.00)</ion-select-option>
+        <ion-select-option value="W2">W2</ion-select-option>
+        <ion-select-option value="W3">W3</ion-select-option>
+      </ion-select>
+    </ion-item>
+  </ion-card> -->
+
+
+  <!-- <div style="height: 400px" *ngIf="saveData.shop.value !== null && saveData.counter.value !== null && saveData.timetype.value !== null" > -->
+    <!-- justify-content: flex-end; -->
+  <div style="height: 400px" *ngIf="saveData.shop.value !== null && saveData.counter.value !== null">
+    <div
+      style=" background-color: white; position: relative; z-index: 99999; display: flex; width: 93%; margin-left: 15px; ">
+      <ion-button *ngIf="status=='W1'" (click)="selectAll()" color="primary" [disabled]="status_plan === 'N' ? false : status_plan === 'X' ? false : true">เลือกวันทำงานทั้งหมด</ion-button>
+      <ion-button *ngIf="status=='W1'" (click)="reStartDays()" color="light" style="margin: auto; margin-right: 0px;width: 15%;" [disabled]="status_plan === 'N' ? false : status_plan === 'X' ? false : true"><img src="../../../../assets/images/csg-plan/refresh-button.png" alt="" style="width: 40px;"></ion-button>
+
+      <div *ngIf="status=='V1'">
+        <ion-label
+          >เหลือใช้วันหยุดงานในเดือนนี้อีก <span style="margin-left: 3px; color: #d61c4b; font-size: large">{{this.countHoliday}}</span> วัน</ion-label
+        >
+      </div>
+      <div *ngIf="status=='W2'">
+        <ion-label
+          >เหลือใช้วัน Holiday ในเดือนนี้อีก <span style="margin-left: 3px; color: #ff4500; font-size: large">{{this.countHoliday}}</span> วัน</ion-label
+        >
+      </div>
+    </div>
+
+    <!-- <div class="calendar calendar-create-plan ">
+      <ion-calendar
+        *ngIf="loadDataHoliday"
+        [type]="type"
+        [(ngModel)]="startDate"
+        [options]="optionsMulti2"
+        [format]="'DD-MM-YYYY'"
+        (monthChange)="getHolidayForMonths($event)"
+        (change)="onChange2($event)"
+      ></ion-calendar>
+    </div> -->
+
+    <div class="calendar calendar-create-plan ">
+      <ion-calendar
+        *ngIf="loadDataHoliday"
+        [(ngModel)]="startDate"
+        [type]="type"
+        [options]="optionsMulti2"
+        [format]="'DD-MM-YYYY'"
+        (monthChange)="getHolidayForMonths($event)"
+        (change)="onChange2($event)"
+      ></ion-calendar>
+    </div>
+
+    <div class="card-list">
+      <ion-list lines="none">
+        <ion-item-sliding *ngFor="let v of values">
+          <ion-item>
+            <!-- <ion-thumbnail slot="start" [style.background-color]="myColorVaraible"> -->
+            <ion-thumbnail slot="start">
+              <img [src]="v.image"/>
+            </ion-thumbnail>
+            <ion-label>
+              <p class="label"><B>{{ v.date }}</B> <span class="textRight">{{v.value}}</span></p>
+              <p class="label">{{ v.custname }}</p>
+              <p class="label">{{ v.counterid }} {{v.countername}}</p>
+              <p class="label" *ngIf="v.workfrom">เวลาปฏิบัติงาน <span class="textRight">{{v.workfrom}} - {{v.workto}}</span></p>
+              <p class="label" *ngIf="v.otfrom">เวลาทำ OT <span class="textRight">{{v.otfrom}} - {{v.otto}}</span></p>
+
+            </ion-label>
+            <!-- <ion-label slot="end" *ngIf="v.stateOt != 'N'"> -->
+            <!-- <p *ngIf="v.stateOt != 'N'" slot="end" class="ot">OT</p> -->
+            <!-- </ion-label> -->
+          </ion-item>
+
+          <!-- <ion-item-options *ngIf="v.typecancel === 'Y'">
+            <ion-item-option color="danger" (click)="presentAlert(v)">ยกเลิก</ion-item-option>
+          </ion-item-options>
+          <ion-item-options *ngIf="v.typecancel === 'N'">
+            <ion-item-option color="danger" disabled="">ยกเลิกไม่ได้</ion-item-option>
+          </ion-item-options> -->
+        </ion-item-sliding >
+      </ion-list>
+
+
+    </div>
+  </div>
+
+
+
+
+  <!-- (change)="!saveData.timetype.value ? '' : onChange2($event)" -->
+  <!--
+  <ion-tabs>
+    <ion-tab-bar slot="bottom" style="border-width: 0px 0px 0px 0px">
+      <ion-tab-button (click)="cancelPlan()" style="border-radius: 2%; width: 100%; box-shadow: 1px 7px 6px rgb(0, 0, 0)">
+        <img class="imgCancel" src="assets/images/csg-plan/cancel.svg" />
+        <ion-label>ยกเลิก</ion-label>
+      </ion-tab-button>
+      <ion-tab-button
+        *ngIf="counterMenu&&custidMenu!=='ไม่มีรหัสร้านค้านี้'"
+        (click)="presentAlertConfirm()"
+        style="border-radius: 2%; margin-left: 5px; box-shadow: 1px 7px 6px rgb(0, 0, 0)"
+      >
+        <img class="imgSave" src="assets/images/csg-plan/save.svg" />
+        <ion-label>บันทึกการสร้าง</ion-label>
+      </ion-tab-button>
+    </ion-tab-bar>
+  </ion-tabs>
+  -->
+</ion-content>
+
+
+
+
+<ion-footer *ngIf="saveData.shop.value&&saveData.counter.value&&timeFrom&&timeTo !== null && dataSelectDay.length !== 0 && (status_plan === 'N' || status_plan === 'X')">
+  <ion-toolbar style="text-align: center">
+
+    <!-- <ion-button (click)="cancelPlan()">
+      <ion-icon name="close-circle-outline" style="color:#d61c4b"></ion-icon>
+      <ion-label> ยกเลิก</ion-label>
+    </ion-button> -->
+    <ion-button *ngIf="saveData.shop.value&&saveData.counter.value&&timeFrom&&timeTo !== null && dataSelectDay.length !== 0 " (click)="presentAlertConfirm()" style="margin-left: 5px;">
+      <ion-icon name="checkmark-circle-outline" style="color:#08a838"></ion-icon>
+      <ion-label> บันทึกการสร้าง</ion-label>
+    </ion-button>
+
+  </ion-toolbar>
+</ion-footer>

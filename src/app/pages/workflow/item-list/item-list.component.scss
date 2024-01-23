@@ -1,0 +1,77 @@
+section {
+  background: #ffffff;
+  border-radius: 14px;
+  border: solid 1.5px #f3f3f3;
+  box-shadow: 0px 2px 25px -12px rgba(0, 0, 0, 0.15);
+  padding: 12px;
+  margin: 10px auto;
+
+  .timedate {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+
+    .timedate__icon {
+      flex-basis: 10%;
+      display: flex;
+      flex-flow: column wrap;
+      justify-content: center;
+      align-items: center;
+      ion-icon {
+        margin-right: 10px;
+        font-size: 1rem;
+      }
+    }
+
+    .timedate__text {
+      flex-basis: 90%;
+      display: flex;
+      flex-flow: column wrap;
+      justify-content: center;
+      align-items: flex-start;
+      p {
+        font-size: 0.8rem;
+
+        span {
+          color: red;
+          font-weight: 500;
+        }
+      }
+    }
+  }
+
+  .content {
+    display: flex;
+    width: 100%;
+
+    .content__txt {
+      flex-basis: 80%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      p {
+        font-size: 0.9rem;
+        margin: 0;
+      }
+    }
+
+    .content__status {
+      flex-basis: 20%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      ion-icon {
+        font-size: 1.5rem;
+      }
+
+      p {
+        font-size: 0.7rem;
+        font-weight: 500;
+        margin: 0;
+      }
+    }
+  }
+}

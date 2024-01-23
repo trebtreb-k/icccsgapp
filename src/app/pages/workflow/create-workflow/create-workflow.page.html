@@ -1,0 +1,170 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+
+    <ion-title>สร้างใบลาผ่าน Workflow</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen="true">
+  <section class="workflow__form">
+    <form class="form custom-create-workflow" [formGroup]="formCreateWorkflow">
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <div class="form__item">
+              <div class="form__item--label">เลือกประเภทการลา</div>
+              <ion-icon name="document-text-outline" class="form__item--icon"></ion-icon>
+              <ion-select
+                class="form__item--select icon"
+                placeholder="เลือกประเภทการลา"
+                interface="action-sheet"
+                cancelText="ปิด"
+                formControlName="type"
+                (ionChange)="typeChange()"
+              >
+                <ion-select-option value="A1">ลาป่วย</ion-select-option>
+                <ion-select-option value="C1">ลากิจ</ion-select-option>
+                <ion-select-option value="C2">ลากิจพิเศษ</ion-select-option>
+                <ion-select-option value="G1">ลาพักร้อน</ion-select-option>
+                <ion-select-option value="99">ปรับปรุงข้อมูลตามใบแก้ไข</ion-select-option>
+                
+              </ion-select>
+            </div>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col>
+            <div class="form__item">
+              <div class="form__item--label">{{titleReason}}</div>
+              <ion-icon name="chatbox-outline" class="form__item--icon"></ion-icon>
+              <input class="form__item--input icon" type="text" placeholder="{{titleReason}}" formControlName="reason" />
+            </div>
+          </ion-col>
+        </ion-row>
+
+        <ion-row (click)="browserImage()">
+          <ion-col>
+            <div class="form__item">
+              <div class="form__item--label">ไฟล์เอกสาร/รูปภาพ</div>
+              <ion-icon
+                [name]="!attachFile.preview ? 'image-outline' : 'checkmark-circle'"
+                [color]="!attachFile.preview ? '' : 'success'"
+                class="form__item--icon"
+              ></ion-icon>
+              <input
+                class="form__item--input icon"
+                type="text"
+                [placeholder]="!attachFile.preview ? 'เลือกที่อยู่ไฟล์' : 'แนบไฟล์แล้ว'"
+                readonly
+              />
+            </div>
+          </ion-col>
+          <ion-col size="3" class="preview__section">
+            <img
+              class="preview__section__image"
+              [src]="!attachFile.preview ? 'assets/images/workflow/add-image.svg' : attachFile.preview"
+              alt=""
+            />
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col>
+            <div class="form__item">
+              <div class="form__item--label">เบอร์โทรติดต่อ</div>
+              <ion-icon name="call-outline" class="form__item--icon"></ion-icon>
+              <input class="form__item--input icon" type="tel" placeholder="เบอร์โทรติดต่อ" formControlName="phone" />
+            </div>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col style="margin-right: 3px">
+            <div class="form__item">
+              <div class="form__item--label">วันที่เริ่มต้น</div>
+              <ion-icon name="calendar-outline" class="form__item--icon right"></ion-icon>
+              <ion-datetime
+                class="form__item--datetime"
+                placeholder="เลือกวันที่เริ่มต้น"
+                [min]="currentYear - 1"
+                [max]="currentYear + 1"
+                displayFormat="DD/MM/YYYY"
+                pickerFormat="DD MMMM YYYY"
+                formControlName="startDate"
+                (ionChange)="dateChange('STARTDATE')"
+              ></ion-datetime>
+            </div>
+          </ion-col>
+          <ion-col style="margin-left: 3px">
+            <div class="form__item">
+              <div class="form__item--label">วันที่สิ้นสุด</div>
+              <ion-icon name="calendar-outline" class="form__item--icon right"></ion-icon>
+              <ion-datetime
+                class="form__item--datetime"
+                placeholder="เลือกวันที่สิ้นสุด"
+                [min]="currentYear - 1"
+                [max]="currentYear + 1"
+                displayFormat="DD/MM/YYYY"
+                pickerFormat="DD MMMM YYYY"
+                formControlName="endDate"
+                (ionChange)="dateChange('ENDDATE')"
+              ></ion-datetime>
+            </div>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col style="margin-right: 3px">
+            <div class="form__item">
+              <div class="form__item--label">เวลาเริ่มต้น</div>
+              <ion-icon name="time-outline" class="form__item--icon right"></ion-icon>
+              <ion-datetime
+                class="form__item--datetime"
+                placeholder="เลือกเวลาเริ่มต้น"
+                displayFormat="HH:mm น."
+                pickerFormat="HH mm"
+                formControlName="startTime"
+              ></ion-datetime>
+            </div>
+          </ion-col>
+          <ion-col style="margin-left: 3px">
+            <div class="form__item">
+              <div class="form__item--label">เวลาสิ้นสุด</div>
+              <ion-icon name="time-outline" class="form__item--icon right"></ion-icon>
+              <ion-datetime
+                class="form__item--datetime"
+                placeholder="เลือกเวลาสิ้นสุด"
+                displayFormat="HH:mm น."
+                pickerFormat="HH mm"
+                formControlName="endTime"
+              ></ion-datetime>
+            </div>
+          </ion-col>
+        </ion-row>
+
+        <div style="margin: 50px"></div>
+
+        <p class="workflow__label">ชื่อผู้อนุมัติ</p>
+        <ion-row class="approver-name" *ngFor="let approver of approvers">
+          <ion-col size="2.5" class="thumbnail">
+            <img [src]="approver.image" onerror="this.src='assets/images/avatar-male.svg'" />
+          </ion-col>
+          <ion-col class="name">
+            <h2 class="title" *ngIf="approver.name">{{ approver.name }}</h2>
+            <h2 class="none" *ngIf="!approver.name">ไม่พบรายชื่อ</h2>
+            <p class="duty">{{ approver.duty }}</p>
+          </ion-col>
+          <ion-col size="1.5" class="edit" (click)="clickAction(approver.level)">
+            <p>{{ approver.event }}</p>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+      <button class="btn btn-primary" [disabled]="!formCreateWorkflow.valid" (click)="createLeaveRequest()">สร้างใบลา</button>
+    </form>
+  </section>
+</ion-content>

@@ -1,0 +1,84 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="setting()">
+        <ion-icon name="menu"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-title>ICC CSG APP</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button (click)="logout()">
+        <ion-icon slot="icon-only" name="log-out-outline" color="dark"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen="true">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content>
+    </ion-refresher-content>
+  </ion-refresher>
+
+  <div class="profile">
+    <div class="profile__card">
+      <div class="profile__card--avatar">
+        <img [src]="user?.picture" onError="this.src='assets/images/avatar-female.svg';" (click)="onViewImage(user?.picture)" alt="" />
+      </div>
+      <div class="profile__card--info">
+        <p class="profile__card--info--id">รหัสพนักงาน : {{ user?.emp_id }}</p>
+        <p class="profile__card--info--name">{{ user?.name }}</p>
+        <p class="profile__card--info--dept">{{ user?.dept_desc }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="static-timedate">
+    <div class="today">
+      <p>{{ today }}</p>
+    </div>
+    <div class="timestamp">
+      <div><p *ngIf="timeToday.checkIn">เข้างาน <span class="in">{{timeToday.checkIn}}</span></p></div>
+      <div><p *ngIf="timeToday.checkOut">ออกงาน <span class="out">{{timeToday.checkOut}}</span></p></div>
+    </div>
+  </div>
+
+  <div class="menus">
+    <div class="topic">
+      <div class="mark"></div>
+      <h3>เมนู</h3>
+    </div>
+    <div class="menus__container">
+      <div class="menus__container__item" *ngFor="let menu of menus" (click)="navigate(menu.link, menu.redirect)">
+        <div class="menus__container__item--logo">
+          <img [src]="menu.logo" alt="" />
+        </div>
+        <div class="menus__container__item--title">
+          <p style="margin-top:4px">{{ menu.title }}</p>
+          <p *ngIf="menu.title2">{{ menu.title2 }}</p>
+        </div>
+        <ion-badge *ngIf="menu.badge>0" class="badge-number" item-end color="danger">{{menu.badge}}</ion-badge>
+      </div>
+    </div>
+  </div>
+
+  <div class="news">
+    <div class="topic">
+      <div class="mark"></div>
+      <h3>ข่าวสาร</h3>
+    </div>
+
+    <ion-slides pager="true" [options]="newsOptions">
+      <ion-slide *ngFor="let news of newsData" (click)="openLink(news)">
+        <img [src]="news.image" alt="news" />
+      </ion-slide>
+    </ion-slides>
+  </div>
+
+
+  <div class="server-version">
+    <p>version : {{ version }}</p>
+  </div>
+</ion-content>
