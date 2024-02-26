@@ -262,31 +262,31 @@ export class HomePage implements OnInit {
 
 
     console.log(this.cheked_unique_device_id);
-    if(!this.cheked_unique_device_id){
+    // if(!this.cheked_unique_device_id){
 
-      try {
-        const res = await this.uniqueDeviceIdApi.checkUniqueDeviceId();
+    //   try {
+    //     const res = await this.uniqueDeviceIdApi.checkUniqueDeviceId();
 
-        if(res.result){
-          this.cheked_unique_device_id = true;
-        }else{
-          this.cheked_unique_device_id = false;
-          await this.storage.clear();
-          await alert('Error: '+res.error_message);
-          this.router.navigate(['/login', {replaceUrl:true}]);
-        }
-       // alert('res='+JSON.stringify(res))
-       // console.log('cheked_unique_device_id',this.cheked_unique_device_id)
-       // alert(this.cheked_unique_device_id)
+    //     if(res.result){
+    //       this.cheked_unique_device_id = true;
+    //     }else{
+    //       this.cheked_unique_device_id = false;
+    //       await this.storage.clear();
+    //       await alert('Error: '+res.error_message);
+    //       this.router.navigate(['/login', {replaceUrl:true}]);
+    //     }
+    //    // alert('res='+JSON.stringify(res))
+    //    // console.log('cheked_unique_device_id',this.cheked_unique_device_id)
+    //    // alert(this.cheked_unique_device_id)
 
-      } catch (e) {
-       // alert(JSON.stringify(e))
-        this.cheked_unique_device_id = false;
-        await this.storage.clear();
-        alert('Error: '+e.error?.e.error?.error_message)
-        this.router.navigate(['/login', {replaceUrl:true}]);
-      }
-    }
+    //   } catch (e) {
+    //    // alert(JSON.stringify(e))
+    //     this.cheked_unique_device_id = false;
+    //     await this.storage.clear();
+    //     alert('Error: '+e.error?.e.error?.error_message)
+    //     this.router.navigate(['/login', {replaceUrl:true}]);
+    //   }
+    // }
 
 
 

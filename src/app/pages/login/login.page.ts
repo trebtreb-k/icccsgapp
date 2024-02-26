@@ -25,7 +25,7 @@ export class LoginPage implements OnInit {
     private authen: AuthenService,
     private router: Router,
     private alert: AlertService,
-    private storage : StorageService
+    private storage: StorageService
   ) {}
 
   async ngOnInit() {}
