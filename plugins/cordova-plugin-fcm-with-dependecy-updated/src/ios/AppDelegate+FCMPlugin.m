@@ -45,9 +45,16 @@ FCMNotificationCenterDelegate *notificationCenterDelegate;
 }
 
 - (void)configureForNotifications {
-    if([FIRApp defaultApp] == nil) {
-        [FIRApp configure];
-    }
+    // if([FIRApp defaultApp] == nil) {
+    //     [FIRApp configure];
+    // }
+    // Get the path for Google-Service-Info.plist
+    NSString * filePath =[[NSBundle mainBundle] pathForResource:@"GoogleService-Info" ofType: @"plist"];
+
+    // Init FIRApp passing the file
+    FIROptions * options =[[FIROptions alloc] initWithContentsOfFile: filePath];
+    [FIRApp configureWithOptions: options];
+
     // For iOS message (sent via FCM)
     [FIRMessaging messaging].delegate = self;
 }

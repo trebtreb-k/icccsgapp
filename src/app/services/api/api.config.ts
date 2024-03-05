@@ -18,8 +18,7 @@ const combine = (req: RootUrl): string => {
   const random = (param: string[]): string => param[Math.floor(Math.random() * param.length)];
   const convert = (param: any[]) => param.map((res: string | number) => `${res}`);
 
-  const response = (param: any) =>
-    _.isString(param) || _.isNumber(param) ? [`${param}`] : _.isArray(param) ? convert(param) : [];
+  const response = (param: any) => (_.isString(param) || _.isNumber(param) ? [`${param}`] : _.isArray(param) ? convert(param) : []);
 
   return !response(port).length
     ? `${protocol}://${random(response(domain))}`

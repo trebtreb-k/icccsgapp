@@ -48,9 +48,9 @@
 					<category android:name="android.intent.category.DEFAULT" />
 				</intent-filter>
 			</activity>
-			<service 
-				android:name="com.gae.scaffolder.plugin.MyFirebaseMessagingService" 
-				android:exported="false" 
+			<service
+				android:name="com.gae.scaffolder.plugin.MyFirebaseMessagingService"
+				android:exported="false"
 				android:stopWithTask="false">
 				<intent-filter>
 					<action android:name="com.google.firebase.MESSAGING_EVENT"/>
@@ -103,8 +103,6 @@
 		<config-file target="*-Info.plist" parent="FirebaseAppDelegateProxyEnabled">
 			<false/>
 		</config-file>
-
-		<resource-file src="src/ios/Assets/GoogleService-Info.plist" target="Resources/GoogleService-Info.plist" />
 
 		<header-file src="src/ios/FCMPlugin.h" />
 		<source-file src="src/ios/FCMPlugin.m" />

@@ -15,8 +15,8 @@ exports.PLATFORM = {
         label: 'ios',
         dir: IOS_DIR,
         googleServiceDestinations: [
-            IOS_DIR + '/' + APP_NAME + '/Resources/GoogleService-Info.plist',
-            IOS_DIR + '/' + APP_NAME + '/Resources/Resources/GoogleService-Info.plist'
+          IOS_DIR + '/' + APP_NAME + '/Resources/GoogleService-Info.plist',
+          IOS_DIR + '/' + APP_NAME + '/Resources/Resources/GoogleService-Info.plist'
         ],
         googleServiceSources: [
             'GoogleService-Info.plist',
@@ -28,8 +28,8 @@ exports.PLATFORM = {
         label: 'android',
         dir: ANDROID_DIR,
         googleServiceDestinations: [
-            ANDROID_DIR + '/google-services.json',
-            ANDROID_DIR + '/app/google-services.json'
+          ANDROID_DIR + '/google-services.json',
+          ANDROID_DIR + '/app/google-services.json'
         ],
         googleServiceSources: [
             ANDROID_DIR + '/google-services.json',

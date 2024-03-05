@@ -1,0 +1,47 @@
+{
+  "prepare_queue": {
+    "installed": [],
+    "uninstalled": []
+  },
+  "config_munge": {
+    "files": {}
+  },
+  "installed_plugins": {
+    "call-number": {
+      "PACKAGE_NAME": "th.co.icc.salestools"
+    },
+    "com-sarriaroman-photoviewer": {
+      "PACKAGE_NAME": "th.co.icc.salestools"
+    },
+    "cordova-plugin-android-permissions": {
+      "PACKAGE_NAME": "th.co.icc.salestools"
+    },
+    "cordova-plugin-androidx": {
+      "PACKAGE_NAME": "th.co.icc.salestools"
+    },
+    "cordova-plugin-androidx-adapter": {
+      "PACKAGE_NAME": "th.co.icc.salestools"
+    },
+    "cordova-plugin-camera": {
+      "PACKAGE_NAME": "th.co.icc.salestools"
+    },
+    "cordova-plugin-crop": {
+      "PACKAGE_NAME": "th.co.icc.salestools"
+    },
+    "cordova-plugin-device": {
+      "PACKAGE_NAME": "th.co.icc.salestools"
+    },
+    "cordova-plugin-email-composer": {
+      "PACKAGE_NAME": "th.co.icc.salestools"
+    },
+    "cordova-plugin-fcm-with-dependecy-updated": {
+      "IOS_FIREBASE_MESSAGING_VERSION": "~> 7.4.0",
+      "PACKAGE_NAME": "th.co.icc.salestools"
+    }
+  },
+  "dependent_plugins": {
+    "cordova-plugin-add-swift-support": {
+      "PACKAGE_NAME": "th.co.icc.salestools"
+    }
+  }
+}

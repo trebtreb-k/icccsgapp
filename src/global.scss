@@ -39,7 +39,22 @@
 
 :root {
   --ion-background-color: #ffffff;
-  --ion-background-color-rgb: 255,255,255;
+  --ion-background-color-rgb: 255, 255, 255;
+}
+
+.ion-page {
+  height: 100%;
+  width: 100%;
+  left: 0;
+  right: 0;
+  top: 0 !important;
+  bottom: 0;
+  display: flex;
+  position: absolute;
+  flex-direction: column;
+  justify-content: space-between;
+  contain: layout size style;
+  overflow: hidden;
 }
 
 ion-header {
