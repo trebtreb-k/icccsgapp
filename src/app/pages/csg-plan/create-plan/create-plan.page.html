@@ -178,7 +178,6 @@
     <div
       style=" background-color: white; position: relative; z-index: 99999; display: flex; width: 93%; margin-left: 15px; ">
       <ion-button *ngIf="status=='W1'" (click)="selectAll()" color="primary" [disabled]="status_plan === 'N' ? false : status_plan === 'X' ? false : true">เลือกวันทำงานทั้งหมด</ion-button>
-      <!-- <ion-button *ngIf="status=='W1'" (click)="deleteAll()" color="primary" [disabled]="status_plan === 'N' ? false : status_plan === 'X' ? false : true">ลบวันทั้งหมด</ion-button> -->
       <ion-button *ngIf="status=='W1'" (click)="reStartDays()" color="light" style="margin: auto; margin-right: 0px;width: 15%;" [disabled]="status_plan === 'N' ? false : status_plan === 'X' ? false : true"><img src="../../../../assets/images/csg-plan/refresh-button.png" alt="" style="width: 40px;"></ion-button>
 
       <div *ngIf="status=='V1'">

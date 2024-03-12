@@ -575,7 +575,7 @@ export class CsgPlanPage implements OnInit {
           data[index].worktype === 'W1'
             ? 'assets/images/csg-plan/calendar_w.png'
             : data[index].worktype === 'W2'
-            ? 'assets/images/csg-plan/calendar_h1.png'
+            ? 'assets/images/csg-plan/calendar_h.png'
             : data[index].worktype === 'V1'
             ? 'assets/images/csg-plan/calendar_o.png'
             : data[index].worktype === 'LE'

@@ -85,8 +85,6 @@ export class CsgPlanService {
 
   async getWorkTypeCSGPlan(): Promise<any> {
     const url = `${ST_ROOT.csgplan}/salestools/csg_plan/worktype`;
-    console.log(url);
-
     return this.http.get(url).toPromise();
   }
 

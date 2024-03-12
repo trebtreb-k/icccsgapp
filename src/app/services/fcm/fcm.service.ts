@@ -6,64 +6,68 @@ import { Injectable } from '@angular/core';
 import { Platform } from '@ionic/angular';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class FcmService {
   //constructor() {}
 
   pushes: any = [];
-  token = '';
+  token: string = '';
 
-  constructor(private fcm: FCM, public platform: Platform, private authenApi: AuthenService) {
-    this.platform.ready().then(() => {
-      this.fcm.onNotification().subscribe((data) => {
-        if (data.wasTapped) {
-          console.log('Received in background');
-        } else {
-          console.log('Received in foreground');
-        }
-      });
 
-      this.fcm.onTokenRefresh().subscribe((token) => {
-        // Register your new token in your back-end if you want
-        // backend.registerToken(token);
-      });
-    });
+  constructor(private fcm : FCM, public platform: Platform, private authenApi: AuthenService) {
+
+    this.platform.ready()
+      .then(() => {
+        this.fcm.onNotification().subscribe(data => {
+          if (data.wasTapped) {
+            console.log("Received in background");
+          } else {
+            console.log("Received in foreground");
+          };
+        });
+
+        this.fcm.onTokenRefresh().subscribe(token => {
+          // Register your new token in your back-end if you want
+          // backend.registerToken(token);
+        });
+      })
   }
 
   async getToken() {
-    console.log('start firebase gettoken');
-    // alert('get token');
+    console.log('start firebase gettoken')
+   // alert('get token');
 
-    // let token = await  this.fcm.getToken();
-    // console.log('xxxxxxxxxxxxx')
-    //  await this.authenApi.updateFirebaseToken('x123456', 'android');
-
-    this.fcm.requestPushPermission().then(() => {});
-    this.token = await this.fcm.getToken();
+   // let token = await  this.fcm.getToken();
+   // console.log('xxxxxxxxxxxxx')
+  //  await this.authenApi.updateFirebaseToken('x123456', 'android');
+      this.fcm.requestPushPermission().then(()=>{});
+      this.token = await this.fcm.getToken();
 
     if (this.platform.is('android')) {
       //  alert(this.token)
-      await this.authenApi.updateFirebaseToken(this.token, 'android');
+        await this.authenApi.updateFirebaseToken(this.token, 'android');
+
     }
 
     if (this.platform.is('ios')) {
-      // this.fcm.requestPushPermissionIOS().then(()=>{})
+        // this.fcm.requestPushPermissionIOS().then(()=>{})
 
-      // await this.fcm.grantPermission();
-      await this.authenApi.updateFirebaseToken(this.token, 'ios');
+        // await this.fcm.grantPermission();
+        await this.authenApi.updateFirebaseToken(this.token, 'ios');
     }
 
-    /*
-      this.fcm.getToken().then(token => {
-          console.log('firebase token', token)
-          alert(token);
-          // Register your new token in your back-end if you want
-        // backend.registerToken(token);
-      })
-      .catch(error=>{
-          alert(JSON.stringify(error))
-      });*/
+
+   /*
+    this.fcm.getToken().then(token => {
+        console.log('firebase token', token)
+        alert(token);
+        // Register your new token in your back-end if you want
+      // backend.registerToken(token);
+    })
+    .catch(error=>{
+        alert(JSON.stringify(error))
+    });*/
   }
 
   /*
@@ -78,4 +82,5 @@ export class FcmService {
   listenToNotifications() {
     return this.fcm.onNotification();
   }
+
 }

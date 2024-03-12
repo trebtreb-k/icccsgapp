@@ -1,11 +1,11 @@
-import { ST_ROOT, ST_USER_PICTURE } from './services/api/api.root';
-
 import { AuthenService } from './services/authen/authen.service';
 import { Component } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { StorageService } from './services/storage/storage.service';
+import { ST_ROOT, ST_USER_PICTURE} from './services/api/api.root';
+
 
 @Component({
   selector: 'app-root',
@@ -45,16 +45,17 @@ export class AppComponent {
 
       // this.router.navigate(['/customer']);
       if (info.type === 'EMPLOYEE') {
-        // alert(token)
+       // alert(token)
         const verify: any = await this.authen.verifyToken(token);
         const { profile } = verify?.data;
-        let picture; // = ST_USER_PICTURE+'/'+ profile.emp_id+'/'+profile.emp_id+'.jpg';
-        if (profile.type === 'EMPLOYEE') {
-          picture = ST_USER_PICTURE + '/' + profile.emp_id + '/' + profile.emp_id + '.jpg';
-        } else {
-          picture = 'assets/images/avatar-female.svg';
-        }
-        await this.storage.set('USER_INFO', { ...profile, picture });
+        let picture;// = ST_USER_PICTURE+'/'+ profile.emp_id+'/'+profile.emp_id+'.jpg';
+        if(profile.type==='EMPLOYEE'){
+            picture = ST_USER_PICTURE+'/'+ profile.emp_id+'/'+profile.emp_id+'.jpg';
+        }else{
+            picture ='assets/images/avatar-female.svg';  
+        }  
+        await this.storage.set('USER_INFO', {...profile, picture});
+       
 
         this.router.navigate(['/home']);
       } else {
