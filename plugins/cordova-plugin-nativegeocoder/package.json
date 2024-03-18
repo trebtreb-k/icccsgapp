@@ -1,39 +1,7 @@
 {
-  "_args": [
-    [
-      "cordova-plugin-nativegeocoder@3.4.1",
-      "D:\\ICCCSGAPPREAL\\icccsgapp_1_3_0"
-    ]
-  ],
-  "_development": true,
-  "_from": "cordova-plugin-nativegeocoder@3.4.1",
-  "_id": "cordova-plugin-nativegeocoder@3.4.1",
-  "_inBundle": false,
-  "_integrity": "sha512-2VDRWFJIRk7mYGxPctadvtdeyYpgX/PZl3xAc8zglLK83YQnAp5p2sNoiYokkCMEXK+vSeuff3E7b3fkAC1TsQ==",
-  "_location": "/cordova-plugin-nativegeocoder",
-  "_phantomChildren": {},
-  "_requested": {
-    "type": "version",
-    "registry": true,
-    "raw": "cordova-plugin-nativegeocoder@3.4.1",
-    "name": "cordova-plugin-nativegeocoder",
-    "escapedName": "cordova-plugin-nativegeocoder",
-    "rawSpec": "3.4.1",
-    "saveSpec": null,
-    "fetchSpec": "3.4.1"
-  },
-  "_requiredBy": [
-    "#DEV:/"
-  ],
-  "_resolved": "https://registry.npmjs.org/cordova-plugin-nativegeocoder/-/cordova-plugin-nativegeocoder-3.4.1.tgz",
-  "_spec": "3.4.1",
-  "_where": "D:\\ICCCSGAPPREAL\\icccsgapp_1_3_0",
-  "author": {
-    "name": "Sebastian Baar"
-  },
-  "bugs": {
-    "url": "https://github.com/sebastianbaar/cordova-plugin-nativegeocoder/issues"
-  },
+  "name": "cordova-plugin-nativegeocoder",
+  "version": "3.5.1",
+  "description": "Cordova plugin for native forward and reverse geocoding",
   "cordova": {
     "id": "cordova-plugin-nativegeocoder",
     "platforms": [
@@ -41,8 +9,10 @@
       "ios"
     ]
   },
-  "description": "Cordova plugin for native forward and reverse geocoding",
-  "homepage": "https://github.com/sebastianbaar/cordova-plugin-nativegeocoder#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sebastianbaar/cordova-plugin-nativegeocoder.git"
+  },
   "keywords": [
     "ecosystem:cordova",
     "cordova-android",
@@ -51,11 +21,10 @@
     "geocoding",
     "location"
   ],
+  "author": "Sebastian Baar",
   "license": "MIT",
-  "name": "cordova-plugin-nativegeocoder",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/sebastianbaar/cordova-plugin-nativegeocoder.git"
+  "bugs": {
+    "url": "https://github.com/sebastianbaar/cordova-plugin-nativegeocoder/issues"
   },
-  "version": "3.4.1"
+  "homepage": "https://github.com/sebastianbaar/cordova-plugin-nativegeocoder#readme"
 }

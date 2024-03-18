@@ -18,7 +18,7 @@
   "cordova-plugin-device": {
     "source": {
       "type": "registry",
-      "id": "cordova-plugin-device@^2.0.2"
+      "id": "cordova-plugin-device@^2.1.0"
     },
     "is_top_level": true,
     "variables": {}
@@ -69,14 +69,6 @@
       "LOCATION_WHEN_IN_USE_DESCRIPTION": "Use geocoder service"
     }
   },
-  "cordova-plugin-add-swift-support": {
-    "source": {
-      "type": "registry",
-      "id": "cordova-plugin-add-swift-support@2.0.2"
-    },
-    "is_top_level": false,
-    "variables": {}
-  },
   "com-sarriaroman-photoviewer": {
     "source": {
       "type": "registry",
@@ -88,7 +80,7 @@
   "cordova-plugin-file-transfer": {
     "source": {
       "type": "registry",
-      "id": "cordova-plugin-file-transfer@2.0.0"
+      "id": "cordova-plugin-file-transfer@^1.7.1"
     },
     "is_top_level": true,
     "variables": {}
@@ -132,7 +124,7 @@
   "cordova-plugin-fingerprint-aio": {
     "source": {
       "type": "registry",
-      "id": "cordova-plugin-fingerprint-aio@^4.0.2"
+      "id": "cordova-plugin-fingerprint-aio@^5.0.1"
     },
     "is_top_level": true,
     "variables": {
@@ -181,14 +173,6 @@
       "ANDROID_SUPPORT_V4_VERSION": "27.+"
     }
   },
-  "call-number": {
-    "source": {
-      "type": "registry",
-      "id": "mx.ferreyra.callnumber"
-    },
-    "is_top_level": true,
-    "variables": {}
-  },
   "cordova-plugin-inappbrowser": {
     "source": {
       "type": "registry",
@@ -208,25 +192,17 @@
   "cordova-plugin-media": {
     "source": {
       "type": "registry",
-      "id": "cordova-plugin-media@7.0.0"
-    },
-    "is_top_level": true,
-    "variables": {}
-  },
-  "cordova-plugin-camera": {
-    "source": {
-      "type": "registry",
-      "id": "cordova-plugin-camera@^5.0.3"
+      "id": "cordova-plugin-media@^7.0.0"
     },
     "is_top_level": true,
     "variables": {
-      "ANDROIDX_CORE_VERSION": "1.8.0"
+      "KEEP_AVAUDIOSESSION_ALWAYS_ACTIVE": "NO"
     }
   },
   "cordova-plugin-fcm-with-dependecy-updated": {
     "source": {
       "type": "registry",
-      "id": "https://github.com/marutifh/cordova-plugin-fcm-with-dependecy-updated"
+      "id": "git+https://github.com/marutifh/cordova-plugin-fcm-with-dependecy-updated.git"
     },
     "is_top_level": true,
     "variables": {

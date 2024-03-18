@@ -1,39 +1,7 @@
 {
-  "_args": [
-    [
-      "com-sarriaroman-photoviewer@1.2.5",
-      "D:\\ICCCSGAPPREAL\\icccsgapp_1_3_0"
-    ]
-  ],
-  "_development": true,
-  "_from": "com-sarriaroman-photoviewer@1.2.5",
-  "_id": "com-sarriaroman-photoviewer@1.2.5",
-  "_inBundle": false,
-  "_integrity": "sha512-VH7Yo8O2qe1ZR7hiZqtiAwsv2FLztEXsA+ksXVIBGEDiY+o5IxOrMb+9g+nGCVMxfxmID3T8GZxpGxAAZXTv2A==",
-  "_location": "/com-sarriaroman-photoviewer",
-  "_phantomChildren": {},
-  "_requested": {
-    "type": "version",
-    "registry": true,
-    "raw": "com-sarriaroman-photoviewer@1.2.5",
-    "name": "com-sarriaroman-photoviewer",
-    "escapedName": "com-sarriaroman-photoviewer",
-    "rawSpec": "1.2.5",
-    "saveSpec": null,
-    "fetchSpec": "1.2.5"
-  },
-  "_requiredBy": [
-    "#DEV:/"
-  ],
-  "_resolved": "https://registry.npmjs.org/com-sarriaroman-photoviewer/-/com-sarriaroman-photoviewer-1.2.5.tgz",
-  "_spec": "1.2.5",
-  "_where": "D:\\ICCCSGAPPREAL\\icccsgapp_1_3_0",
-  "author": {
-    "name": "Román A. Sarria"
-  },
-  "bugs": {
-    "url": "https://github.com/sarriaroman/photoviewer/issues"
-  },
+  "name": "com-sarriaroman-photoviewer",
+  "version": "1.3.0",
+  "description": "This plugin is intended to show a picture from an URL into a Photo Viewer with zoom features.",
   "cordova": {
     "id": "com-sarriaroman-photoviewer",
     "platforms": [
@@ -41,11 +9,10 @@
       "ios"
     ]
   },
-  "description": "This plugin is intended to show a picture from an URL into a Photo Viewer with zoom features.",
-  "devDependencies": {
-    "typescript": "3.2.2"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sarriaroman/photoviewer"
   },
-  "homepage": "https://github.com/sarriaroman/photoviewer#readme",
   "keywords": [
     "cordova",
     "photoviewer",
@@ -53,14 +20,12 @@
     "cordova-android",
     "cordova-ios"
   ],
+  "author": "Román A. Sarria",
   "license": "MIT",
-  "name": "com-sarriaroman-photoviewer",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/sarriaroman/photoviewer.git"
-  },
   "scripts": {
     "build": "tsc"
   },
-  "version": "1.2.5"
+  "devDependencies": {
+    "typescript": "3.2.2"
+  }
 }
