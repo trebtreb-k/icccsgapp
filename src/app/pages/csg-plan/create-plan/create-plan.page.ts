@@ -16,7 +16,6 @@ moment.locale('th');
   templateUrl: './create-plan.page.html',
   styleUrls: ['./create-plan.page.scss'],
 })
-
 export class CreatePlanPage implements OnInit {
   check = false;
   dateMulti: string[];
@@ -49,7 +48,12 @@ export class CreatePlanPage implements OnInit {
   monthCreate: any;
   empId: any;
   flagcount = 'Y';
-  saveData = { shop: { value: null, name: null }, counter: { value: null, name: null }, timetype: { value: null, name: null }, worktype: { value: 'W1', name: 'วันทำงานปกติ', color: '008000' } };
+  saveData = {
+    shop: { value: null, name: null },
+    counter: { value: null, name: null },
+    timetype: { value: null, name: null },
+    worktype: { value: 'W1', name: 'วันทำงานปกติ', color: '008000' },
+  };
 
   mydate: any;
   m: string;
@@ -68,7 +72,6 @@ export class CreatePlanPage implements OnInit {
   timeOTTo: any;
   otType: any;
 
-
   daysConfig = [];
   workday = [];
   dataSelectDay = [];
@@ -80,8 +83,6 @@ export class CreatePlanPage implements OnInit {
 
   values: any;
   dataAssigndate = [];
-
-
 
   startDate: any;
   myColorVaraible = 'red';
@@ -102,7 +103,7 @@ export class CreatePlanPage implements OnInit {
     this.paramsMonthBefore = state;
   }
 
-  async checkEvent(ev){
+  async checkEvent(ev) {
     console.log(ev);
     console.log(this.eventcheck);
     console.log(this.check);
@@ -115,7 +116,7 @@ export class CreatePlanPage implements OnInit {
       this.timeOTTo = '';
       this.otType = '';
       console.log('::::::111');
-    }else{
+    } else {
       console.log(this.otTo);
 
       this.timeOTFrom = this.timeTo;
@@ -136,9 +137,7 @@ export class CreatePlanPage implements OnInit {
     console.log(this.check);
   }
 
-
   async ngOnInit() {
-
     // await this.loading.dismiss();
     // this.timeFrom = '10:00';
     // this.timeTo = '19:00';
@@ -148,39 +147,47 @@ export class CreatePlanPage implements OnInit {
     // this.otTo = '19:00';
 
     // alert('sssss');
-    console.log( moment(this.paramsMonthBefore.monthToCreate,'YYYYMM').format('MM-DD-YYYY'));
+    console.log(moment(this.paramsMonthBefore.monthToCreate, 'YYYYMM').format('MM-DD-YYYY'));
 
     // moment(this.startDate.monthToCreate,'YYYYMM').format('YYYYMM')
 
-    this.startDate =  moment(this.paramsMonthBefore.monthToCreate,'YYYYMM').format('MM-DD-YYYY');
-
+    this.startDate = moment(this.paramsMonthBefore.monthToCreate, 'YYYYMM').format('MM-DD-YYYY');
 
     // let myTag = this.el.nativeElement.querySelector("p");
 
-
-
     // alert("sss");
     this.check = false;
-    this.eventcheck = {detail: {checked : false}};
+    this.eventcheck = { detail: { checked: false } };
     this.getUserInfo();
 
     // this.loadData = this.getDataDateM(this.dataAssigndate)
     if (this.startDate) {
       // alert('มี')
-      this.monthCreate = moment(this.paramsMonthBefore.monthToCreate,'YYYYMM').format('YYYYMM');
-    }else{
+      this.monthCreate = moment(this.paramsMonthBefore.monthToCreate, 'YYYYMM').format('YYYYMM');
+    } else {
       this.monthCreate = moment().format('YYYYMM');
     }
 
     const callTimeDefaultApi = await this.api.getTimeDefault();
 
     // this.timeTo = '19:00';
-    console.log('--------------',callTimeDefaultApi);
-    this.timeFrom   = `${callTimeDefaultApi.datas[0].open_time.substring('0','2')}:${callTimeDefaultApi.datas[0].open_time.substring('2','4')}`;
-    this.timeTo     = `${callTimeDefaultApi.datas[0].close_time_cal.substring('0','2')}:${callTimeDefaultApi.datas[0].close_time_cal.substring('2','4')}`;
-    this.otFrom     = `${callTimeDefaultApi.datas[0].close_time_cal.substring('0','2')}:${callTimeDefaultApi.datas[0].close_time_cal.substring('2','4')}`;
-    this.otTo       = `${callTimeDefaultApi.datas[0].close_time.substring('0','2')}:${callTimeDefaultApi.datas[0].close_time.substring('2','4')}`;
-
+    console.log('--------------', callTimeDefaultApi);
+    this.timeFrom = `${callTimeDefaultApi.datas[0].open_time.substring('0', '2')}:${callTimeDefaultApi.datas[0].open_time.substring(
+      '2',
+      '4'
+    )}`;
+    this.timeTo = `${callTimeDefaultApi.datas[0].close_time_cal.substring('0', '2')}:${callTimeDefaultApi.datas[0].close_time_cal.substring(
+      '2',
+      '4'
+    )}`;
+    this.otFrom = `${callTimeDefaultApi.datas[0].close_time_cal.substring('0', '2')}:${callTimeDefaultApi.datas[0].close_time_cal.substring(
+      '2',
+      '4'
+    )}`;
+    this.otTo = `${callTimeDefaultApi.datas[0].close_time.substring('0', '2')}:${callTimeDefaultApi.datas[0].close_time.substring(
+      '2',
+      '4'
+    )}`;
 
     // this.m = moment().format('MM');
     this.m = moment().format('MM');
@@ -200,14 +207,13 @@ export class CreatePlanPage implements OnInit {
     console.log(this.dayStartFromY, this.dayStartFromM);
   }
 
-
   async getDatasCSGCreatePlan(periodplan: any, custid: any, counterid: any) {
     const dataCsgCreatePlan = [];
     // this.countHoliday = 0;
     // alert(this.countHoliday);
     // this.monthCreate = moment(events.newMonth.string).format('YYYYMM');
     this.counterid = counterid;
-    console.log('/////',custid,counterid,this.empId,periodplan);
+    console.log('/////', custid, counterid, this.empId, periodplan);
 
     // this.monthCreate = moment().format('YYYYMM');
 
@@ -228,20 +234,17 @@ export class CreatePlanPage implements OnInit {
 
     // console.log(this.dayStartFromY, this.dayStartFromM);
 
-    console.log('///////////////////////',this.daysConfig);
-
+    console.log('///////////////////////', this.daysConfig);
 
     const callApi = await this.api.getHolidayCSGPlan(periodplan);
     this.dataHolidayAPI = callApi.datas;
-    console.log('----',this.dataHolidayAPI);
+    console.log('----', this.dataHolidayAPI);
     this.dateAll = callApi.datas;
 
     console.log(this.empId);
 
-
-
-    console.log('this.monthCreate, this.empId',this.monthCreate, this.empId);
-    console.log('periodplan, this.empId',periodplan, this.empId);
+    console.log('this.monthCreate, this.empId', this.monthCreate, this.empId);
+    console.log('periodplan, this.empId', periodplan, this.empId);
 
     const callApiCountHoliday = await this.api.getCountHoliday(periodplan, this.empId);
     // const callApiCountHoliday = await this.api.getCountHoliday(this.monthCreate, '90536');
@@ -252,37 +255,30 @@ export class CreatePlanPage implements OnInit {
       console.log(this.monthCreate);
       console.log(this.countHolidayAPI);
       // this.countSpecial = this.countHolidayAPI[0].special;
-    }else{
+    } else {
       console.log('*****ยังไม่มีการกำหนดวันหยุด');
-      callApiCountHoliday.datas.push({sunday: 0,
-        special: 0,
-        holiday: 0});
+      callApiCountHoliday.datas.push({ sunday: 0, special: 0, holiday: 0 });
       this.countHolidayAPI = callApiCountHoliday.datas;
       console.log(this.countHolidayAPI);
       // this.countSpecial = this.countHolidayAPI[0].special;
     }
     // this.countHolidayAPI = callApiCountHoliday.datas;
-    this.countSpecial = this.countHolidayAPI[0].special+this.countHolidayAPI[0].sunday;;
+    this.countSpecial = this.countHolidayAPI[0].special + this.countHolidayAPI[0].sunday;
     this.countHoliday = this.countHolidayAPI[0].holiday;
     console.log(this.countHolidayAPI);
     this.loadDataHoliday = this.getDataHoliDay(this.dataHolidayAPI);
 
-
-
-    const callApiGetCsgCreatePlanDetail = await this.api.getCsgCreatePlanDetail(custid,counterid,this.empId,periodplan);
+    const callApiGetCsgCreatePlanDetail = await this.api.getCsgCreatePlanDetail(custid, counterid, this.empId, periodplan);
     console.log(callApiGetCsgCreatePlanDetail);
-
 
     console.log(this.saveData);
 
     console.log(this.daysConfig);
     console.log(callApiGetCsgCreatePlanDetail.datas);
 
-    console.log('?????',this.dataHoliday);
+    console.log('?????', this.dataHoliday);
 
     for (const data of callApiGetCsgCreatePlanDetail.datas) {
-
-
       // console.log(data);
       // console.log(this.dayStartFromY, this.dayStartFromM, this.dayStartFromD);
 
@@ -294,87 +290,107 @@ export class CreatePlanPage implements OnInit {
       // });
 
       // function diffDate(start, end) {
-        // try {
-          const date = (moment(new Date()).format('DD/MM/YYYY'));
-          // console.log(date);
-          let date_res = moment(data.date, "DD-MM-YYYY");
-          let this_day = moment(date, "DD-MM-YYYY");
+      // try {
+      const date = moment(new Date()).format('DD/MM/YYYY');
+      // console.log(date);
+      let date_res = moment(data.date, 'DD-MM-YYYY');
+      let this_day = moment(date, 'DD-MM-YYYY');
 
-          const diff = date_res.diff(this_day, "days");
-          const days = diff;
-          // console.log(days);
-          // return days;
-        // } catch (error) {
-        //   console.error(error);
-        // }
+      const diff = date_res.diff(this_day, 'days');
+      const days = diff;
+      // console.log(days);
+      // return days;
+      // } catch (error) {
+      //   console.error(error);
+      // }
       // }
       // console.log("??????",data);
       let typecss: any;
       if (days < 0) {
-        typecss = data.worktype === 'W1' ? 'custom-calendar workday oct' : data.worktype === 'W2' ? 'custom-calendar workholiday oct' : data.worktype === 'V1' ? 'custom-calendar offday oct' : data.worktype === 'LE' ? 'custom-calendar expected-holiday oct' : '';
-      }else{
-        typecss = data.worktype === 'W1' ? 'custom-calendar workday' : data.worktype === 'W2' ? 'custom-calendar workholiday' : data.worktype === 'V1' ? 'custom-calendar offday' : data.worktype === 'LE' ? 'custom-calendar expected-holiday' : '';
+        typecss =
+          data.worktype === 'W1'
+            ? 'custom-calendar workday oct'
+            : data.worktype === 'W2'
+            ? 'custom-calendar workholiday oct'
+            : data.worktype === 'V1'
+            ? 'custom-calendar offday oct'
+            : data.worktype === 'LE'
+            ? 'custom-calendar expected-holiday oct'
+            : '';
+      } else {
+        typecss =
+          data.worktype === 'W1'
+            ? 'custom-calendar workday'
+            : data.worktype === 'W2'
+            ? 'custom-calendar workholiday'
+            : data.worktype === 'V1'
+            ? 'custom-calendar offday'
+            : data.worktype === 'LE'
+            ? 'custom-calendar expected-holiday'
+            : '';
       }
 
       console.log(data);
 
-      !data.timetype ? '' :  dataCsgCreatePlan.push({
-        "date": moment(data.date,'DD/MM/YYYY').format('YYYY-MM-DD'),
-        // "cssClass": days < 0 ? "custom-calendar workday oct" : "custom-calendar workday",
-        "cssClass": `${typecss}`,
-        "worktype": `${data.worktype}`,
-        // "subTitle": `${data.worktype} ${data.otfrom !== '' ? 'OT' : ''}`,
-        "subTitle": `${data.timefrom === '' ? data.worktype : data.timefrom } ${data.otfrom !== '' ? 'OT' : ''}`,
-        "timefrom": data.timefrom,
-        "timeto"  : data.timeto,
-        "timeotfrom": data.otfrom,
-        "timeotto"  : data.otto,
-      });
+      !data.timetype
+        ? ''
+        : dataCsgCreatePlan.push({
+            date: moment(data.date, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+            // "cssClass": days < 0 ? "custom-calendar workday oct" : "custom-calendar workday",
+            cssClass: `${typecss}`,
+            worktype: `${data.worktype}`,
+            // "subTitle": `${data.worktype} ${data.otfrom !== '' ? 'OT' : ''}`,
+            subTitle: `${data.timefrom === '' ? data.worktype : data.timefrom} ${data.otfrom !== '' ? 'OT' : ''}`,
+            timefrom: data.timefrom,
+            timeto: data.timeto,
+            timeotfrom: data.otfrom,
+            timeotto: data.otto,
+          });
       // this.daysConfig.push({ ...data, date: moment(data.date).format('YYYY-MM-DD') });
     }
     this.daysConfig = dataCsgCreatePlan;
 
-  //   this.daysConfig.push({
-  //     "date": "2022-09-27",
-  //     "cssClass": "custom-calendar workday",
-  //     "subTitle": "A8"
-  // });
-    console.log('?????',this.daysConfig);
+    //   this.daysConfig.push({
+    //     "date": "2022-09-27",
+    //     "cssClass": "custom-calendar workday",
+    //     "subTitle": "A8"
+    // });
+    console.log('?????', this.daysConfig);
     this.dataSelectDay = this.daysConfig;
 
     console.log(dataCsgCreatePlan);
-    console.log('?????',this.dataHoliday);
+    console.log('?????', this.dataHoliday);
     console.log(dataCsgCreatePlan.length);
     for (const data of this.dataHoliday) {
       // console.log('?????',data.date);
       // console.log('?????',moment(data.date).format('YYYY-MM-DD'));
-      console.log('???',data);
+      console.log('???', data);
 
       // if (dataCsgCreatePlan.length === 0) {
-        data.date = moment(data.date).format('YYYY-MM-DD');
-        console.log('??----',data);
+      data.date = moment(data.date).format('YYYY-MM-DD');
+      console.log('??----', data);
 
-        // dataCsgCreatePlan.push(data);
-        const searchIndex = dataCsgCreatePlan.findIndex((i) => i.date === data.date);
+      // dataCsgCreatePlan.push(data);
+      const searchIndex = dataCsgCreatePlan.findIndex((i) => i.date === data.date);
 
-        console.log(searchIndex);
-        console.log(dataCsgCreatePlan[searchIndex]);
-        if (dataCsgCreatePlan[searchIndex]) {
-          if (dataCsgCreatePlan[searchIndex].worktype === '') {
-            dataCsgCreatePlan[searchIndex].cssClass = 'custom-calendar holiday';
-          }
-        }else{
-          dataCsgCreatePlan.push(data);
+      console.log(searchIndex);
+      console.log(dataCsgCreatePlan[searchIndex]);
+      if (dataCsgCreatePlan[searchIndex]) {
+        if (dataCsgCreatePlan[searchIndex].worktype === '') {
+          dataCsgCreatePlan[searchIndex].cssClass = 'custom-calendar holiday';
         }
+      } else {
+        dataCsgCreatePlan.push(data);
+      }
 
-        // dataCsgCreatePlan[searchIndex].cssClass = dataCsgCreatePlan[searchIndex].worktype !== '' ? 'custom-calendar holiday' : '';
+      // dataCsgCreatePlan[searchIndex].cssClass = dataCsgCreatePlan[searchIndex].worktype !== '' ? 'custom-calendar holiday' : '';
       // }
     }
     console.log(dataCsgCreatePlan);
 
     let checkCountHoliday = 0;
     for (const item of dataCsgCreatePlan) {
-      console.log('????',item);
+      console.log('????', item);
       if (item.worktype === 'W2' || item.worktype === 'V1') {
         checkCountHoliday++;
       }
@@ -393,11 +409,10 @@ export class CreatePlanPage implements OnInit {
     console.log(callApiPlan);
     this.dataAssigndate = callApiPlan.datas;
 
-
     // from: new Date(this.dayStartFromY, this.dayStartFromM, this.dayStartFromD),
     this.optionsMulti2 = {
       from: new Date(this.dayStartFromY, this.dayStartFromM, this.dayStartFromD),
-      disableWeeks: this.status_plan === 'N' ? '' : this.status_plan === 'X' ? '' : [0,1,2,3,4,5,6],
+      disableWeeks: this.status_plan === 'N' ? '' : this.status_plan === 'X' ? '' : [0, 1, 2, 3, 4, 5, 6],
       monthFormat: 'ปี YYYY เดือน MMM',
       monthPickerFormat: ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'],
       weekdays: ['อา', 'จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส'],
@@ -416,7 +431,6 @@ export class CreatePlanPage implements OnInit {
     // this.editValue()
   }
 
-
   async getUserInfo(): Promise<void> {
     const info = await this.storage.get('USER_INFO');
     this.empId = info?.emp_id;
@@ -430,7 +444,7 @@ export class CreatePlanPage implements OnInit {
 
   getDataHoliDay(dataApi: any) {
     this.dataHoliday = [];
-    console.log('dataApi',dataApi);
+    console.log('dataApi', dataApi);
     dataApi.forEach((e: any) => {
       // console.log(e);
       // const dateC = this.moment.formatDate(e.date, 'MM-DD-YYYY', 'th', 'DD/MM/YYYY');
@@ -454,45 +468,38 @@ export class CreatePlanPage implements OnInit {
     return this.dataHoliday;
   }
 
-
-
   getdetailDay(data: any) {
-
-
     console.log(this.daysConfig);
     console.log(data);
 
-
-  // this.dataAssigndate = this.daysConfig;
+    // this.dataAssigndate = this.daysConfig;
     // return;
     const valToMonths = [];
     for (let index = 0; index < this.dataAssigndate.length; index++) {
       // for (let [index, item]  of this.loadData.entries()) {
 
-        const date = (moment(new Date()).format('DD/MM/YYYY'));
-        console.log(this.dataAssigndate[index].assigndate);
-        let date_res = moment(this.dataAssigndate[index].assigndate, "DD-MM-YYYY");
-        let this_day = moment(date, "DD-MM-YYYY");
+      const date = moment(new Date()).format('DD/MM/YYYY');
+      console.log(this.dataAssigndate[index].assigndate);
+      let date_res = moment(this.dataAssigndate[index].assigndate, 'DD-MM-YYYY');
+      let this_day = moment(date, 'DD-MM-YYYY');
 
+      console.log(date_res);
+      console.log(this_day);
 
-        console.log(date_res);
-        console.log(this_day);
+      const diff = date_res.diff(this_day, 'days');
+      const days = diff;
 
-        const diff = date_res.diff(this_day, "days");
-        const days = diff;
+      console.log(days);
 
-        console.log(days);
+      // if (days < 0) {
+      this.dataAssigndate[index].typecancel = days < 0 ? `N` : `Y`;
+      // }else{
+      // }
 
-        // if (days < 0) {
-          this.dataAssigndate[index].typecancel = days < 0 ? `N` : `Y`;
-        // }else{
-        // }
-
-    // }
+      // }
       console.log(this.dataAssigndate[index]);
 
       console.log(this.counterMenu);
-
 
       if (this.dataAssigndate[index].counterid === this.counterMenu) {
         valToMonths.push({
@@ -515,25 +522,17 @@ export class CreatePlanPage implements OnInit {
               ? data[index].workfrom.substring(0, 2) + '.' + data[index].workfrom.substring(2, 4)
               : data[index].workfrom,
           workto:
-            data[index].workto !== ''
-              ? data[index].workto.substring(0, 2) + '.' + data[index].workto.substring(2, 4)
-              : data[index].workto,
+            data[index].workto !== '' ? data[index].workto.substring(0, 2) + '.' + data[index].workto.substring(2, 4) : data[index].workto,
           otfrom:
-            data[index].otfrom !== ''
-              ? data[index].otfrom.substring(0, 2) + '.' + data[index].otfrom.substring(2, 4)
-              : data[index].otfrom,
-          otto:
-            data[index].otto !== ''
-              ? data[index].otto.substring(0, 2) + '.' + data[index].otto.substring(2, 4)
-              : data[index].otto,
+            data[index].otfrom !== '' ? data[index].otfrom.substring(0, 2) + '.' + data[index].otfrom.substring(2, 4) : data[index].otfrom,
+          otto: data[index].otto !== '' ? data[index].otto.substring(0, 2) + '.' + data[index].otto.substring(2, 4) : data[index].otto,
           custid: data[index].custid,
           custname: data[index].custname,
           counterid: data[index].counterid,
           countername: data[index].countername,
-          typecancel: data[index].typecancel
+          typecancel: data[index].typecancel,
         });
       }
-
     }
     console.log(valToMonths);
 
@@ -568,29 +567,25 @@ export class CreatePlanPage implements OnInit {
       console.log(this.monthCreate);
       console.log(this.countHolidayAPI);
       // this.countSpecial = this.countHolidayAPI[0].special;
-    }else{
+    } else {
       console.log('*****ยังไม่มีการกำหนดวันหยุด');
-      callApiCountHoliday.datas.push({sunday: 0,
-        special: 0,
-        holiday: 0});
+      callApiCountHoliday.datas.push({ sunday: 0, special: 0, holiday: 0 });
       this.countHolidayAPI = callApiCountHoliday.datas;
       console.log(this.countHolidayAPI);
       // this.countSpecial = this.countHolidayAPI[0].special;
     }
 
-    this.countSpecial = this.countHolidayAPI[0].special+this.countHolidayAPI[0].sunday;
+    this.countSpecial = this.countHolidayAPI[0].special + this.countHolidayAPI[0].sunday;
     this.countHoliday = this.countHolidayAPI[0].holiday;
 
-
     this.MDayCheck = moment(events.newMonth.string).format('MM');
-
 
     console.log(this.monthCreate);
 
     const callApi = await this.api.getHolidayCSGPlan(this.monthCreate);
     this.dataHolidayAPI = callApi.datas;
     // this.loadData = this.getDataDateM(this.dataHolidayAPI)
-    console.log('?????',this.loadDataHoliday);
+    console.log('?????', this.loadDataHoliday);
 
     const valToMonths = [];
     // cssClass: e.worktype!='W1' ? 'custom-calendar danger' : 'custom-calendar normal',
@@ -616,12 +611,11 @@ export class CreatePlanPage implements OnInit {
 
     console.log(this.daysConfig);
 
-    console.log('this.monthCreate',this.monthCreate);
-    console.log('this.custid',this.custid);
-    console.log('this.counterMenu',this.counterMenu);
+    console.log('this.monthCreate', this.monthCreate);
+    console.log('this.custid', this.custid);
+    console.log('this.counterMenu', this.counterMenu);
 
     this.getDatasCSGCreatePlan(this.monthCreate, this.custid, this.counterMenu);
-
 
     // this.optionsMulti2 = {
     //   from: new Date(this.dayStartFromY, this.dayStartFromM, this.dayStartFromD),
@@ -651,18 +645,16 @@ export class CreatePlanPage implements OnInit {
     console.log(this.statusType);
   }
 
-
   onChange2(ev: any) {
     let checkCountHoliday = 0;
     console.log('onChange2', ev);
-    console.log('????',this.status);
+    console.log('????', this.status);
 
+    // console.log('this.countHoliday',this.countHoliday);
 
-      // console.log('this.countHoliday',this.countHoliday);
-
-    console.log('this.timeOTFrom----',this.timeOTFrom);
-    console.log('this.timeOTTo----',this.timeOTTo);
-    console.log('this.otType-----',this.otType);
+    console.log('this.timeOTFrom----', this.timeOTFrom);
+    console.log('this.timeOTTo----', this.timeOTTo);
+    console.log('this.otType-----', this.otType);
 
     const value = moment(ev._d, 'DD/MM/YYYY').format('YYYY-MM-DD');
     const MCheck = moment(ev._d, 'DD/MM/YYYY').format('MM');
@@ -673,10 +665,9 @@ export class CreatePlanPage implements OnInit {
 
     console.log(this.values);
 
-
     if (this.daysConfig.length === 0) {
       const init = this.dataHoliday;
-      console.log('////',this.dataHoliday);
+      console.log('////', this.dataHoliday);
 
       for (const x of init) {
         this.daysConfig.push({ ...x, date: moment(x.date).format('YYYY-MM-DD') });
@@ -693,13 +684,12 @@ export class CreatePlanPage implements OnInit {
     // let gg = html(`<br>${searchIndex}`);
 
     if (searchIndex < 0) {
-      this.countSelect ++;
+      this.countSelect++;
 
-
-        // if (this.status === 'W2') {
-        //   this.countHoliday--;
-        //   checkCountHoliday = this.countHoliday;
-        // }
+      // if (this.status === 'W2') {
+      //   this.countHoliday--;
+      //   checkCountHoliday = this.countHoliday;
+      // }
       if (this.status === 'V1') {
         this.daysConfig.push({
           date: moment(ev._d, 'DD/MM/YYYY').format('YYYY-MM-DD'),
@@ -713,7 +703,7 @@ export class CreatePlanPage implements OnInit {
           // marked: true,
           // title: `A8 ${DCheck} OT`,
         });
-      }else if(this.status === 'LE'){
+      } else if (this.status === 'LE') {
         this.daysConfig.push({
           date: moment(ev._d, 'DD/MM/YYYY').format('YYYY-MM-DD'),
           cssClass: 'custom-calendar expected-holiday',
@@ -726,7 +716,7 @@ export class CreatePlanPage implements OnInit {
           // marked: true,
           // title: `A8 ${DCheck} OT`,
         });
-      }else{
+      } else {
         this.daysConfig.push({
           date: moment(ev._d, 'DD/MM/YYYY').format('YYYY-MM-DD'),
           cssClass:
@@ -740,164 +730,167 @@ export class CreatePlanPage implements OnInit {
               ? 'custom-calendar expected-holiday'
               : '',
           // subTitle: `${this.statusType} ${this.otType === 'OT' ? 'OT' : ''}`,
-          subTitle: `${this.timeFrom.substring('0','2')}${this.timeFrom.substring('3')} ${this.otType === 'OT' ? 'OT' : ''}`,
+          subTitle: `${this.timeFrom.substring('0', '2')}${this.timeFrom.substring('3')} ${this.otType === 'OT' ? 'OT' : ''}`,
           worktype: `${this.status}`,
-          timefrom: `${this.timeFrom.substring('0','2')}${this.timeFrom.substring('3')}`,
-          timeto:   `${this.timeTo.substring('0','2')}${this.timeTo.substring('3')}`,
-          timeotfrom: this.check === true ? `${this.timeOTFrom.substring('0','2')}${this.timeOTFrom.substring('3')}` : '',
-          timeotto: this.check === true ? `${this.timeOTTo.substring('0','2')}${this.timeOTTo.substring('3')}` : '',
+          timefrom: `${this.timeFrom.substring('0', '2')}${this.timeFrom.substring('3')}`,
+          timeto: `${this.timeTo.substring('0', '2')}${this.timeTo.substring('3')}`,
+          timeotfrom: this.check === true ? `${this.timeOTFrom.substring('0', '2')}${this.timeOTFrom.substring('3')}` : '',
+          timeotto: this.check === true ? `${this.timeOTTo.substring('0', '2')}${this.timeOTTo.substring('3')}` : '',
           // marked: true,
           // title: `A8 ${DCheck} OT`,
         });
-
-
       }
-
     } else if (searchIndex >= 0) {
       console.log(this.check);
-      this.countSelect --;
-      console.log(this.daysConfig[searchIndex].cssClass,this.status);
+      this.countSelect--;
+      console.log(this.daysConfig[searchIndex].cssClass, this.status);
       console.log(this.daysConfig[searchIndex]);
 
-      const fromTimeFrom = `${this.timeFrom.substring('0','2')}${this.timeFrom.substring('3')}`;
-      const fromTimeTo = `${this.timeTo.substring('0','2')}${this.timeTo.substring('3')}`;
+      const fromTimeFrom = `${this.timeFrom.substring('0', '2')}${this.timeFrom.substring('3')}`;
+      const fromTimeTo = `${this.timeTo.substring('0', '2')}${this.timeTo.substring('3')}`;
 
-      const fromTimeOTFrom  = this.check === true ? `${this.timeOTFrom.substring('0','2')}${this.timeOTFrom.substring('3')}` : '';
-      const fromTimeOTTo    = this.check === true ? `${this.timeOTTo.substring('0','2')}${this.timeOTTo.substring('3')}` : '';
+      const fromTimeOTFrom = this.check === true ? `${this.timeOTFrom.substring('0', '2')}${this.timeOTFrom.substring('3')}` : '';
+      const fromTimeOTTo = this.check === true ? `${this.timeOTTo.substring('0', '2')}${this.timeOTTo.substring('3')}` : '';
       this.daysConfig[searchIndex].worktype = this.status;
 
-      console.log('?????',this.daysConfig);
-      console.log('?????',this.daysConfig[searchIndex]);
+      console.log('?????', this.daysConfig);
+      console.log('?????', this.daysConfig[searchIndex]);
 
-
-
-      console.log('?????',this.status);
+      console.log('?????', this.status);
       if (this.status === 'W1') {
         console.log('TYPE W1');
         console.log(this.daysConfig[searchIndex].cssClass);
         if (this.daysConfig[searchIndex].cssClass === 'custom-calendar workday') {
-            console.log('cssClass = custom-calendar workday');
-            if (this.daysConfig[searchIndex].timefrom !== fromTimeFrom || this.daysConfig[searchIndex].timeto !== fromTimeTo) {
-              console.log(' !== fromTime ');
-              console.log('11111111111111111111');
-              console.log(this.daysConfig[searchIndex].timefrom,fromTimeFrom);
+          console.log('cssClass = custom-calendar workday');
+          if (this.daysConfig[searchIndex].timefrom !== fromTimeFrom || this.daysConfig[searchIndex].timeto !== fromTimeTo) {
+            console.log(' !== fromTime ');
+            console.log('11111111111111111111');
+            console.log(this.daysConfig[searchIndex].timefrom, fromTimeFrom);
 
-              this.daysConfig[searchIndex].timefrom = fromTimeFrom;
-              this.daysConfig[searchIndex].timeto = fromTimeTo;
-              this.daysConfig[searchIndex].subTitle = `${fromTimeFrom} `;
-              if(this.check === true){
+            this.daysConfig[searchIndex].timefrom = fromTimeFrom;
+            this.daysConfig[searchIndex].timeto = fromTimeTo;
+            this.daysConfig[searchIndex].subTitle = `${fromTimeFrom} `;
+            if (this.check === true) {
+              this.daysConfig[searchIndex].timeotfrom = fromTimeOTFrom;
+              this.daysConfig[searchIndex].timeotto = fromTimeOTTo;
+              // this.daysConfig[searchIndex].subTitle = `${this.status} ${this.check === true ? 'OT' : ''}`;
+              this.daysConfig[searchIndex].subTitle = `${this.timeFrom.substring('0', '2')}${this.timeFrom.substring('3')} ${
+                this.check === true ? 'OT' : ''
+              }`;
+            }
+          } else {
+            console.log('cssClass != custom-calendar workday');
+            if (this.check === true) {
+              if (this.daysConfig[searchIndex].timeotfrom !== fromTimeOTFrom || this.daysConfig[searchIndex].timeotto !== fromTimeOTTo) {
+                console.log(' !== fromTime ');
                 this.daysConfig[searchIndex].timeotfrom = fromTimeOTFrom;
                 this.daysConfig[searchIndex].timeotto = fromTimeOTTo;
                 // this.daysConfig[searchIndex].subTitle = `${this.status} ${this.check === true ? 'OT' : ''}`;
-                this.daysConfig[searchIndex].subTitle = `${this.timeFrom.substring('0','2')}${this.timeFrom.substring('3')} ${this.check === true ? 'OT' : ''}`;
+                this.daysConfig[searchIndex].subTitle = `${this.timeFrom.substring('0', '2')}${this.timeFrom.substring('3')} ${
+                  this.check === true ? 'OT' : ''
+                }`;
+              } else {
+                this.daysConfig.splice(searchIndex, 1);
               }
-            }else{
-              console.log('cssClass != custom-calendar workday');
-              if(this.check === true){
-                if (this.daysConfig[searchIndex].timeotfrom !== fromTimeOTFrom || this.daysConfig[searchIndex].timeotto !== fromTimeOTTo) {
-                  console.log(' !== fromTime ');
-                  this.daysConfig[searchIndex].timeotfrom = fromTimeOTFrom;
-                  this.daysConfig[searchIndex].timeotto = fromTimeOTTo;
-                  // this.daysConfig[searchIndex].subTitle = `${this.status} ${this.check === true ? 'OT' : ''}`;
-                  this.daysConfig[searchIndex].subTitle = `${this.timeFrom.substring('0','2')}${this.timeFrom.substring('3')} ${this.check === true ? 'OT' : ''}`;
-                }else{
-                  this.daysConfig.splice(searchIndex, 1);
-                }
-              }else{
-                // if (this.daysConfig[searchIndex].subTitle !== 'W1 OT') {
-                if (this.daysConfig[searchIndex].subTitle !== `${this.timeFrom.substring('0','2')}${this.timeFrom.substring('3')} OT`) {
-
-                  this.daysConfig.splice(searchIndex, 1);
-                }else{
-
-                  this.daysConfig[searchIndex].timeotfrom = fromTimeOTFrom;
-                  this.daysConfig[searchIndex].timeotto = fromTimeOTTo;
-                  // this.daysConfig[searchIndex].subTitle = `${this.status} `;
-                  this.daysConfig[searchIndex].subTitle = `${this.timeFrom.substring('0','2')}${this.timeFrom.substring('3')} `;
-                }
+            } else {
+              // if (this.daysConfig[searchIndex].subTitle !== 'W1 OT') {
+              if (this.daysConfig[searchIndex].subTitle !== `${this.timeFrom.substring('0', '2')}${this.timeFrom.substring('3')} OT`) {
+                this.daysConfig.splice(searchIndex, 1);
+              } else {
+                this.daysConfig[searchIndex].timeotfrom = fromTimeOTFrom;
+                this.daysConfig[searchIndex].timeotto = fromTimeOTTo;
+                // this.daysConfig[searchIndex].subTitle = `${this.status} `;
+                this.daysConfig[searchIndex].subTitle = `${this.timeFrom.substring('0', '2')}${this.timeFrom.substring('3')} `;
               }
             }
-        }else{
-            console.log('no workday');
-            this.daysConfig[searchIndex].cssClass = 'custom-calendar workday';
-            this.daysConfig[searchIndex].timefrom = fromTimeFrom;
-              this.daysConfig[searchIndex].timeto = fromTimeTo;
-              if(this.check === true){
-                this.daysConfig[searchIndex].timeotfrom = fromTimeOTFrom;
-                this.daysConfig[searchIndex].timeotto = fromTimeOTTo;
-                // this.daysConfig[searchIndex].subTitle = `${this.status} ${this.check === true ? 'OT' : ''}`;
-                this.daysConfig[searchIndex].subTitle = `${this.timeFrom.substring('0','2')}${this.timeFrom.substring('3')} ${this.check === true ? 'OT' : ''}`;
-              }else{
-                this.daysConfig[searchIndex].timeotfrom = '';
-                this.daysConfig[searchIndex].timeotto = '';
-                // this.daysConfig[searchIndex].subTitle = `${this.status} `;
-                this.daysConfig[searchIndex].subTitle = `${this.timeFrom.substring('0','2')}${this.timeFrom.substring('3')} `;
-              }
+          }
+        } else {
+          console.log('no workday');
+          this.daysConfig[searchIndex].cssClass = 'custom-calendar workday';
+          this.daysConfig[searchIndex].timefrom = fromTimeFrom;
+          this.daysConfig[searchIndex].timeto = fromTimeTo;
+          if (this.check === true) {
+            this.daysConfig[searchIndex].timeotfrom = fromTimeOTFrom;
+            this.daysConfig[searchIndex].timeotto = fromTimeOTTo;
+            // this.daysConfig[searchIndex].subTitle = `${this.status} ${this.check === true ? 'OT' : ''}`;
+            this.daysConfig[searchIndex].subTitle = `${this.timeFrom.substring('0', '2')}${this.timeFrom.substring('3')} ${
+              this.check === true ? 'OT' : ''
+            }`;
+          } else {
+            this.daysConfig[searchIndex].timeotfrom = '';
+            this.daysConfig[searchIndex].timeotto = '';
+            // this.daysConfig[searchIndex].subTitle = `${this.status} `;
+            this.daysConfig[searchIndex].subTitle = `${this.timeFrom.substring('0', '2')}${this.timeFrom.substring('3')} `;
+          }
         }
-      }else if (this.status === 'W2'){
+      } else if (this.status === 'W2') {
         console.log('TYPE W2');
         console.log(this.daysConfig[searchIndex].cssClass);
 
         if (this.daysConfig[searchIndex].cssClass === 'custom-calendar workholiday') {
-            console.log('cssClass = custom-calendar workholiday');
-            if (this.daysConfig[searchIndex].timefrom !== fromTimeFrom || this.daysConfig[searchIndex].timeto !== fromTimeTo) {
-              console.log(' !== fromTime ');
-              this.daysConfig[searchIndex].timefrom = fromTimeFrom;
-              this.daysConfig[searchIndex].timeto = fromTimeTo;
-              if(this.check === true){
-                this.daysConfig[searchIndex].timeotfrom = fromTimeOTFrom;
-                this.daysConfig[searchIndex].timeotto = fromTimeOTTo;
-                // this.daysConfig[searchIndex].subTitle = `${this.status} ${this.check === true ? 'OT' : ''}`;
-                this.daysConfig[searchIndex].subTitle = `${this.timeFrom.substring('0','2')}${this.timeFrom.substring('3')} ${this.check === true ? 'OT' : ''}`;
-              }
-            }else{
-              console.log('cssClass != custom-calendar workholiday');
-              if(this.check === true){
-                if (this.daysConfig[searchIndex].timeotfrom !== fromTimeOTFrom || this.daysConfig[searchIndex].timeotto !== fromTimeOTTo) {
-                  console.log(' !== fromTime ');
-                  this.daysConfig[searchIndex].timeotfrom = fromTimeOTFrom;
-                  this.daysConfig[searchIndex].timeotto = fromTimeOTTo;
-                  // this.daysConfig[searchIndex].subTitle = `${this.status} ${this.check === true ? 'OT' : ''}`;
-                  this.daysConfig[searchIndex].subTitle = `${this.timeFrom.substring('0','2')}${this.timeFrom.substring('3')} ${this.check === true ? 'OT' : ''}`;
-                }else{
-                  this.daysConfig[searchIndex].timeotfrom = '';
-                  this.daysConfig[searchIndex].timeotto = '';
-                  this.daysConfig.splice(searchIndex, 1);
-                }
-              }else{
-                // if (this.daysConfig[searchIndex].subTitle !== 'W2 OT') {
-                if (this.daysConfig[searchIndex].subTitle !== `${this.timeFrom.substring('0','2')}${this.timeFrom.substring('3')} OT`) {
-                  this.daysConfig[searchIndex].timeotfrom = '';
-                  this.daysConfig[searchIndex].timeotto = '';
-                  this.daysConfig.splice(searchIndex, 1);
-
-                }else{
-                  this.daysConfig[searchIndex].timeotfrom = fromTimeOTFrom;
-                  this.daysConfig[searchIndex].timeotto = fromTimeOTTo;
-                  // this.daysConfig[searchIndex].subTitle = `${this.status} `;
-                  this.daysConfig[searchIndex].subTitle = `${this.timeFrom.substring('0','2')}${this.timeFrom.substring('3')} `;
-                }
-              }
-            }
-        }else{
-            console.log('no workholiday');
-            this.daysConfig[searchIndex].cssClass = 'custom-calendar workholiday';
+          console.log('cssClass = custom-calendar workholiday');
+          if (this.daysConfig[searchIndex].timefrom !== fromTimeFrom || this.daysConfig[searchIndex].timeto !== fromTimeTo) {
+            console.log(' !== fromTime ');
             this.daysConfig[searchIndex].timefrom = fromTimeFrom;
-              this.daysConfig[searchIndex].timeto = fromTimeTo;
-              if(this.check === true){
+            this.daysConfig[searchIndex].timeto = fromTimeTo;
+            if (this.check === true) {
+              this.daysConfig[searchIndex].timeotfrom = fromTimeOTFrom;
+              this.daysConfig[searchIndex].timeotto = fromTimeOTTo;
+              // this.daysConfig[searchIndex].subTitle = `${this.status} ${this.check === true ? 'OT' : ''}`;
+              this.daysConfig[searchIndex].subTitle = `${this.timeFrom.substring('0', '2')}${this.timeFrom.substring('3')} ${
+                this.check === true ? 'OT' : ''
+              }`;
+            }
+          } else {
+            console.log('cssClass != custom-calendar workholiday');
+            if (this.check === true) {
+              if (this.daysConfig[searchIndex].timeotfrom !== fromTimeOTFrom || this.daysConfig[searchIndex].timeotto !== fromTimeOTTo) {
+                console.log(' !== fromTime ');
                 this.daysConfig[searchIndex].timeotfrom = fromTimeOTFrom;
                 this.daysConfig[searchIndex].timeotto = fromTimeOTTo;
                 // this.daysConfig[searchIndex].subTitle = `${this.status} ${this.check === true ? 'OT' : ''}`;
-                this.daysConfig[searchIndex].subTitle = `${this.timeFrom.substring('0','2')}${this.timeFrom.substring('3')} ${this.check === true ? 'OT' : ''}`;
-              }else{
+                this.daysConfig[searchIndex].subTitle = `${this.timeFrom.substring('0', '2')}${this.timeFrom.substring('3')} ${
+                  this.check === true ? 'OT' : ''
+                }`;
+              } else {
                 this.daysConfig[searchIndex].timeotfrom = '';
                 this.daysConfig[searchIndex].timeotto = '';
-                // this.daysConfig[searchIndex].subTitle = `${this.status} `;
-                this.daysConfig[searchIndex].subTitle = `${this.timeFrom.substring('0','2')}${this.timeFrom.substring('3')} `;
+                this.daysConfig.splice(searchIndex, 1);
               }
-
+            } else {
+              // if (this.daysConfig[searchIndex].subTitle !== 'W2 OT') {
+              if (this.daysConfig[searchIndex].subTitle !== `${this.timeFrom.substring('0', '2')}${this.timeFrom.substring('3')} OT`) {
+                this.daysConfig[searchIndex].timeotfrom = '';
+                this.daysConfig[searchIndex].timeotto = '';
+                this.daysConfig.splice(searchIndex, 1);
+              } else {
+                this.daysConfig[searchIndex].timeotfrom = fromTimeOTFrom;
+                this.daysConfig[searchIndex].timeotto = fromTimeOTTo;
+                // this.daysConfig[searchIndex].subTitle = `${this.status} `;
+                this.daysConfig[searchIndex].subTitle = `${this.timeFrom.substring('0', '2')}${this.timeFrom.substring('3')} `;
+              }
+            }
+          }
+        } else {
+          console.log('no workholiday');
+          this.daysConfig[searchIndex].cssClass = 'custom-calendar workholiday';
+          this.daysConfig[searchIndex].timefrom = fromTimeFrom;
+          this.daysConfig[searchIndex].timeto = fromTimeTo;
+          if (this.check === true) {
+            this.daysConfig[searchIndex].timeotfrom = fromTimeOTFrom;
+            this.daysConfig[searchIndex].timeotto = fromTimeOTTo;
+            // this.daysConfig[searchIndex].subTitle = `${this.status} ${this.check === true ? 'OT' : ''}`;
+            this.daysConfig[searchIndex].subTitle = `${this.timeFrom.substring('0', '2')}${this.timeFrom.substring('3')} ${
+              this.check === true ? 'OT' : ''
+            }`;
+          } else {
+            this.daysConfig[searchIndex].timeotfrom = '';
+            this.daysConfig[searchIndex].timeotto = '';
+            // this.daysConfig[searchIndex].subTitle = `${this.status} `;
+            this.daysConfig[searchIndex].subTitle = `${this.timeFrom.substring('0', '2')}${this.timeFrom.substring('3')} `;
+          }
         }
-      }else if (this.status === 'V1') {
+      } else if (this.status === 'V1') {
         console.log(this.daysConfig[searchIndex].cssClass);
         console.log(this.status);
 
@@ -910,11 +903,11 @@ export class CreatePlanPage implements OnInit {
           this.daysConfig[searchIndex].timeotto = '';
           this.daysConfig[searchIndex].subTitle = `${this.status} `;
           this.daysConfig[searchIndex].worktype = this.status;
-        }else{
+        } else {
           console.log('= custom-calendar offday');
           this.daysConfig.splice(searchIndex, 1);
         }
-      }else if (this.status === 'LE') {
+      } else if (this.status === 'LE') {
         console.log(this.daysConfig[searchIndex].cssClass);
         console.log(this.status);
 
@@ -927,14 +920,11 @@ export class CreatePlanPage implements OnInit {
           this.daysConfig[searchIndex].timeotto = '';
           this.daysConfig[searchIndex].subTitle = `${this.status} `;
           this.daysConfig[searchIndex].worktype = this.status;
-        }else{
+        } else {
           console.log('= custom-calendar expected-holiday');
           this.daysConfig.splice(searchIndex, 1);
         }
       }
-
-
-
 
       console.log(this.daysConfig);
       console.log(searchIndex);
@@ -952,9 +942,8 @@ export class CreatePlanPage implements OnInit {
 
     // this.sss = [{date: '2022-09-14', cssClass: 'custom-calendar workday', defaultSubtitle: 'W2'}];
 
-
     for (const item of this.daysConfig) {
-      console.log('????',item);
+      console.log('????', item);
       if (item.worktype === 'W2' || item.worktype === 'V1') {
         checkCountHoliday++;
       }
@@ -966,15 +955,14 @@ export class CreatePlanPage implements OnInit {
 
     this.countHoliday = this.countHolidayAPI[0].holiday - checkCountHoliday;
 
-    console.log('after',this.countHoliday);
-    console.log('this.daysConfig',this.daysConfig);
-    console.log('value',value);
+    console.log('after', this.countHoliday);
+    console.log('this.daysConfig', this.daysConfig);
+    console.log('value', value);
 
     const searchIndexInDaysConfig = this.daysConfig.findIndex((i) => i.date === value);
     console.log(searchIndexInDaysConfig);
 
     console.log(value);
-
 
     // const searchIndexInValues = this.values.findIndex((i) => i.date === moment(value,'YYYY-MM-DD').format('DD/MM/YYYY'));
 
@@ -985,7 +973,7 @@ export class CreatePlanPage implements OnInit {
       this.countHoliday = 0;
     }
 
-    console.log('after this.daysConfig',this.daysConfig);
+    console.log('after this.daysConfig', this.daysConfig);
 
     // this.optionsMulti2 = {
     //   from: new Date(this.dayStartFromY, this.dayStartFromM, this.dayStartFromD),
@@ -1012,7 +1000,7 @@ export class CreatePlanPage implements OnInit {
     // from: new Date(this.dayStartFromY, this.dayStartFromM, this.dayStartFromD),
     this.optionsMulti2 = {
       from: new Date(this.dayStartFromY, this.dayStartFromM, this.dayStartFromD),
-      disableWeeks: this.status_plan === 'N' ? '' : this.status_plan === 'X' ? '' : [0,1,2,3,4,5,6],
+      disableWeeks: this.status_plan === 'N' ? '' : this.status_plan === 'X' ? '' : [0, 1, 2, 3, 4, 5, 6],
       monthFormat: 'ปี YYYY เดือน MMM',
       monthPickerFormat: ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'],
       weekdays: ['อา', 'จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส'],
@@ -1022,8 +1010,6 @@ export class CreatePlanPage implements OnInit {
       // pickMode: 'multi',
       daysConfig: this.daysConfig,
     };
-
-
 
     console.log(this.dataSelectDay);
     console.log(this.daysConfig);
@@ -1035,7 +1021,7 @@ export class CreatePlanPage implements OnInit {
       }
     }
     // if (this.daysConfig.length !== this.dataSelectDay.length) {
-      // console.log(moment(this.dataSelectDay[1].date, 'DD/MM/YYYY').format('YYYY-MM-DD'));
+    // console.log(moment(this.dataSelectDay[1].date, 'DD/MM/YYYY').format('YYYY-MM-DD'));
     // }
     console.log(this.countHoliday);
     console.log(this.countHolidayAPI[0].holiday);
@@ -1047,47 +1033,48 @@ export class CreatePlanPage implements OnInit {
       if (item.subTitle && item.worktype !== '') {
         console.log('มี');
 
-        console.log( moment(item.date, 'YYYY-MM-DD').format('dd'));
-
+        console.log(moment(item.date, 'YYYY-MM-DD').format('dd'));
 
         this.values.push({
-          "image"   : item.worktype === 'W1'
-          ? 'assets/images/csg-plan/calendar_w.png'
-          : item.worktype === 'W2'
-          ? 'assets/images/csg-plan/calendar_h.png'
-          : item.worktype === 'V1'
-          ? 'assets/images/csg-plan/calendar_o.png'
-          : item.worktype === 'LE'
-          ? 'assets/images/csg-plan/calendar_o3.png'
-          : '',
-          "date"    :`${moment(item.date, 'YYYY-MM-DD').format('dd')} ${moment(item.date, 'YYYY-MM-DD').format('DD/MM/YYYY')}`,
-          "value"   : item.worktype === 'W1'
-          ? 'วันทำงานปกติ'
-          : item.worktype === 'W2'
-          ? 'HOLIDAY'
-          : item.worktype === 'V1'
-          ? 'วันหยุดประจำสัปดาห์'
-          : item.worktype === 'LE'
-          ? 'ลางาน'
-          : '',
-          "worktype": `${item.worktype}`,
-          "workfrom": item.timefrom === '' ? '' : `${item.timefrom.substring('0','2')}:${item.timefrom.substring('2')}`,
-          "workto"  : item.timeto === '' ? '' : `${item.timeto.substring('0','2')}:${item.timeto.substring('2')}`,
-          "otfrom"  : item.timeotfrom === '' ? '' : `${item.timeotfrom.substring('0','2')}:${item.timeotfrom.substring('2')}`,
-          "otto"    : item.timeotto === '' ? '' : `${item.timeotto.substring('0','2')}:${item.timeotto.substring('2')}`,
-          "counterid": `${this.counterid}`,
+          image:
+            item.worktype === 'W1'
+              ? 'assets/images/csg-plan/calendar_w.png'
+              : item.worktype === 'W2'
+              ? 'assets/images/csg-plan/calendar_h.png'
+              : item.worktype === 'V1'
+              ? 'assets/images/csg-plan/calendar_o.png'
+              : item.worktype === 'LE'
+              ? 'assets/images/csg-plan/calendar_o3.png'
+              : '',
+          date: `${moment(item.date, 'YYYY-MM-DD').format('dd')} ${moment(item.date, 'YYYY-MM-DD').format('DD/MM/YYYY')}`,
+          value:
+            item.worktype === 'W1'
+              ? 'วันทำงานปกติ'
+              : item.worktype === 'W2'
+              ? 'HOLIDAY'
+              : item.worktype === 'V1'
+              ? 'วันหยุดประจำสัปดาห์'
+              : item.worktype === 'LE'
+              ? 'ลางาน'
+              : '',
+          worktype: `${item.worktype}`,
+          workfrom: item.timefrom === '' ? '' : `${item.timefrom.substring('0', '2')}:${item.timefrom.substring('2')}`,
+          workto: item.timeto === '' ? '' : `${item.timeto.substring('0', '2')}:${item.timeto.substring('2')}`,
+          otfrom: item.timeotfrom === '' ? '' : `${item.timeotfrom.substring('0', '2')}:${item.timeotfrom.substring('2')}`,
+          otto: item.timeotto === '' ? '' : `${item.timeotto.substring('0', '2')}:${item.timeotto.substring('2')}`,
+          counterid: `${this.counterid}`,
         });
-      }else{
+      } else {
         console.log('ไม่มี');
-
       }
-
     }
 
     // console.log(moment(this.values[0].date.substring(3), 'DD/MM/YYYY'));
     // console.log(this.values[0].date.substring(3));
 
-    const jj =  this.values.sort((b, a) => moment(b.date.substring(3), 'DD/MM/YYYY').unix() - moment(a.date.substring(3), 'DD/MM/YYYY').unix());
+    const jj = this.values.sort(
+      (b, a) => moment(b.date.substring(3), 'DD/MM/YYYY').unix() - moment(a.date.substring(3), 'DD/MM/YYYY').unix()
+    );
     console.log(jj);
 
     console.log(this.values);
@@ -1105,24 +1092,25 @@ export class CreatePlanPage implements OnInit {
     console.log(ev);
     console.log(this.custidMenu);
     console.log(this.counterMenu);
-      const popover = await this.createPlanPopover.create({
-        component: CreatePlanMenuPopoverComponent,
-        cssClass: 'popoverMenu',
-        componentProps: {
-          // props: { type: ev, dataCounter: !this.counters ? '' : this.counters },
-          props: { type: ev, dataCounter: !this.counters ? '' : this.counters, custid: !this.custid ? '' : this.custid },
-          props2: {counterid: !this.counterMenu ? '' : this.counterMenu},
-          props3: {time_from: '', time_to: ''},
-          props4: {worktype: '', worktypename: '', worktypecolor: ''},
-        },
-        event: ev,
-        translucent: true,
-      });
+    const popover = await this.createPlanPopover.create({
+      component: CreatePlanMenuPopoverComponent,
+      mode: 'md',
+      cssClass: 'popoverMenu',
+      componentProps: {
+        // props: { type: ev, dataCounter: !this.counters ? '' : this.counters },
+        props: { type: ev, dataCounter: !this.counters ? '' : this.counters, custid: !this.custid ? '' : this.custid },
+        props2: { counterid: !this.counterMenu ? '' : this.counterMenu },
+        props3: { time_from: '', time_to: '' },
+        props4: { worktype: '', worktypename: '', worktypecolor: '' },
+      },
+      event: ev,
+      translucent: true,
+    });
 
     popover.onDidDismiss().then(async (param: any) => {
       if (param.role !== 'backdrop' && param.data.dismissed) {
         const val = param.data;
-        console.log('----',val);
+        console.log('----', val);
         if (ev === 'shop') {
           this.saveData.shop.value = val.value;
           this.saveData.shop.name = val.name;
@@ -1139,24 +1127,23 @@ export class CreatePlanPage implements OnInit {
           this.statusType = null;
           // this.monthCreate = moment().format('YYYYMM');
           if (this.startDate) {
-            this.monthCreate = moment(this.paramsMonthBefore.monthToCreate,'YYYYMM').format('YYYYMM');
-          }else{
+            this.monthCreate = moment(this.paramsMonthBefore.monthToCreate, 'YYYYMM').format('YYYYMM');
+          } else {
             this.monthCreate = moment().format('YYYYMM');
           }
           console.log('ssss');
 
-          console.log(this.empId,this.custid);
+          console.log(this.empId, this.custid);
 
-          const callApi2 = await this.api.getCouterShopCSGPlan(this.empId,this.custid);
+          const callApi2 = await this.api.getCouterShopCSGPlan(this.empId, this.custid);
           console.log(callApi2);
           console.log(callApi2.datas.length);
-
 
           if (callApi2.datas.length === 1) {
             this.saveData.counter.value = callApi2.datas[0].counterid;
             this.saveData.counter.name = `${callApi2.datas[0].counterid} ${callApi2.datas[0].countername}`;
             this.counterMenu = callApi2.datas[0].counterid;
-          }else{
+          } else {
             this.saveData.counter.value = null;
             this.saveData.counter.name = null;
           }
@@ -1181,15 +1168,13 @@ export class CreatePlanPage implements OnInit {
           // this.reStartDays();
           console.log(this.monthCreate, this.custid, this.counterMenu);
 
-
           this.getDatasCSGCreatePlan(this.monthCreate, this.custid, this.counterMenu);
         }
 
         if (ev === 'timetype') {
-
           console.log('////', val);
           console.log('>>>>', this.saveData.timetype);
-          console.log('ev',ev);
+          console.log('ev', ev);
 
           this.saveData.timetype.value = val.value;
           this.saveData.timetype.name = val.name;
@@ -1206,14 +1191,14 @@ export class CreatePlanPage implements OnInit {
           if (this.check !== true) {
             this.timeOTFrom = '';
             this.timeOTTo = '';
-          }else{
+          } else {
             this.timeOTFrom = this.otFrom;
             this.timeOTTo = this.otTo;
           }
           // this.timeOTFrom = this.otFrom;
           // this.timeOTTo = this.otTo;
-          console.log('********************',this.monthCreate);
-          console.log('???????????',this.daysConfig);
+          console.log('********************', this.monthCreate);
+          console.log('???????????', this.daysConfig);
         }
 
         if (ev === 'worktype') {
@@ -1221,16 +1206,15 @@ export class CreatePlanPage implements OnInit {
           console.log(val);
           console.log(val.worktype);
           console.log(this.saveData.worktype);
-          this.saveData.worktype.value  = val.worktype;
-          this.saveData.worktype.name   = val.worktypename;
-          this.saveData.worktype.color  = val.worktypecolor;
+          this.saveData.worktype.value = val.worktype;
+          this.saveData.worktype.name = val.worktypename;
+          this.saveData.worktype.color = val.worktypecolor;
           this.status = val.worktype;
           console.log('event ******* ', this.eventcheck);
-          console.log('??????',this.eventcheck.detail);
-          console.log('??????',this.eventcheck.detail.checked);
+          console.log('??????', this.eventcheck.detail);
+          console.log('??????', this.eventcheck.detail.checked);
           this.eventcheck.detail.checked = false;
           this.checkEvent(this.eventcheck);
-
 
           console.log('check ********* before', this.check);
           // this.check = false;
@@ -1250,7 +1234,7 @@ export class CreatePlanPage implements OnInit {
     return await popover.present();
   }
 
-  async timeOTFromClick($event){
+  async timeOTFromClick($event) {
     console.log($event);
     console.log($event.detail.value);
     // this.otTo = $event.detail.value;
@@ -1260,48 +1244,48 @@ export class CreatePlanPage implements OnInit {
 
     // this.timeTo = $event.detail.value;
   }
-  async timeOTToClick($event){
+  async timeOTToClick($event) {
     console.log($event);
     console.log($event.detail.value);
     this.timeOTTo = $event.detail.value;
   }
-  async timeFromClick($event){
+  async timeFromClick($event) {
     console.log($event);
     console.log($event.detail.value);
-    console.log($event.detail.value.substr('0','2'));
-    console.log($event.detail.value.substr('0','2'));
-    console.log($event.detail.value.substr('3','4'));
+    console.log($event.detail.value.substr('0', '2'));
+    console.log($event.detail.value.substr('0', '2'));
+    console.log($event.detail.value.substr('3', '4'));
     this.calTimeTo($event.detail.value);
     this.timeFrom = $event.detail.value;
   }
-  async timeToClick($event){
+  async timeToClick($event) {
     console.log($event);
     console.log($event.detail.value);
     this.timeTo = $event.detail.value;
-    console.log('????',this.timeTo);
+    console.log('????', this.timeTo);
   }
 
-  async calTimeTo(timeFrom){
+  async calTimeTo(timeFrom) {
     // let cTimeFrom = parseInt(timeFrom.substr('0','2'));
-    let cTimeFrom = parseInt(timeFrom.substr('0','2'), 10);
-    let cTimeTo = timeFrom.substr('3','4');
+    let cTimeFrom = parseInt(timeFrom.substr('0', '2'), 10);
+    let cTimeTo = timeFrom.substr('3', '4');
 
-      if (cTimeFrom<15) {
-        console.log('////',cTimeFrom+9);
-        console.log('////',cTimeTo);
-        this.timeTo = `${cTimeFrom+9}:${cTimeTo}`;
-      }else{
-        console.log('////',cTimeFrom+9);
-        this.timeTo = `23:${cTimeTo}`;
-      }
+    if (cTimeFrom < 15) {
+      console.log('////', cTimeFrom + 9);
+      console.log('////', cTimeTo);
+      this.timeTo = `${cTimeFrom + 9}:${cTimeTo}`;
+    } else {
+      console.log('////', cTimeFrom + 9);
+      this.timeTo = `23:${cTimeTo}`;
+    }
   }
 
   async createPlan() {
     // console.log("this.dataSelectDay",this.dataSelectDay);
     console.log(this.daysConfig);
     console.log(this.saveData);
-    console.log('******-',this.dateAll);
-    console.log('***/***-',this.dataSelectDay);
+    console.log('******-', this.dateAll);
+    console.log('***/***-', this.dataSelectDay);
 
     // console.log('this.monthCreate',this.monthCreate);
     // console.log('empid', this.empId);
@@ -1322,75 +1306,67 @@ export class CreatePlanPage implements OnInit {
         timeto: '',
         timeotfrom: '',
         timeotto: '',
-        worktype: ''
+        worktype: '',
       });
-
     }
 
-    console.log('////',this.dataSelectDay);
-    console.log('////@@@@@',dataset);
-      for (const dataSelectDay of this.dataSelectDay) {
+    console.log('////', this.dataSelectDay);
+    console.log('////@@@@@', dataset);
+    for (const dataSelectDay of this.dataSelectDay) {
+      console.log(dataSelectDay.day);
+      if (!dataSelectDay.day) {
+        let obj = dataset.find((x) => x.assigndate === moment(dataSelectDay.date, 'YYYY-MM-DD').format('DD/MM/YYYY'));
+        console.log(obj);
+        // console.log(dataSelectDay);
+        obj.timetype = !dataSelectDay.subTitle ? '' : dataSelectDay.subTitle;
+        obj.worktype = !dataSelectDay.worktype ? '' : dataSelectDay.worktype;
+        obj.timefrom = !dataSelectDay.timefrom ? '' : dataSelectDay.timefrom;
+        obj.timeto = !dataSelectDay.timeto ? '' : dataSelectDay.timeto;
+        obj.timeotfrom = !dataSelectDay.timeotfrom ? '' : dataSelectDay.timeotfrom;
+        obj.timeotto = !dataSelectDay.timeotto ? '' : dataSelectDay.timeotto;
 
-        console.log(dataSelectDay.day);
-        if (!dataSelectDay.day) {
-          let obj = dataset.find(x => x.assigndate === moment(dataSelectDay.date, 'YYYY-MM-DD').format('DD/MM/YYYY'));
-          console.log(obj);
-          // console.log(dataSelectDay);
-          obj.timetype    = !dataSelectDay.subTitle   ? '' : dataSelectDay.subTitle;
-          obj.worktype    = !dataSelectDay.worktype   ? '' : dataSelectDay.worktype;
-          obj.timefrom    = !dataSelectDay.timefrom   ? '' : dataSelectDay.timefrom;
-          obj.timeto      = !dataSelectDay.timeto     ? '' : dataSelectDay.timeto;
-          obj.timeotfrom  = !dataSelectDay.timeotfrom ? '' : dataSelectDay.timeotfrom;
-          obj.timeotto    = !dataSelectDay.timeotto   ? '' : dataSelectDay.timeotto;
-
-          // obj.type = dataSelectDay.type;
-        }else{
-          let obj = dataset.find(x => x.assigndate === dataSelectDay.day);
-          console.log('////',obj);
-          // console.log(dataSelectDay);
-          obj.timetype = !dataSelectDay.timetype   ? '' : dataSelectDay.timetype;
-          obj.worktype = dataSelectDay.worktype;
-          obj.timefrom = dataSelectDay.timefrom;
-          obj.timeto = dataSelectDay.timeto;
-          obj.timeotfrom = dataSelectDay.timeotfrom;
-          obj.timeotto = dataSelectDay.timeotto;
-          // obj.type = dataSelectDay.type;
-        }
-
-
+        // obj.type = dataSelectDay.type;
+      } else {
+        let obj = dataset.find((x) => x.assigndate === dataSelectDay.day);
+        console.log('////', obj);
+        // console.log(dataSelectDay);
+        obj.timetype = !dataSelectDay.timetype ? '' : dataSelectDay.timetype;
+        obj.worktype = dataSelectDay.worktype;
+        obj.timefrom = dataSelectDay.timefrom;
+        obj.timeto = dataSelectDay.timeto;
+        obj.timeotfrom = dataSelectDay.timeotfrom;
+        obj.timeotto = dataSelectDay.timeotto;
+        // obj.type = dataSelectDay.type;
       }
+    }
     // }
-
-
-
 
     const body = { dataset };
 
     console.log(body);
 
-      const call = await this.api.insertCreatePlanCSGPlan(body);
-      console.log(call.error_message);
+    const call = await this.api.insertCreatePlanCSGPlan(body);
+    console.log(call.error_message);
 
-      // if (call.error_message === 'SUCCESS') {
-        const result = this.dataSelectDay.find(({ worktype }) => worktype === 'LE');
-        console.log(result);
-        let statusLEDay = 'N';
-        if (result) {
-          console.log('<<<<<<<<<<<<<<<<<<มี<<<<<<');
+    // if (call.error_message === 'SUCCESS') {
+    const result = this.dataSelectDay.find(({ worktype }) => worktype === 'LE');
+    console.log(result);
+    let statusLEDay = 'N';
+    if (result) {
+      console.log('<<<<<<<<<<<<<<<<<<มี<<<<<<');
 
-          statusLEDay = 'Y';
-        }else{
-          console.log('<<<<<<<<<<<<<<<<<<ไม่มี<<<<<<');
-          statusLEDay = 'N';
-        }
-        this.alertSuccess(call,statusLEDay);
-      // }else{
+      statusLEDay = 'Y';
+    } else {
+      console.log('<<<<<<<<<<<<<<<<<<ไม่มี<<<<<<');
+      statusLEDay = 'N';
+    }
+    this.alertSuccess(call, statusLEDay);
+    // }else{
 
-      // }
+    // }
 
     // this.navCtrl.back();
   }
-
 
   // async presentPopover(ev: any) {
   //   console.log(ev);
@@ -1419,22 +1395,26 @@ export class CreatePlanPage implements OnInit {
   async selectAll() {
     this.daysConfig = [];
 
-    const callApiGetCsgCreatePlanDetail = await this.api.getCsgCreatePlanDetail(this.custid,this.counterMenu,this.empId,this.monthCreate);
+    const callApiGetCsgCreatePlanDetail = await this.api.getCsgCreatePlanDetail(
+      this.custid,
+      this.counterMenu,
+      this.empId,
+      this.monthCreate
+    );
     console.log(callApiGetCsgCreatePlanDetail);
 
-    const fromTimeFrom = `${this.timeFrom.substring('0','2')}${this.timeFrom.substring('3')}`;
-    const fromTimeTo = `${this.timeTo.substring('0','2')}${this.timeTo.substring('3')}`;
+    const fromTimeFrom = `${this.timeFrom.substring('0', '2')}${this.timeFrom.substring('3')}`;
+    const fromTimeTo = `${this.timeTo.substring('0', '2')}${this.timeTo.substring('3')}`;
 
-    const fromTimeOTFrom  = this.check === true ? `${this.timeOTFrom.substring('0','2')}${this.timeOTFrom.substring('3')}` : '';
-    const fromTimeOTTo    = this.check === true ? `${this.timeOTTo.substring('0','2')}${this.timeOTTo.substring('3')}` : '';
+    const fromTimeOTFrom = this.check === true ? `${this.timeOTFrom.substring('0', '2')}${this.timeOTFrom.substring('3')}` : '';
+    const fromTimeOTTo = this.check === true ? `${this.timeOTTo.substring('0', '2')}${this.timeOTTo.substring('3')}` : '';
 
     if (callApiGetCsgCreatePlanDetail.datas.length !== 0) {
-      callApiGetCsgCreatePlanDetail.datas.forEach(i => {
+      callApiGetCsgCreatePlanDetail.datas.forEach((i) => {
         console.log(i);
 
         if (i.worktype !== '') {
-
-          console.log( this.dayStartFromD);
+          console.log(this.dayStartFromD);
 
           if (moment(i.date, 'DD/MM/YYYY').format('MM') === this.m) {
             if (moment(i.date, 'DD/MM/YYYY').format('DD') >= this.dayStartFromD) {
@@ -1446,24 +1426,33 @@ export class CreatePlanPage implements OnInit {
                 timefrom: fromTimeFrom,
                 timeto: fromTimeTo,
                 timeotfrom: this.check === true ? fromTimeOTFrom : '',
-                timeotto:   this.check === true ? fromTimeOTTo : '',
+                timeotto: this.check === true ? fromTimeOTTo : '',
                 worktype: this.status,
               });
-            }else{
+            } else {
               this.daysConfig.push({
                 date: moment(i.date, 'DD/MM/YYYY').format('YYYY-MM-DD'),
-                cssClass: i.worktype === 'W1' ? 'custom-calendar workday oct' : i.worktype === 'W2' ? 'custom-calendar workholiday oct' : i.worktype === 'V1' ? 'custom-calendar offday oct' : i.worktype === 'LE' ? 'custom-calendar expected-holiday oct' : '',
+                cssClass:
+                  i.worktype === 'W1'
+                    ? 'custom-calendar workday oct'
+                    : i.worktype === 'W2'
+                    ? 'custom-calendar workholiday oct'
+                    : i.worktype === 'V1'
+                    ? 'custom-calendar offday oct'
+                    : i.worktype === 'LE'
+                    ? 'custom-calendar expected-holiday oct'
+                    : '',
                 // subTitle: `${i.worktype} ${i.otfrom !== '' ? 'OT' : ''}`,
                 subTitle: `${i.timefrom} ${i.otfrom !== '' ? 'OT' : ''}`,
                 // subTitle: `${i.timefrom} ${this.check === true ? 'OT' : ''}`,
                 timefrom: i.timefrom,
                 timeto: i.timeto,
                 timeotfrom: i.otfrom,
-                timeotto:   i.otto,
+                timeotto: i.otto,
                 worktype: i.worktype,
               });
             }
-          }else if (moment(i.date, 'DD/MM/YYYY').format('MM') > this.m){
+          } else if (moment(i.date, 'DD/MM/YYYY').format('MM') > this.m) {
             this.daysConfig.push({
               date: moment(i.date, 'DD/MM/YYYY').format('YYYY-MM-DD'),
               cssClass: this.status === 'W1' ? 'custom-calendar workday' : this.status === 'V1' ? 'custom-calendar offday' : '',
@@ -1472,11 +1461,11 @@ export class CreatePlanPage implements OnInit {
               timefrom: fromTimeFrom,
               timeto: fromTimeTo,
               timeotfrom: this.check === true ? fromTimeOTFrom : '',
-              timeotto:   this.check === true ? fromTimeOTTo : '',
+              timeotto: this.check === true ? fromTimeOTTo : '',
               worktype: this.status,
             });
           }
-        }else{
+        } else {
           console.log('?????????????11111<<<<<<<<<<<<<<<<<<<<<>>>>>>>');
           if (moment(i.date, 'DD/MM/YYYY').format('MM') === this.m) {
             console.log('?????????????222222<<<<<<<<<<<<<<<<<<<<<>>>>>>>');
@@ -1490,11 +1479,11 @@ export class CreatePlanPage implements OnInit {
                 timefrom: fromTimeFrom,
                 timeto: fromTimeTo,
                 timeotfrom: this.check === true ? fromTimeOTFrom : '',
-                timeotto:   this.check === true ? fromTimeOTTo : '',
+                timeotto: this.check === true ? fromTimeOTTo : '',
                 worktype: this.status,
               });
             }
-          }else if(moment(i.date, 'DD/MM/YYYY').format('MM') > this.m){
+          } else if (moment(i.date, 'DD/MM/YYYY').format('MM') > this.m) {
             this.daysConfig.push({
               date: moment(i.date, 'DD/MM/YYYY').format('YYYY-MM-DD'),
               cssClass: this.status === 'W1' ? 'custom-calendar workday' : this.status === 'V1' ? 'custom-calendar offday' : '',
@@ -1503,13 +1492,13 @@ export class CreatePlanPage implements OnInit {
               timefrom: fromTimeFrom,
               timeto: fromTimeTo,
               timeotfrom: this.check === true ? fromTimeOTFrom : '',
-              timeotto:   this.check === true ? fromTimeOTTo : '',
+              timeotto: this.check === true ? fromTimeOTTo : '',
               worktype: this.status,
             });
           }
         }
       });
-    }else{
+    } else {
       for (const i in this.dataHolidayAPI) {
         if (this.dataHolidayAPI[i].month === this.m) {
           if (this.dataHolidayAPI[i].day >= this.dayStartFromD) {
@@ -1517,43 +1506,41 @@ export class CreatePlanPage implements OnInit {
               date: moment(this.dataHolidayAPI[i].date, 'DD/MM/YYYY').format('YYYY-MM-DD'),
               cssClass: this.status === 'W1' ? 'custom-calendar workday' : this.status === 'V1' ? 'custom-calendar offday' : '',
               // subTitle: `${this.status} ${this.check === true ? 'OT' : ''}`,
-              subTitle: `${this.timeFrom.substring('0','2')}${this.timeFrom.substring('3')} ${this.check === true ? 'OT' : ''}`,
+              subTitle: `${this.timeFrom.substring('0', '2')}${this.timeFrom.substring('3')} ${this.check === true ? 'OT' : ''}`,
               timefrom: fromTimeFrom,
               timeto: fromTimeTo,
               timeotfrom: this.check === true ? fromTimeOTFrom : '',
-              timeotto:   this.check === true ? fromTimeOTTo : '',
+              timeotto: this.check === true ? fromTimeOTTo : '',
               worktype: this.status,
             });
           }
         } else {
-
           this.daysConfig.push({
             // date: this.moment.formatDate(this.dataHolidayAPI[i].date, 'YYYY-MM-DD', 'th', 'DD/MM/YYYY'),
             date: moment(this.dataHolidayAPI[i].date, 'DD/MM/YYYY').format('YYYY-MM-DD'),
             cssClass: this.status === 'W1' ? 'custom-calendar workday' : this.status === 'V1' ? 'custom-calendar offday' : '',
             // subTitle: `${this.status} ${this.check === true ? 'OT' : ''}`,
-            subTitle: `${this.timeFrom.substring('0','2')}${this.timeFrom.substring('3')} ${this.check === true ? 'OT' : ''}`,
+            subTitle: `${this.timeFrom.substring('0', '2')}${this.timeFrom.substring('3')} ${this.check === true ? 'OT' : ''}`,
             timefrom: fromTimeFrom,
             timeto: fromTimeTo,
             timeotfrom: this.check === true ? fromTimeOTFrom : '',
-            timeotto:   this.check === true ? fromTimeOTTo : '',
+            timeotto: this.check === true ? fromTimeOTTo : '',
             worktype: this.status,
           });
-
         }
       }
     }
 
     console.log(this.daysConfig);
     console.log(this.daysConfigAll);
-    console.log('this.dataHoliday',this.dataHoliday);
+    console.log('this.dataHoliday', this.dataHoliday);
     this.showAllday = [];
     if (this.dataHoliday.length !== 0) {
       for await (const item of this.daysConfig) {
         this.showAllday.push(item);
       }
       for (const item of this.dataHoliday) {
-        const obj = this.daysConfig.find(x => x.date === moment(item.day, 'YYYY-MM-DD').format('YYYY-MM-DD'));
+        const obj = this.daysConfig.find((x) => x.date === moment(item.day, 'YYYY-MM-DD').format('YYYY-MM-DD'));
         if (!obj) {
           console.log(item);
           // this.showAllday.push(item);
@@ -1561,16 +1548,15 @@ export class CreatePlanPage implements OnInit {
           // const searchIndex = this.dataSelectDay.findIndex((i) => i.day === item.day);
         }
       }
-
     }
     console.log(this.showAllday);
 
-    console.log('>>>>>>>>>',this.daysConfig);
+    console.log('>>>>>>>>>', this.daysConfig);
 
     // from: new Date(this.dayStartFromY, this.dayStartFromM, this.dayStartFromD),
     this.optionsMulti2 = {
       from: new Date(this.dayStartFromY, this.dayStartFromM, this.dayStartFromD),
-      disableWeeks: this.status_plan === 'N' ? '' : this.status_plan === 'X' ? '' : [0,1,2,3,4,5,6],
+      disableWeeks: this.status_plan === 'N' ? '' : this.status_plan === 'X' ? '' : [0, 1, 2, 3, 4, 5, 6],
       monthFormat: 'ปี YYYY เดือน MMM',
       monthPickerFormat: ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'],
       weekdays: ['อา', 'จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส'],
@@ -1580,7 +1566,6 @@ export class CreatePlanPage implements OnInit {
       // pickMode: 'multi',
       daysConfig: this.daysConfig,
     };
-
 
     this.dataSelectDay = [];
     for (const item of this.daysConfig) {
@@ -1612,74 +1597,70 @@ export class CreatePlanPage implements OnInit {
               : item.cssClass === 'custom-calendar expected-holiday'
               ? 'LE'
               : '',
-              timetype: item.subTitle,
-              timefrom: item.timefrom,
-              timeto: item.timeto,
-              timeotfrom: item.timeotfrom,
-              timeotto: item.timeotto,
-              worktype: item.worktype,
+          timetype: item.subTitle,
+          timefrom: item.timefrom,
+          timeto: item.timeto,
+          timeotfrom: item.timeotfrom,
+          timeotto: item.timeotto,
+          worktype: item.worktype,
         });
-      }else{
+      } else {
         console.log(item);
       }
 
-
       this.values = [];
-    for (const item2 of this.daysConfig) {
-      if (item2.subTitle && item.worktype !== '') {
-        // console.log('มี');
+      for (const item2 of this.daysConfig) {
+        if (item2.subTitle && item.worktype !== '') {
+          // console.log('มี');
 
-        // console.log( moment(item2.date, 'YYYY-MM-DD').format('dd'));
+          // console.log( moment(item2.date, 'YYYY-MM-DD').format('dd'));
 
-
-        this.values.push({
-          "image"   : item2.worktype === 'W1'
-          ? 'assets/images/csg-plan/calendar_w.png'
-          : item2.worktype === 'W2'
-          ? 'assets/images/csg-plan/calendar_h.png'
-          : item2.worktype === 'V1'
-          ? 'assets/images/csg-plan/calendar_o.png'
-          : item2.worktype === 'LE'
-          ? 'assets/images/csg-plan/calendar_o3.png'
-          : '',
-          "date"    :`${moment(item2.date, 'YYYY-MM-DD').format('dd')} ${moment(item2.date, 'YYYY-MM-DD').format('DD/MM/YYYY')}`,
-          "value"   : item2.worktype === 'W1'
-          ? 'วันทำงานปกติ'
-          : item2.worktype === 'W2'
-          ? 'HOLIDAY'
-          : item2.worktype === 'V1'
-          ? 'วันหยุดประจำสัปดาห์'
-          : item2.worktype === 'LE'
-          ? 'ลางาน'
-          : '',
-          "worktype": `${item2.worktype}`,
-          "workfrom": item2.timefrom === '' ? '' : `${item2.timefrom.substring('0','2')}:${item2.timefrom.substring('2')}`,
-          "workto"  : item2.timeto === '' ? '' : `${item2.timeto.substring('0','2')}:${item2.timeto.substring('2')}`,
-          "otfrom"  : item2.timeotfrom === '' ? '' : `${item2.timeotfrom.substring('0','2')}:${item2.timeotfrom.substring('2')}`,
-          "otto"    : item2.timeotto === '' ? '' : `${item2.timeotto.substring('0','2')}:${item2.timeotto.substring('2')}`,
-          "counterid": `${this.counterid}`,
-        });
-      }else{
-        console.log('ไม่มี');
-
+          this.values.push({
+            image:
+              item2.worktype === 'W1'
+                ? 'assets/images/csg-plan/calendar_w.png'
+                : item2.worktype === 'W2'
+                ? 'assets/images/csg-plan/calendar_h.png'
+                : item2.worktype === 'V1'
+                ? 'assets/images/csg-plan/calendar_o.png'
+                : item2.worktype === 'LE'
+                ? 'assets/images/csg-plan/calendar_o3.png'
+                : '',
+            date: `${moment(item2.date, 'YYYY-MM-DD').format('dd')} ${moment(item2.date, 'YYYY-MM-DD').format('DD/MM/YYYY')}`,
+            value:
+              item2.worktype === 'W1'
+                ? 'วันทำงานปกติ'
+                : item2.worktype === 'W2'
+                ? 'HOLIDAY'
+                : item2.worktype === 'V1'
+                ? 'วันหยุดประจำสัปดาห์'
+                : item2.worktype === 'LE'
+                ? 'ลางาน'
+                : '',
+            worktype: `${item2.worktype}`,
+            workfrom: item2.timefrom === '' ? '' : `${item2.timefrom.substring('0', '2')}:${item2.timefrom.substring('2')}`,
+            workto: item2.timeto === '' ? '' : `${item2.timeto.substring('0', '2')}:${item2.timeto.substring('2')}`,
+            otfrom: item2.timeotfrom === '' ? '' : `${item2.timeotfrom.substring('0', '2')}:${item2.timeotfrom.substring('2')}`,
+            otto: item2.timeotto === '' ? '' : `${item2.timeotto.substring('0', '2')}:${item2.timeotto.substring('2')}`,
+            counterid: `${this.counterid}`,
+          });
+        } else {
+          console.log('ไม่มี');
+        }
       }
 
-    }
+      // console.log(moment(this.values[0].date.substring(3), 'DD/MM/YYYY'));
+      // console.log(this.values[0].date.substring(3));
 
-    // console.log(moment(this.values[0].date.substring(3), 'DD/MM/YYYY'));
-    // console.log(this.values[0].date.substring(3));
+      const jj = this.values.sort(
+        (b, a) => moment(b.date.substring(3), 'DD/MM/YYYY').unix() - moment(a.date.substring(3), 'DD/MM/YYYY').unix()
+      );
+      // console.log(jj);
 
-    const jj =  this.values.sort((b, a) => moment(b.date.substring(3), 'DD/MM/YYYY').unix() - moment(a.date.substring(3), 'DD/MM/YYYY').unix());
-    // console.log(jj);
-
-    // console.log(this.values);
-
-
+      // console.log(this.values);
     }
     console.log(this.dataSelectDay);
     console.log(this.daysConfig);
-
-
   }
 
   async reStartDays() {
@@ -1693,7 +1674,6 @@ export class CreatePlanPage implements OnInit {
     console.log(this.dataHolidayAPI);
 
     this.loadDataHoliday = this.getDataHoliDay(this.dataHolidayAPI);
-
 
     // this.optionsMulti2 = {
     //   from: new Date(this.dayStartFromY, this.dayStartFromM, this.dayStartFromD),
@@ -1713,7 +1693,6 @@ export class CreatePlanPage implements OnInit {
   }
 
   async presentAlertConfirm() {
-
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
       header: 'ยืนยันการสร้างแผลนหรือไม่',
@@ -1725,7 +1704,6 @@ export class CreatePlanPage implements OnInit {
           cssClass: 'secondary',
           handler: (blah) => {
             // console.log('Confirm Cancel: blah');
-
           },
         },
         {
@@ -1742,19 +1720,22 @@ export class CreatePlanPage implements OnInit {
     await alert.present();
   }
 
-
-  async alertSuccess(datas,statusLEDay) {
-
-
+  async alertSuccess(datas, statusLEDay) {
     console.log(datas);
     console.log(statusLEDay);
     // datas.error_message = 'ERROR';
     const alert = await this.alertController.create({
       cssClass: 'alert_success',
       // header: 'ยืนยันการสร้างแผลนหรือไม่',
-      message: `<img src="${datas.error_message === 'SUCCESS'
-      ? `../../../../assets/images/csg-plan/success.svg " alt="g-maps" style="border-radius: 2px"> <br> บันทึกการสร้างสำเร็จ <br> ${statusLEDay === 'Y' ? `<div class="card-alert alert alert-danger mb-0">*เนื่องจากท่านมีการใช้ "ลางาน" กรุณา สร้าง ใบลา เข้า ระบบ WorkFlow</div>` : ''}`
-      : '../../../../assets/images/csg-plan/error.png " alt="g-maps" style="border-radius: 2px"> <br> บันทึกการสร้างไม่สำเร็จ'}`,
+      message: `<img src="${
+        datas.error_message === 'SUCCESS'
+          ? `../../../../assets/images/csg-plan/success.svg " alt="g-maps" style="border-radius: 2px"> <br> บันทึกการสร้างสำเร็จ <br> ${
+              statusLEDay === 'Y'
+                ? `<div class="card-alert alert alert-danger mb-0">*เนื่องจากท่านมีการใช้ "ลางาน" กรุณา สร้าง ใบลา เข้า ระบบ WorkFlow</div>`
+                : ''
+            }`
+          : '../../../../assets/images/csg-plan/error.png " alt="g-maps" style="border-radius: 2px"> <br> บันทึกการสร้างไม่สำเร็จ'
+      }`,
       buttons: [
         // {
         //   text: 'ปิด',
@@ -1765,15 +1746,14 @@ export class CreatePlanPage implements OnInit {
         //     // console.log('Confirm Cancel: blah');
         //   },
         // },
-      //   {
-      //     text: 'ยืนยัน',
-      //     handler: () => {
-      //       // console.log(this.dataSelectDay);
-
-      //       // console.log('Confirm Okay');
-      //       this.createPlan();
-      //     },
-      //   },
+        //   {
+        //     text: 'ยืนยัน',
+        //     handler: () => {
+        //       // console.log(this.dataSelectDay);
+        //       // console.log('Confirm Okay');
+        //       this.createPlan();
+        //     },
+        //   },
       ],
     });
     await alert.present();
@@ -1781,16 +1761,14 @@ export class CreatePlanPage implements OnInit {
       alert.dismiss();
 
       const navigationExtras: NavigationExtras = {
-        state: {monthFromCreate: this.monthCreate}
+        state: { monthFromCreate: this.monthCreate },
       };
 
       // this.navCtrl.navigateBack(['csg-plan'], navigationExtras);
 
       this.navCtrl.navigateBack(['csg-plan'], navigationExtras);
 
-
       // this.navCtrl.back();
-
 
       // const navigationExtras: NavigationExtras = {
       //   state: {name: 'trebtreb'}
@@ -1801,8 +1779,6 @@ export class CreatePlanPage implements OnInit {
   }
 
   back() {
-
-
     // const navigationExtras: NavigationExtras = {
     //   state: {monthFromCreate: this.monthCreate}
     // };
@@ -1811,16 +1787,12 @@ export class CreatePlanPage implements OnInit {
     // this.navCtrl.navigateBack(['csg-plan']);
 
     const navigationExtras: NavigationExtras = {
-      state: {monthFromCreate: this.paramsMonthBefore.monthToCreate}
+      state: { monthFromCreate: this.paramsMonthBefore.monthToCreate },
     };
 
     // console.log(this.monthCreate);
 
-
     this.router.navigate(['csg-plan'], navigationExtras);
     // this.router.navigate(['csg-plan']);
-
   }
-
-
 }

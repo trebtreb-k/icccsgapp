@@ -2,34 +2,9 @@ module.exports = function (ctx) {
   // Use console.log(ctx); to print the context to the console when running 'ionic build/serve'
 
   var projectDir = ctx.project.dir;
-
-  fixCordovaFCMDuplication(projectDir);
   fixCordovaFileTransferIOS(projectDir);
   fixPodGoogleUtilitiesIOS(projectDir);
 };
-
-function fixCordovaFCMDuplication(projectDir) {
-  var fs = require('fs');
-
-  var filePath = projectDir + '/plugins/cordova-plugin-fcm-with-dependecy-updated/scripts/configuration.js';
-
-  var fileContent = fs.readFileSync(filePath, 'utf8');
-
-  fileContent = fileContent.replace("IOS_DIR + '/' + APP_NAME + '/Resources/Resources/GoogleService-Info.plist',", '');
-
-  fileContent = fileContent.replace(
-    "IOS_DIR + '/' + APP_NAME + '/Resources/GoogleService-Info.plist',",
-    "IOS_DIR + '/' + APP_NAME + '/Resources/GoogleService-Info.plist'"
-  );
-
-  console.log('Fixed cordova-plugin-fcm-with-dependecy-updated for duplication of "GoogleService-Info.plist"');
-
-  fileContent = fileContent.replace("ANDROID_DIR + '/google-services.json',", '');
-
-  console.log('Fixed cordova-plugin-fcm-with-dependecy-updated for duplication of "google-services.json"');
-
-  fs.writeFileSync(filePath, fileContent, 'utf8');
-}
 
 function fixCordovaFileTransferIOS(projectDir) {
   var fs = require('fs');
@@ -62,14 +37,27 @@ function fixCordovaFileTransferIOS(projectDir) {
 
 function fixPodGoogleUtilitiesIOS(projectDir) {
   var fs = require('fs');
+  var cp = require('child_process');
 
   var filePath = projectDir + '/platforms/ios/Podfile';
 
   var fileContent = fs.readFileSync(filePath, 'utf8');
 
-  fileContent = fileContent.replace("pod 'Firebase/Messaging', '~> 7.4.0'", "pod 'Firebase/Messaging'\n\tpod 'GoogleUtilities'");
+  newFileContent = fileContent.replace("pod 'Firebase/Messaging', '~> 7.4.0'\nend", "pod 'Firebase/Messaging', '~> 7.4.0'\n\tpod 'GoogleUtilities', '7.12.0'\nend");
 
-  fs.writeFileSync(filePath, fileContent, 'utf8');
+  if (fileContent !== newFileContent) {
+    fs.writeFileSync(filePath, newFileContent, 'utf8');
+    cp.exec('rm Podfile.lock', {cwd: 'platforms/ios/'}, function(error,stdout,stderr) {
+      console.error(error);
+      console.log(stdout);
+      console.error(stderr);
+    });
+    cp.exec('pod install', {cwd: 'platforms/ios/'}, function(error,stdout,stderr) {
+      console.error(error);
+      console.log(stdout);
+      console.error(stderr);
+    });
+  }
 
   console.log('Fixed GoogleUtilities Pod');
 }

@@ -47,23 +47,22 @@
       </ion-label>
     </ion-item>
     <!-- <ion-item> -->
-      <!-- <ion-label>
+    <!-- <ion-label>
         <h2>อื่นๆ</h2>
       </ion-label> -->
-      <!-- <ion-item> -->
-      <!-- <ion-label position="floating">
+    <!-- <ion-item> -->
+    <!-- <ion-label position="floating">
         <ion-icon name="add-outline"></ion-icon>
         กำหนดเคาน์เตอร์เอง</ion-label
       > -->
-      <!-- <ion-input [ngClass]="{ BB: selectedIndexC == 1 }" (ionChange)="inputTextCounter($event)"></ion-input>
+    <!-- <ion-input [ngClass]="{ BB: selectedIndexC == 1 }" (ionChange)="inputTextCounter($event)"></ion-input>
       <ion-button *ngIf="otherCounters" color="primary" style="width: 100%; height: 50px" (click)="addNewShopCounter('counter')"
         >เลือกเคาน์เตอร์นี้</ion-button
       > -->
-      <!-- </ion-item> -->
-      <!-- <ion-searchbar showCancelButton="always"></ion-searchbar> -->
+    <!-- </ion-item> -->
+    <!-- <ion-searchbar showCancelButton="always"></ion-searchbar> -->
     <!-- </ion-item> -->
   </ion-list>
-
 
   <ion-list *ngIf="props.type === 'timetype'">
     <ion-item button *ngFor="let dataTimeType of dataTimeTypeAPI" (click)="meClicked($event, dataTimeType, 'timetype')">
@@ -82,17 +81,29 @@
     </ion-item> -->
     <ion-item button *ngFor="let dataWorkType of dataWorkTypeAPI" (click)="meClicked($event, dataWorkType, 'worktype')">
       <ion-label>
-        <div style="background-color: #{{dataWorkType.work_color}}; width: 20px; height: 20px; border-radius: 50%"><span style="margin-left: 25px;">{{dataWorkType.work_dexc}}</span></div>
+        <!-- <div
+          [ngStyle]="{
+            backgroundColor: '#{{dataWorkType.work_color}}',
+            width: '20px',
+            height: '20px',
+            borderRadius: '50%'
+          }"
+        >
+          <span style="margin-left: 25px">{{ dataWorkType.work_dexc }}</span>
+        </div> -->
+        <span style="float: left">
+          <div  style="background-color: #{{dataWorkType.work_color}}; width: 20px; height: 20px; border-radius: 50%; float: left;"></div> <span style="margin-left: 10px;">{{dataWorkType.work_dexc}}</span>
+        </span>
       </ion-label>
 
       <!-- <ion-select-option value="W">วันทำงานปกติ</ion-select-option> -->
     </ion-item>
   </ion-list>
   <!-- <ion-list> -->
-    <ion-item (click)="closedPopover()">
-      <ion-label>
-        <h2>ปิด</h2>
-      </ion-label>
-    </ion-item>
+  <ion-item (click)="closedPopover()">
+    <ion-label>
+      <h2>ปิด</h2>
+    </ion-label>
+  </ion-item>
   <!-- </ion-list> -->
 </ion-content>

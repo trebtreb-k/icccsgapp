@@ -104,20 +104,19 @@ export class ApproverDetailPage implements OnInit {
 
 
   ionViewDidEnter(): void {
-    // setTimeout(() => {
-    //   this.loading.dismiss();
-    // }, 2000);
+    setTimeout(() => {
+      this.loading.dismiss();
+     }, 2000);
   }
 
   async getDetailApprover(period,empID) {
 
     const callApiApproverDetail = await this.api.getApproverDetail(period, empID);
     // const callApiCountHoliday = await this.api.getApproverDetail('202306', '90536');
-    console.log(callApiApproverDetail.datas);
+    console.log('????',callApiApproverDetail.datas);
 
     if (callApiApproverDetail.datas) {
       this.values = callApiApproverDetail.datas;
-
     }
     this.loading.dismiss();
     // this.values = valToMonths;
