@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "429186016735",
+    "firebase_url": "https://salestoolsapp.firebaseio.com",
+    "project_id": "salestoolsapp",
+    "storage_bucket": "salestoolsapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:429186016735:android:80dc4b0b45c2a0f1b2106a",
+        "android_client_info": {
+          "package_name": "th.co.icc.salestools"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "429186016735-li8jc8serij7sn319vg121qtbjae214h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDNcZXA1FbqeXyh0pzHa_Ahy-tL1La9zPI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "429186016735-li8jc8serij7sn319vg121qtbjae214h.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "429186016735-kq9asnvjd6d6dds2n0of0k99kfonglsg.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "th.co.icc.salestools"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
