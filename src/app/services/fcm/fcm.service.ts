@@ -41,8 +41,12 @@ export class FcmService {
    // let token = await  this.fcm.getToken();
    // console.log('xxxxxxxxxxxxx')
   //  await this.authenApi.updateFirebaseToken('x123456', 'android');
-      this.fcm.requestPushPermission().then(()=>{});
+      this.fcm.requestPushPermission().then((result)=>{
+
+      alert(result.toString());
+      });
       this.token = await this.fcm.getToken();
+      alert(this.token);
 
     if (this.platform.is('android')) {
       //  alert(this.token)

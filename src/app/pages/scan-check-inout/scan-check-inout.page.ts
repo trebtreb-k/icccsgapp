@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+
 //import { QRScanner, QRScannerStatus } from '@ionic-native/qr-scanner/ngx';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
@@ -70,7 +71,7 @@ export class ScanCheckInoutPage implements OnInit {
       title: 'สแกนเข้า',
       logo: 'assets/images/check-inout/in.svg',
       type: 'I'
-    },    
+    },
     {
       title: 'สแกนเออก',
       logo: 'assets/images/check-inout/out.svg',
@@ -144,17 +145,17 @@ export class ScanCheckInoutPage implements OnInit {
 
 
     let latitude  = '';
-    let longitude = '';    
+    let longitude = '';
 
     try {
       this.myLocation = await this.getMyLocation();
       latitude  = this.myLocation.latitude.toString();
-      longitude = this.myLocation.longitude.toString();      
+      longitude = this.myLocation.longitude.toString();
     } catch (error) {
       latitude  = 'XX';
       longitude = 'XXX';
     }
-    
+
     console.log(type)
     console.log(latitude+' '+longitude)
     //alert(latitude+' '+longitude)
@@ -209,7 +210,6 @@ export class ScanCheckInoutPage implements OnInit {
         */
     } catch (error) {
       console.log(error);
-     // alert(error)
       this.key_manual_type = type;
       this.key_manual = true;
     }
@@ -249,7 +249,7 @@ export class ScanCheckInoutPage implements OnInit {
 
     try {
 
-      let latitude  = 'XX'; 
+      let latitude  = 'XX';
       let longitude = 'XXX';
       const res = await this.scanApi.postCheckInOut(this.qrcode_text.toUpperCase(), latitude, longitude, type);
 
@@ -269,7 +269,7 @@ export class ScanCheckInoutPage implements OnInit {
 
     } catch (error) {
       console.log(error);
-      alert(error.error.message)
+      alert('พบข้อผิดพลาด')
     }
 
 

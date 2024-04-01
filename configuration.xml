@@ -1,3 +1,12 @@
 <edit-config file="*-Info.plist" mode="merge" target="NSLocationWhenInUseUsageDescription">
    <string>We use your location for full functionality of certain app features.</string>
 </edit-config>
+<edit-config file="*-Info.plist" mode="merge" target="NSCameraUsageDescription">
+   <string>Camera is required for QR scaning clock-in/clock-out</string>
+</edit-config>
+<edit-config file="*-Info.plist" mode="merge" target="NSPhotoLibraryAddUsageDescription">
+   <string>Photo Library is required for Proof of Work and profile image uploading</string>
+</edit-config>
+<edit-config file="*-Info.plist" mode="merge" target="NSPhotoLibraryUsageDescription">
+   <string>Photo Library is required for Proof of Work and profile image uploading</string>
+</edit-config>
