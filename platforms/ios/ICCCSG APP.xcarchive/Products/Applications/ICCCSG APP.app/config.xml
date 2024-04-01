@@ -87,7 +87,7 @@
     <name>ICCCSG APP</name>
     <description>ICC INTERNATIONAL CSG APPLICATION</description>
     <author email="developer@icc.co.th" href="http://www.icc.co.th">ICC 5EA - Developer</author>
-    <content original-src="index.html" src="http://localhost:8100" />
+    <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
@@ -96,7 +96,6 @@
     <allow-intent href="mailto:*" />
     <allow-intent href="geo:*" />
     <allow-navigation href="*" />
-    <allow-navigation href="http://localhost:8100" sessionid="6a491834" />
     <allow-intent href="itms:*" />
     <allow-intent href="itms-apps:*" />
     <icon height="29" src="resources/ios/icon/icon-small.png" width="29" />
