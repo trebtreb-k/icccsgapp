@@ -1,9 +1,10 @@
 {
     "WebKit.framework": 1,
-    "CoreLocation.framework": 3,
-    "AVFoundation.framework": 2,
+    "CoreLocation.framework": 4,
+    "AVFoundation.framework": 3,
     "AudioToolbox.framework": 1,
     "QuartzCore.framework": 1,
     "Security.framework": 1,
-    "MessageUI.framework": 1
+    "MessageUI.framework": 1,
+    "ImageIO.framework": 1
 }

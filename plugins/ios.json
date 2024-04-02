@@ -1,83 +1,86 @@
 {
-  "prepare_queue": {
-    "installed": [],
-    "uninstalled": []
-  },
-  "config_munge": {
-    "files": {}
-  },
-  "installed_plugins": {
-    "cordova-plugin-whitelist": {
-      "PACKAGE_NAME": "th.co.icc.salestools"
+    "prepare_queue": {
+        "installed": [],
+        "uninstalled": []
     },
-    "cordova-plugin-statusbar": {
-      "PACKAGE_NAME": "th.co.icc.salestools"
+    "config_munge": {
+        "files": {}
     },
-    "cordova-plugin-device": {
-      "PACKAGE_NAME": "th.co.icc.salestools"
+    "installed_plugins": {
+        "cordova-plugin-whitelist": {
+            "PACKAGE_NAME": "th.co.icc.salestools"
+        },
+        "cordova-plugin-statusbar": {
+            "PACKAGE_NAME": "th.co.icc.salestools"
+        },
+        "cordova-plugin-device": {
+            "PACKAGE_NAME": "th.co.icc.salestools"
+        },
+        "cordova-plugin-ionic-webview": {
+            "PACKAGE_NAME": "th.co.icc.salestools"
+        },
+        "cordova-plugin-ionic-keyboard": {
+            "PACKAGE_NAME": "th.co.icc.salestools"
+        },
+        "cordova-plugin-geolocation": {
+            "GPS_REQUIRED": "true",
+            "PACKAGE_NAME": "th.co.icc.salestools"
+        },
+        "cordova-plugin-nativegeocoder": {
+            "LOCATION_WHEN_IN_USE_DESCRIPTION": "Use geocoder service",
+            "PACKAGE_NAME": "th.co.icc.salestools"
+        },
+        "com-sarriaroman-photoviewer": {
+            "PACKAGE_NAME": "th.co.icc.salestools"
+        },
+        "cordova-plugin-file-transfer": {
+            "PACKAGE_NAME": "th.co.icc.salestools"
+        },
+        "phonegap-plugin-barcodescanner": {
+            "PACKAGE_NAME": "th.co.icc.salestools"
+        },
+        "cordova-plugin-crop": {
+            "PACKAGE_NAME": "th.co.icc.salestools"
+        },
+        "cordova-plugin-request-location-accuracy": {
+            "PACKAGE_NAME": "th.co.icc.salestools"
+        },
+        "cordova-plugin-fingerprint-aio": {
+            "FACEID_USAGE_DESCRIPTION": " ",
+            "PACKAGE_NAME": "th.co.icc.salestools"
+        },
+        "cordova-plugin-android-permissions": {
+            "PACKAGE_NAME": "th.co.icc.salestools"
+        },
+        "cordova-plugin-unique-device-id2": {
+            "PACKAGE_NAME": "th.co.icc.salestools"
+        },
+        "cordova-plugin-androidx": {
+            "PACKAGE_NAME": "th.co.icc.salestools"
+        },
+        "cordova-plugin-androidx-adapter": {
+            "PACKAGE_NAME": "th.co.icc.salestools"
+        },
+        "cordova-plugin-email-composer": {
+            "PACKAGE_NAME": "th.co.icc.salestools"
+        },
+        "cordova-plugin-inappbrowser": {
+            "PACKAGE_NAME": "th.co.icc.salestools"
+        },
+        "mx.ferreyra.callnumber": {
+            "PACKAGE_NAME": "th.co.icc.salestools"
+        },
+        "cordova-plugin-fcm-with-dependecy-updated": {
+            "IOS_FIREBASE_MESSAGING_VERSION": "~> 7.4.0",
+            "PACKAGE_NAME": "th.co.icc.salestools"
+        },
+        "cordova-plugin-camera": {
+            "PACKAGE_NAME": "th.co.icc.salestools"
+        }
     },
-    "cordova-plugin-ionic-webview": {
-      "PACKAGE_NAME": "th.co.icc.salestools"
-    },
-    "cordova-plugin-ionic-keyboard": {
-      "PACKAGE_NAME": "th.co.icc.salestools"
-    },
-    "cordova-plugin-geolocation": {
-      "GPS_REQUIRED": "true",
-      "PACKAGE_NAME": "th.co.icc.salestools"
-    },
-    "cordova-plugin-nativegeocoder": {
-      "LOCATION_WHEN_IN_USE_DESCRIPTION": "Use geocoder service",
-      "PACKAGE_NAME": "th.co.icc.salestools"
-    },
-    "com-sarriaroman-photoviewer": {
-      "PACKAGE_NAME": "th.co.icc.salestools"
-    },
-    "cordova-plugin-file-transfer": {
-      "PACKAGE_NAME": "th.co.icc.salestools"
-    },
-    "phonegap-plugin-barcodescanner": {
-      "PACKAGE_NAME": "th.co.icc.salestools"
-    },
-    "cordova-plugin-crop": {
-      "PACKAGE_NAME": "th.co.icc.salestools"
-    },
-    "cordova-plugin-request-location-accuracy": {
-      "PACKAGE_NAME": "th.co.icc.salestools"
-    },
-    "cordova-plugin-fingerprint-aio": {
-      "FACEID_USAGE_DESCRIPTION": " ",
-      "PACKAGE_NAME": "th.co.icc.salestools"
-    },
-    "cordova-plugin-android-permissions": {
-      "PACKAGE_NAME": "th.co.icc.salestools"
-    },
-    "cordova-plugin-unique-device-id2": {
-      "PACKAGE_NAME": "th.co.icc.salestools"
-    },
-    "cordova-plugin-androidx": {
-      "PACKAGE_NAME": "th.co.icc.salestools"
-    },
-    "cordova-plugin-androidx-adapter": {
-      "PACKAGE_NAME": "th.co.icc.salestools"
-    },
-    "cordova-plugin-email-composer": {
-      "PACKAGE_NAME": "th.co.icc.salestools"
-    },
-    "cordova-plugin-inappbrowser": {
-      "PACKAGE_NAME": "th.co.icc.salestools"
-    },
-    "mx.ferreyra.callnumber": {
-      "PACKAGE_NAME": "th.co.icc.salestools"
-    },
-    "cordova-plugin-fcm-with-dependecy-updated": {
-      "IOS_FIREBASE_MESSAGING_VERSION": "~> 7.4.0",
-      "PACKAGE_NAME": "th.co.icc.salestools"
+    "dependent_plugins": {
+        "cordova-plugin-file": {
+            "PACKAGE_NAME": "th.co.icc.salestools"
+        }
     }
-  },
-  "dependent_plugins": {
-    "cordova-plugin-file": {
-      "PACKAGE_NAME": "th.co.icc.salestools"
-    }
-  }
 }

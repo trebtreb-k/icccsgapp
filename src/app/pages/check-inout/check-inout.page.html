@@ -26,10 +26,10 @@
         <ion-col size="8">
           {{currentLocation}}
         </ion-col>
-      </ion-row>  
+      </ion-row>
     </div>
     <!-- yod hide 31-03-2022
-    <div class="section__location--map">  
+    <div class="section__location--map">
       <div #map id="map">
         <div class="section__location--content" *ngIf="statusMap === 'LOADING'">
           <ng-lottie
@@ -48,7 +48,7 @@
           <p>ไม่พบตำแหน่งของท่าน กรุณาลองใหม่อีกครั้ง</p>
           <p class="sub">( ตรวจสอบเครื่องของท่าน เปิดบริการหาตำแหน่งที่ตั้งแล้วหรือยัง )</p>
         </div>
-      </div>      
+      </div>
     </div>-->
   </div>
 </ion-content>
@@ -73,11 +73,11 @@
 
   <div class="section__content">
 
-      
 
-    <div class="section__timeout">      
+
+    <div class="section__timeout">
       <div class="section__timeout--check">
-        <ion-checkbox style="margin-top :11px;" color="dark" slot="start" (ionChange)="checkEventAll($event)"></ion-checkbox>     
+        <ion-checkbox style="margin-top :11px;" color="dark" slot="start" (ionChange)="checkEventAll($event)"></ion-checkbox>
         <p style="margin-top:-0px">All</p>
       </div>
       <div class="section__timeout--text">
@@ -88,7 +88,7 @@
             <countdown [config]="{ leftTime: countdownExpire, format: 's' }" (event)="expireCountdown($event)"></countdown>
           </strong>
           วินาที
-        </p>    
+        </p>
       </div>
       <div class="section__timeout--button">
         <button class="btn btn-primary" style="padding:15px;height:55px" [disabled]="!locationsSelected.length" (click)="alertModeAction()">Check In/Out</button>
@@ -102,7 +102,7 @@
     <div class="section__info" *ngFor="let location of workspaceLocation; let i = index">
 
       <div class="section__info--check">
-        <ion-checkbox color="dark" slot="start" [checked]="isCheck(location) >= 0" (ionChange)="checkEvent(location, $event)"></ion-checkbox>     
+        <ion-checkbox color="dark" slot="start" [checked]="isCheck(location) >= 0" (ionChange)="checkEvent(location, $event)"></ion-checkbox>
       </div>
       <div class="section__info--imageText"  (click)="alertModeCheckInOut(location)">
         <div class="img-text">
@@ -135,9 +135,9 @@
 
     <!--
     <div class="section__timeout">
-      
+
       <div class="section__timeout--check">
-        <ion-checkbox style="margin-top:20px" color="dark" slot="start" (ionChange)="checkEventAll($event)"></ion-checkbox>     
+        <ion-checkbox style="margin-top:20px" color="dark" slot="start" (ionChange)="checkEventAll($event)"></ion-checkbox>
         <p style="margin-top:-4px">All</p>
       </div>
 
@@ -149,7 +149,7 @@
             <countdown [config]="{ leftTime: countdownExpire, format: 's' }" (event)="expireCountdown($event)"></countdown>
           </strong>
           วินาที
-        </p>    
+        </p>
       </div>
       <div class="section__timeout--button">
         <button class="btn btn-primary" [disabled]="!locationsSelected.length" (click)="alertModeAction()">Action</button>

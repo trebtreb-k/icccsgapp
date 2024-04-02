@@ -1,6 +1,6 @@
 import * as moment from 'moment';
 
-import { AlertController, ModalController } from '@ionic/angular';
+import { AlertController, ModalController, Platform } from '@ionic/angular';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 
 import { CheckInoutService } from './../../services/api/check-inout/check-inout.service';
@@ -52,37 +52,11 @@ export class CheckInoutPage implements OnInit {
   countdownExpire = 60;
   countdownCompleted = 3;
 
-  autoCheck : boolean;
-  currentLocation : string = '';
+  autoCheck: boolean;
+  currentLocation: string;
+  mobilePlatform: string;
+  lottiefiles: any;
 
-
-  lottiefiles = {
-    loadData: {
-      options: { path: 'assets/lottiefiles/reload.json', loop: true },
-      width: '80px',
-      height: '80px',
-    },
-    completedData: {
-      options: { path: 'assets/lottiefiles/completed-2.json', loop: false },
-      width: '170px',
-      height: '170px',
-    },
-    loadingMap: {
-      options: { path: 'assets/lottiefiles/loading-map.json', loop: true },
-      width: '300px',
-      height: '300px',
-    },
-    warningMap: {
-      options: { path: 'assets/lottiefiles/warning-map.json', loop: false },
-      width: '150px',
-      height: '150px',
-    },
-    waiting: {
-      options: { path: 'assets/lottiefiles/waiting.json', loop: false },
-      width: '100px',
-      height: '100px',
-    },
-  };
 
 
   result = {
@@ -93,16 +67,18 @@ export class CheckInoutPage implements OnInit {
     counter_id   : '',
     counter_name : '',
     time_stamp   : ''
-  }
+  };
 
   constructor(private router: Router,
               private alertController: AlertController,
               private modalController: ModalController,
               private geolocation: Geolocation,
+              private platform: Platform,
               private locationAccuracy:  LocationAccuracy,
-              private checkInApi : CheckInoutService) {}
+              private checkInApi: CheckInoutService) {}
 
-  ngOnInit() {
+  async ngOnInit() {
+    await this.checkMobilePlatform();
     this.initMap();
   }
 
@@ -110,12 +86,50 @@ export class CheckInoutPage implements OnInit {
     this.initMap();
   }
 
+  async checkMobilePlatform() {
+    if (this.platform.is('ios')) {
+      this.mobilePlatform = 'ios';
+    } else if (this.platform.is('android')) {
+      this.mobilePlatform = 'android';
+    } else {
+      this.mobilePlatform = 'cordova';
+    }
+
+    this.lottiefiles = {
+      loadData: {
+        options: { path: 'assets/lottiefiles/reload.json', loop: true },
+        width: '80px',
+        height: '80px',
+      },
+      completedData: {
+        options: { path: this.mobilePlatform === 'ios' ? 'assets/lottiefiles/completed.json' : 'assets/lottiefiles/completed-2.json', loop: false },
+        width: '170px',
+        height: '170px',
+      },
+      loadingMap: {
+        options: { path: 'assets/lottiefiles/loading-map.json', loop: true },
+        width: '300px',
+        height: '300px',
+      },
+      warningMap: {
+        options: { path: 'assets/lottiefiles/warning-map.json', loop: false },
+        width: '150px',
+        height: '150px',
+      },
+      waiting: {
+        options: { path: 'assets/lottiefiles/waiting.json', loop: false },
+        width: '100px',
+        height: '100px',
+      },
+    };
+  }
+
   async initMap(): Promise<void> {
     try {
 
       this.myLocation = await this.getMyLocation();
      // alert( this.myLocation.latitude.toString())
-      this.currentLocation = this.myLocation.latitude.toString()+' , '+this.myLocation.longitude.toString()
+      this.currentLocation = this.myLocation.latitude.toString()+' , '+this.myLocation.longitude.toString();
       //31-03-2022 this.showMap(this.myLocation);
 
       this.workspaceLocation = await this.getWorkLocation();
@@ -148,9 +162,13 @@ export class CheckInoutPage implements OnInit {
        //   await this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY)
 
 
-       //   alert('3')
-          console.log('call getCurrentPosition')
+       //alert('3')
+
+          console.log('call getCurrentPosition');
           const resp = await this.geolocation.getCurrentPosition({enableHighAccuracy: true});
+
+          resp.coords.latitude = 13.686262;
+          resp.coords.longitude = 100.526466;
 
           resolve({
             title: 'My Location',
@@ -162,7 +180,7 @@ export class CheckInoutPage implements OnInit {
         //}
 
       } catch (error) {
-        alert('err')
+        alert('err');
         console.log(error);
         reject({ name: 'MY_LOCATION', message: 'NOT_FOUND' });
       }
@@ -174,7 +192,7 @@ export class CheckInoutPage implements OnInit {
 
       const response = await this.checkInApi.getLocationNearMe(this.myLocation.latitude.toString(), this.myLocation.longitude.toString());
 
-      let datas= [];
+      let datas = [];
 
       response.datas.forEach(data => {
         datas.push({

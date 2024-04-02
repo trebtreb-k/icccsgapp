@@ -354,6 +354,7 @@ dependencies {
     implementation "com.android.support:support-v4:27.+"
     implementation "com.soundcloud.android:android-crop:1.0.0@aar"
     implementation "com.google.android.gms:play-services-location:16.+"
+    implementation "com.android.support:support-v4:24.1.1+"
     // SUB-PROJECT DEPENDENCIES END
 }
 
