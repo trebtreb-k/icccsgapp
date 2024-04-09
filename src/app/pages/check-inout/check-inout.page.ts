@@ -167,8 +167,8 @@ export class CheckInoutPage implements OnInit {
           console.log('call getCurrentPosition');
           const resp = await this.geolocation.getCurrentPosition({enableHighAccuracy: true});
 
-          resp.coords.latitude = 13.686262;
-          resp.coords.longitude = 100.526466;
+          //resp.coords.latitude = 13.686262;
+          //resp.coords.longitude = 100.526466;
 
           resolve({
             title: 'My Location',
