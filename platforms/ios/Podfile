@@ -2,8 +2,8 @@
 source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '11.0'
 
-target 'ICCCSG APP' do
-	project 'ICCCSG APP.xcodeproj'
+target 'C:\Users\90536\Documents\icccsgapp\platforms\ios\ICCCSG APP' do
+	project 'C:\Users\90536\Documents\icccsgapp\platforms\ios\ICCCSG APP.xcodeproj'
 	pod 'Firebase/Messaging', '~> 7.4.0'
 	pod 'GoogleUtilities', '7.12.0'
 end

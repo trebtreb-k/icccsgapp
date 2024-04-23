@@ -84,9 +84,6 @@
     <feature name="FCMPlugin">
         <param name="ios-package" value="FCMPlugin" />
     </feature>
-    <feature name="Camera">
-        <param name="ios-package" value="CDVCamera" />
-    </feature>
     <name>ICCCSG APP</name>
     <description>ICC INTERNATIONAL CSG APPLICATION</description>
     <author email="developer@icc.co.th" href="http://www.icc.co.th">ICC 5EA - Developer</author>
@@ -170,7 +167,6 @@
     <preference name="deployment-target" value="11.0" />
     <preference name="CordovaWebViewEngine" value="CDVWKWebViewEngine" />
     <preference name="SwiftVersion" value="5.0" />
-    <preference name="CameraUsesGeolocation" value="false" />
     <preference name="ScrollEnabled" value="false" />
     <preference name="SplashMaintainAspectRatio" value="true" />
     <preference name="FadeSplashScreenDuration" value="300" />

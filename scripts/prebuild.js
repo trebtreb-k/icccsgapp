@@ -4,6 +4,9 @@ module.exports = function (ctx) {
   var projectDir = ctx.project.dir;
   fixCordovaFileTransferIOS(projectDir);
   fixPodGoogleUtilitiesIOS(projectDir);
+  fixAndroidCompatFingerPrint(projectDir);
+  fixAndroidDefaultSDKVersion(projectDir);
+
 };
 
 function fixCordovaFileTransferIOS(projectDir) {
@@ -60,4 +63,38 @@ function fixPodGoogleUtilitiesIOS(projectDir) {
   }
 
   console.log('Fixed GoogleUtilities Pod');
+}
+
+function fixAndroidCompatFingerPrint(projectDir) {
+  var fs = require('fs');
+
+  var filePath = projectDir + '/platforms/android/cordova-plugin-fingerprint-aio/salestools-build.gradle';
+
+  var fileContent = fs.readFileSync(filePath, 'utf8');
+
+  newFileContent = fileContent.replace("dependencies {\n    implementation \"androidx.biometric:biometric", "dependencies {\n    implementation \"androidx.appcompat:appcompat:1.2.0\"\n    implementation \"androidx.biometric:biometric");
+
+  if (fileContent !== newFileContent) {
+    fs.writeFileSync(filePath, newFileContent, 'utf8');
+  }
+
+  console.log('Fixed Android Finger Print');
+}
+
+function fixAndroidDefaultSDKVersion(projectDir) {
+  var fs = require('fs');
+
+  var filePath = projectDir + '/platforms/android/build.gradle';
+
+  var fileContent = fs.readFileSync(filePath, 'utf8');
+
+  newFileContent = fileContent.replace("defaultBuildToolsVersion=\"29.0.2\"", "defaultBuildToolsVersion=\"30.0.3\"");
+  newFileContent = newFileContent.replace("defaultTargetSdkVersion=29", "defaultTargetSdkVersion=30");
+  newFileContent = newFileContent.replace("defaultCompileSdkVersion=29", "defaultCompileSdkVersion=30");
+
+  if (fileContent !== newFileContent) {
+    fs.writeFileSync(filePath, newFileContent, 'utf8');
+  }
+
+  console.log('Fixed Default Android SDK Version');
 }

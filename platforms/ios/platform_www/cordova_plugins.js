@@ -310,14 +310,6 @@ cordova.define('cordova/plugin_list', function(require, exports, module) {
       ]
     },
     {
-      "id": "cordova-plugin-android-permissions.Permissions",
-      "file": "plugins/cordova-plugin-android-permissions/www/permissions-dummy.js",
-      "pluginId": "cordova-plugin-android-permissions",
-      "clobbers": [
-        "cordova.plugins.permissions"
-      ]
-    },
-    {
       "id": "cordova-plugin-unique-device-id2.UniqueDeviceID",
       "file": "plugins/cordova-plugin-unique-device-id2/www/uniqueid.js",
       "pluginId": "cordova-plugin-unique-device-id2",
@@ -356,38 +348,6 @@ cordova.define('cordova/plugin_list', function(require, exports, module) {
       "clobbers": [
         "FCM"
       ]
-    },
-    {
-      "id": "cordova-plugin-camera.Camera",
-      "file": "plugins/cordova-plugin-camera/www/CameraConstants.js",
-      "pluginId": "cordova-plugin-camera",
-      "clobbers": [
-        "Camera"
-      ]
-    },
-    {
-      "id": "cordova-plugin-camera.CameraPopoverOptions",
-      "file": "plugins/cordova-plugin-camera/www/CameraPopoverOptions.js",
-      "pluginId": "cordova-plugin-camera",
-      "clobbers": [
-        "CameraPopoverOptions"
-      ]
-    },
-    {
-      "id": "cordova-plugin-camera.camera",
-      "file": "plugins/cordova-plugin-camera/www/Camera.js",
-      "pluginId": "cordova-plugin-camera",
-      "clobbers": [
-        "navigator.camera"
-      ]
-    },
-    {
-      "id": "cordova-plugin-camera.CameraPopoverHandle",
-      "file": "plugins/cordova-plugin-camera/www/ios/CameraPopoverHandle.js",
-      "pluginId": "cordova-plugin-camera",
-      "clobbers": [
-        "CameraPopoverHandle"
-      ]
     }
   ];
   module.exports.metadata = {
@@ -405,14 +365,12 @@ cordova.define('cordova/plugin_list', function(require, exports, module) {
     "cordova-plugin-crop": "0.3.1",
     "cordova-plugin-request-location-accuracy": "2.3.0",
     "cordova-plugin-fingerprint-aio": "5.0.3",
-    "cordova-plugin-android-permissions": "1.1.5",
     "cordova-plugin-unique-device-id2": "2.0.0",
     "cordova-plugin-androidx": "3.0.0",
     "cordova-plugin-androidx-adapter": "1.1.3",
     "cordova-plugin-email-composer": "0.9.2",
     "cordova-plugin-inappbrowser": "5.0.0",
     "mx.ferreyra.callnumber": "0.0.2",
-    "cordova-plugin-fcm-with-dependecy-updated": "7.8.0",
-    "cordova-plugin-camera": "4.0.3"
+    "cordova-plugin-fcm-with-dependecy-updated": "7.8.0"
   };
 });
