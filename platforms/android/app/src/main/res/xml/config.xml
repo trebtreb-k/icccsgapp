@@ -75,7 +75,7 @@
     <name>ICCCSG APP</name>
     <description>ICC INTERNATIONAL CSG APPLICATION</description>
     <author email="developer@icc.co.th" href="http://www.icc.co.th">ICC 5EA - Developer</author>
-    <content src="index.html" />
+    <content original-src="index.html" src="http://localhost:8100" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
@@ -89,6 +89,9 @@
         <application android:networkSecurityConfig="@xml/network_security_config" />
         <application android:exported="true" />
         <application android:usesCleartextTraffic="true" />
+    </edit-config>
+    <edit-config file="app/src/main/AndroidManifest.xml" mode="merge" target="/manifest/application/activity[@android:name='MainActivity']" xmlns:android="http://schemas.android.com/apk/res/android">
+        <activity android:exported="true" />
     </edit-config>
     <resource-file src="resources/android/xml/network_security_config.xml" target="app/src/main/res/xml/network_security_config.xml" />
     <allow-intent href="market:*" />

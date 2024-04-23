@@ -515,24 +515,27 @@ export class HomePage implements OnInit {
     /***********************************/
 
     fcmListenToNotifications() {
-      this.fcm.getToken();
+      this.platform.ready().then(() => {
+        this.fcm.getToken();
+  
+  
+        try {
+          this.fcm.listenToNotifications().subscribe((data) => {
+            console.log(data);
+  
+            if (data.wasTapped) {
+              console.log('Received in background');
+            } else {
+              console.log('Received in foreground');
+              // alert(JSON.stringify(data))
+              this.alertNotifyMessage(data);
+            }
+          });
+        } catch (error) {
+  
+        }
 
-
-      try {
-        this.fcm.listenToNotifications().subscribe((data) => {
-          console.log(data);
-
-          if (data.wasTapped) {
-            console.log('Received in background');
-          } else {
-            console.log('Received in foreground');
-            // alert(JSON.stringify(data))
-            this.alertNotifyMessage(data);
-          }
-        });
-      } catch (error) {
-
-      }
+      });
 
     }
 
