@@ -83,7 +83,7 @@
                 "parents": {
                     "/manifest/application": [
                         {
-                            "xml": "<application android:usesCleartextTraffic=\"true\" />",
+                            "xml": "<application android:exported=\"true\" />",
                             "count": 3,
                             "mode": "merge",
                             "id": "config.xml",
@@ -98,7 +98,7 @@
                             }
                         },
                         {
-                            "xml": "<application android:networkSecurityConfig=\"@xml/network_security_config\" />",
+                            "xml": "<application android:usesCleartextTraffic=\"true\" />",
                             "count": 2,
                             "mode": "merge",
                             "id": "config.xml",
@@ -113,7 +113,7 @@
                             }
                         },
                         {
-                            "xml": "<application android:exported=\"true\" />",
+                            "xml": "<application android:networkSecurityConfig=\"@xml/network_security_config\" />",
                             "count": 1,
                             "mode": "merge",
                             "id": "config.xml",
@@ -147,16 +147,37 @@
                     ],
                     "/manifest": [
                         {
-                            "xml": "<manifest xmlns:tools=\"http://schemas.android.com/tools\" />",
+                            "xml": "<uses-permission android:name=\"android.permission.POST_NOTIFICATIONS\" />",
                             "count": 1,
                             "mode": "merge",
                             "id": "config.xml",
                             "oldAttrib": {
                                 "android:hardwareAccelerated": "true",
+                                "android:name": "android.permission.POST_NOTIFICATIONS",
                                 "android:versionCode": "10305",
                                 "android:versionName": "1.3.5",
                                 "package": "th.co.icc.salestools",
                                 "xmlns:android": "http://schemas.android.com/apk/res/android"
+                            }
+                        }
+                    ],
+                    "/manifest/uses-permission": [
+                        {
+                            "xml": "<uses-permission android:name=\"android.permission.INTERNET\" />",
+                            "count": 1,
+                            "mode": "merge",
+                            "id": "config.xml",
+                            "oldAttrib": {
+                                "android:name": "android.permission.POST_NOTIFICATIONS"
+                            }
+                        },
+                        {
+                            "xml": "<uses-permission android:name=\"android.permission.POST_NOTIFICATIONS\" />",
+                            "count": 1,
+                            "mode": "merge",
+                            "id": "config.xml",
+                            "oldAttrib": {
+                                "android:name": "android.permission.INTERNET"
                             }
                         }
                     ]
