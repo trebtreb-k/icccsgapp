@@ -16,7 +16,15 @@ export class AnnounceService {
 
   async announce(): Promise<any> {
     const url = `${ST_ROOT.announce}/salestools/announce/list`;
-    return this.http.get(url).toPromise();
+ 
+    const token = await this.storage.get('USER_TOKEN');
+    let headers = new HttpHeaders();
+    headers = headers.set('Authorization', `Bearer ${token}`);
+    console.log(headers);
+    
+    return this.http.get(url, { headers }).toPromise();
+    
+    //return this.http.get(url).toPromise();
   }
 
 

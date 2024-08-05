@@ -61,11 +61,12 @@ export class UniqueDeviceIdService {
       //  await this.updateUniqueDeviceId('112233445566', userInfo.mobile_phone, this.mobilePlatform);
 
        // alert(this.mobilePlatform)
-
+       
        if (this.mobilePlatform === 'android' || this.mobilePlatform === 'ios') {
 
-           const uuid = await this.uniqueDeviceId.get();
 
+           const uuid = await this.uniqueDeviceId.get();
+           
            const res = await this.updateUniqueDeviceId(uuid, userInfo.mobile_phone, this.mobilePlatform);
 
            if(res.result){
@@ -75,7 +76,7 @@ export class UniqueDeviceIdService {
            }
 
        } else {
-
+        
            return { result : true };
        }
 

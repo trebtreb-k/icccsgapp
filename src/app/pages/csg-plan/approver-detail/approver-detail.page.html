@@ -15,7 +15,7 @@
     <ion-list  lines="none" >
       <!-- <ion-item-sliding [ngClass]="{'status__item': true, disable: true}"> -->
       <ion-item-sliding *ngFor="let v of values">
-        <ion-item >
+        <ion-item *ngIf="v.flag_approve">
           <ion-thumbnail>
             <img style="border-radius: 50%" onerror="this.src='assets/images/avatar-male.svg'" src='https://iccapp-minio.icc.co.th:9000/icchrapp/profile/{{v.approve_id}}/{{v.approve_id}}.jpg'>
           </ion-thumbnail>

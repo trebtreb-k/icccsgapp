@@ -25,6 +25,7 @@ export class CreateWorkflowPage implements OnInit {
   user: API_RESPONSE_PROFILE;
   dateNow = moment().format('YYYY-MM-DD');
   approvers: any = [];
+  typeleaverequests: any = [];
   flagUpdateApprover = false;
 
   titleReason: string = 'เหตุผลการลา';
@@ -76,6 +77,15 @@ export class CreateWorkflowPage implements OnInit {
   async init(): Promise<void> {
     try {
       const fetchApproverInfo = await this.api.workflowApproverInfo();
+      const config = await this.storage.get('CONFIG');
+      console.log(config);
+   
+      const listsTypeLeave = await this.api.workflowTypeLeaverequest();
+      this.typeleaverequests = listsTypeLeave.datas;
+
+      console.log('listsTypeLeave',listsTypeLeave);
+      console.log('typeleaverequest',this.typeleaverequests);
+      
 
       const { approver1, approver2, approver1Name, approver2Name, empid, telno } = fetchApproverInfo.data;
       const approversRaw = [
@@ -85,6 +95,8 @@ export class CreateWorkflowPage implements OnInit {
       const image = (id: string) => `https://iccapp-minio.icc.co.th:9000/icchrapp/profile/${id}/${id}.jpg?alt=media`;
       const approversData = approversRaw.map((p: any) => ({ ...p, image: image(p.id), event: p.id ? 'แก้ไข' : 'เพิ่ม' }));
 
+      
+      
       this.approvers = approversData;
 
       this.loading.dismiss();
@@ -158,6 +170,7 @@ export class CreateWorkflowPage implements OnInit {
 
       const deptId = this.user.dept_id;
       const lists = await this.api.workflowSearchApprover(level, deptId);
+     
 
       this.loading.dismiss();
 

@@ -99,7 +99,10 @@ export class ApproverDetailPage implements OnInit {
 
   ngOnInit() {
     this.loading.present();
-    this.getDetailApprover(this.paramsMonthBefore.yearmonth, this.paramsMonthBefore.csgid);
+
+    console.log("this.paramsMonthBefore",this.paramsMonthBefore);
+    
+    this.getDetailApprover(this.paramsMonthBefore.yearmonth, this.paramsMonthBefore.csgid, this.paramsMonthBefore.step_status);
   }
 
 
@@ -109,7 +112,10 @@ export class ApproverDetailPage implements OnInit {
      }, 2000);
   }
 
-  async getDetailApprover(period,empID) {
+  async getDetailApprover(period,empID,step_status) {
+
+    console.log('step_status',step_status);
+    
 
     const callApiApproverDetail = await this.api.getApproverDetail(period, empID);
     // const callApiCountHoliday = await this.api.getApproverDetail('202306', '90536');

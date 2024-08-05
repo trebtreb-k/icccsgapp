@@ -34,6 +34,8 @@ export class WorkflowService {
   async workflowDocDetail(body: { workflow_id: string; doc_id: string }): Promise<any> {
     const token = await this.storage.get('USER_TOKEN');
     const url = `${ST_ROOT.workflow}/salestools/leaverequest/lists/detail`;
+    console.log(url);
+    
     let headers = new HttpHeaders();
     headers = headers.set('Authorization', `Bearer ${token}`);
 
@@ -69,12 +71,32 @@ export class WorkflowService {
 
   async workflowSearchApprover(level: string, deptId: string): Promise<any> {
     const token = await this.storage.get('USER_TOKEN');
+    
+
     const url = `${ST_ROOT.workflow}/salestools/leaverequest/searchpeople/${level}/${deptId}`;
+    console.log(url);
+    console.log(token);
+    
     let headers = new HttpHeaders();
     headers = headers.set('Authorization', `Bearer ${token}`);
 
     return this.http.get(url, { headers }).toPromise();
   }
+
+  async workflowTypeLeaverequest(): Promise<any> {
+    const token = await this.storage.get('USER_TOKEN');
+
+    console.log('ST_ROOT.workflow',ST_ROOT);
+
+    const url = `${ST_ROOT.workflow}/salestools/leaverequest/typeleaverequest`;
+    console.log('workflowTypeLeaverequest', url);
+    
+    let headers = new HttpHeaders();
+    headers = headers.set('Authorization', `Bearer ${token}`);
+
+    return this.http.get(url, { headers }).toPromise();
+  }
+
 
   async workflowCreateDoc(body: CreateDocBody): Promise<any> {
     const token = await this.storage.get('USER_TOKEN');

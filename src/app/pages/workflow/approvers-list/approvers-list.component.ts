@@ -22,6 +22,9 @@ export class ApproversListComponent implements OnInit {
   ngOnInit() {
     const state = this.navParams.get('props').people;
 
+    console.log(state);
+
+
     const image = (id: any) => `https://iccapp-minio.icc.co.th:9000/icchrapp/profile/${id}/${id}.jpg?alt=media`;
     const datas = state.map((param: any) => ({ ...param, image: image(param.empid) }));
 

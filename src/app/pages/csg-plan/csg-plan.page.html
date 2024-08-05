@@ -22,7 +22,7 @@
       <ion-item-sliding>
         <ion-label>ขั้นตอนการอนุมัติ</ion-label>
 
-        <section class="status" (click)="status_plan === 'X' ? '' : status_plan === 'N' ? '' : approverDetail(monthCreate,empId)">
+        <section class="status">
           <div class="status__step">
             <!-- // -------------------------------------------- // -->
 
@@ -47,11 +47,11 @@
 
             <!-- <div [ngClass]="{'status__item': true, disable: status_plan === 'A' ? false : status_plan === 'W' ? false : true, bb: true}"> -->
             <!-- <div [ngClass]="{'status__item': true, disable: status_plan === 'A' ? false : status_plan === 'W' ? false : true, bb: true}"> -->
-            <div [ngClass]="{'status__item': true, disable: status_plan === 'X' ? true : status_plan === 'N' ? true : false, bb: true}">
+            <div [ngClass]="{'status__item': true, disable: status_plan === 'X' ? true : status_plan === 'N' ? true : false, bb: true}" (click)="status_plan === 'X' ? '' : status_plan === 'N' ? '' : approverDetail(monthCreate,empId,'A')">
               <div class="status__item--image">
                 <!-- <ion-icon name="time" color="warning"></ion-icon> -->
                 <!-- <ion-icon [name]="status_plan === 'A' ? 'time' : status_plan === 'W' ? 'time' : status_plan === 'X' ? 'time' : 'checkmark-circle'" [color]="status_plan === 'N' ? 'warning' : status_plan === 'W' ? 'warning' :status_plan === 'X' ? 'warning' : 'success'"></ion-icon> -->
-                <ion-icon [name]="status_plan === 'S' ? 'checkmark-circle' : 'time' " [color]="status_plan === 'N' ? 'warning' : status_plan === 'W' ? 'warning' :status_plan === 'S' ? 'success' : 'warning'"></ion-icon>
+                <ion-icon [name]="status_plan === 'S' ? 'checkmark-circle' : status_plan === 'A' ? 'checkmark-circle' : 'time' " [color]="status_plan === 'S' || status_plan === 'A' ? 'success' :  'warning'"></ion-icon>
               </div>
                 <label>{{g2_desc}}</label>
             </div>
@@ -65,10 +65,10 @@
             <!-- // -------------------------------------------- // -->
 
             <!-- <div [ngClass]="{'status__item': true, disable: status_plan === 'S' ? false : true, bb: true}"> -->
-            <div [ngClass]="{'status__item': true, disable: status_plan === 'S' ? false : true, bb: true}">
+            <div [ngClass]="{'status__item': true, disable: status_plan === 'S' ? false : status_plan === 'A' ? false : true, bb: true}" (click)="status_plan === 'X' ? '' : status_plan === 'N' ? '' : approverDetail(monthCreate,empId,'S')">
               <div class="status__item--image">
                 <!-- <ion-icon [name]="status_plan === 'X' ? 'time' : 'checkmark-circle'" [color]="status_plan === 'X' ? 'warning' : 'success'"></ion-icon> -->
-                <ion-icon [name]="status_plan === 'S' ? 'checkmark-circle' : 'time' " [color]="status_plan === 'S' ? 'success' : 'warning'"></ion-icon>
+                <ion-icon [name]="status_plan === 'S' ? 'checkmark-circle' :  'time' " [color]="status_plan === 'S' ? 'success' : 'warning'"></ion-icon>
               </div>
                 <label>{{g3_desc}}</label>
             </div>

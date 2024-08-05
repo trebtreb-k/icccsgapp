@@ -17,6 +17,7 @@ import { StorageService } from './../../services/storage/storage.service';
 import { UniqueDeviceIdService } from './../../services/api/unique-device-id/unique-device-id.service';
 import { environment as env } from './../../../environments/environment';
 import { moment } from './../../services/utils/moment/moment.service';
+import { CsgPlanService } from './../../services/api/csg-plan/csg-plan.service';
 
 moment.locale('th');
 
@@ -173,6 +174,7 @@ export class HomePage implements OnInit {
     private pdpaApi: PdpaService,
     private crypto: CryptoService,
     private iab: InAppBrowser,
+    private api: CsgPlanService,
   ) {
   //  this.fcm.getToken();
     this.fcmListenToNotifications();
@@ -230,7 +232,8 @@ export class HomePage implements OnInit {
     // } catch (error) {
     //   console.log(error);
     // }
-
+   
+    
   }
 
 
@@ -238,6 +241,7 @@ export class HomePage implements OnInit {
   async ionViewDidEnter() {
     this.getConfig();
     this.getUserInfo();
+
 
     try {
         console.log('start get timetoday')
@@ -252,6 +256,8 @@ export class HomePage implements OnInit {
 
         /* announce slider */
         const announce = await this.home.announce();
+        console.log(announce);
+        
         this.newsData = await announce.data;
 
         this.getAnnouncePopup();
@@ -262,31 +268,31 @@ export class HomePage implements OnInit {
 
 
     console.log(this.cheked_unique_device_id);
-    if(!this.cheked_unique_device_id){
+    // if(!this.cheked_unique_device_id){
 
-      try {
-        const res = await this.uniqueDeviceIdApi.checkUniqueDeviceId();
+    //   try {
+    //     const res = await this.uniqueDeviceIdApi.checkUniqueDeviceId();
 
-        if(res.result){
-          this.cheked_unique_device_id = true;
-        }else{
-          this.cheked_unique_device_id = false;
-          await this.storage.clear();
-          await alert('Error: '+res.error_message);
-          this.router.navigate(['/login', {replaceUrl:true}]);
-        }
-       // alert('res='+JSON.stringify(res))
-       // console.log('cheked_unique_device_id',this.cheked_unique_device_id)
-       // alert(this.cheked_unique_device_id)
+    //     if(res.result){
+    //       this.cheked_unique_device_id = true;
+    //     }else{
+    //       this.cheked_unique_device_id = false;
+    //       await this.storage.clear();
+    //       await alert('Error: '+res.error_message);
+    //       this.router.navigate(['/login', {replaceUrl:true}]);
+    //     }
+    //    // alert('res='+JSON.stringify(res))
+    //    // console.log('cheked_unique_device_id',this.cheked_unique_device_id)
+    //    // alert(this.cheked_unique_device_id)
 
-      } catch (e) {
-       // alert(JSON.stringify(e))
-        this.cheked_unique_device_id = false;
-        await this.storage.clear();
-        alert('Error: '+e.error?.e.error?.error_message)
-        this.router.navigate(['/login', {replaceUrl:true}]);
-      }
-    }
+    //   } catch (e) {
+    //    // alert(JSON.stringify(e))
+    //     this.cheked_unique_device_id = false;
+    //     await this.storage.clear();
+    //     alert('Error: '+e.error?.e.error?.error_message)
+    //     this.router.navigate(['/login', {replaceUrl:true}]);
+    //   }
+    // }
 
 
 
@@ -312,9 +318,21 @@ export class HomePage implements OnInit {
 
   async getUserInfo(): Promise<void> {
     const info = await this.storage.get('USER_INFO');
+    console.log(info);
+    
     this.user = info;
     this.user.picture = this.user.picture+'?v='+this.version_picture.toString();
 
+
+    console.log(info.company);
+    
+    // const monthV = moment().format('YYYYMM');
+    // const callApi = await this.api.getCSGPlan(info.emp_id, monthV);
+    // console.log(callApi);
+
+
+    console.log(info.menus);
+    this.menus = info.menus;
     /*
     if(this.state){
       if(this.state.refresh){
@@ -347,7 +365,7 @@ export class HomePage implements OnInit {
   }
 
   navigate(route: string, redirect: string): void {
-
+    
     if(redirect=='PDPA'){
        this.openPDPA();
 
@@ -571,7 +589,6 @@ export class HomePage implements OnInit {
             this.router.navigate(['/pdpa-privacy-notify']);
           }
         }
-
       } catch (error) {
         console.log(error)
         //alert(error);

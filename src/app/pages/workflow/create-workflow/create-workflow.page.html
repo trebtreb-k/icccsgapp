@@ -25,11 +25,14 @@
                 formControlName="type"
                 (ionChange)="typeChange()"
               >
-                <ion-select-option value="A1">ลาป่วย</ion-select-option>
+
+                <ion-select-option *ngFor="let typeleaverequest of typeleaverequests" value="{{typeleaverequest.type}}">{{typeleaverequest.type_name}}</ion-select-option>
+
+                <!-- <ion-select-option value="A1">ลาป่วย</ion-select-option>
                 <ion-select-option value="C1">ลากิจ</ion-select-option>
                 <ion-select-option value="C2">ลากิจพิเศษ</ion-select-option>
                 <ion-select-option value="G1">ลาพักร้อน</ion-select-option>
-                <ion-select-option value="99">ปรับปรุงข้อมูลตามใบแก้ไข</ion-select-option>
+                <ion-select-option value="99">ปรับปรุงข้อมูลตามใบแก้ไข</ion-select-option> -->
                 
               </ion-select>
             </div>

@@ -26,6 +26,7 @@ const combine = (req: RootUrl): string => {
     : `${protocol}://${random(response(domain))}:${random(response(port))}`;
 };
 
+
 const current = (param: RootServer): string => (env.production ? combine(param.production) : combine(param.development));
 
 // :: ++++++++++++++++++++++++++++++++++++ ::

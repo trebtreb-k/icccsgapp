@@ -69,6 +69,7 @@
     "moment": "^2.29.1",
     "ngx-countdown": "^8.0.1",
     "ngx-lottie": "^6.4.0",
+    "package.json": "^2.0.1",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2"

@@ -222,7 +222,6 @@ export class CsgPlanPage implements OnInit {
 
      console.log(body);
 
-
     const callApi = await this.api.updateWorkPlanStatusCretae(body);
 
     console.log('???????',callApi);
@@ -714,9 +713,13 @@ export class CsgPlanPage implements OnInit {
     this.router.navigate(['csg-plan/create-plan'], navigationExtras);
   }
 
-  async approverDetail(dataYearmonth,dataCSGID) {
+  async approverDetail(dataYearmonth,dataCSGID,status) {
     const navigationExtras: NavigationExtras = {
-      state: {yearmonth: dataYearmonth,csgid: dataCSGID}
+      state: {
+        yearmonth: dataYearmonth,
+        csgid: dataCSGID,
+        step_status: status
+      }
     };
 
     console.log(navigationExtras);

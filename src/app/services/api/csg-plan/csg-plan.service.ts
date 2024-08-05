@@ -12,7 +12,7 @@ export class CsgPlanService {
 
   async getCSGPlan(empId: string, date: any): Promise<any> {
     const url = `${ST_ROOT.csgplan}/salestools/csg_plan/${date}/${empId}`;
-    console.log('?????????',url);
+    console.log('????--?????',url);
 
     return this.http.get(url).toPromise();
   }

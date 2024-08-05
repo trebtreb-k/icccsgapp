@@ -33,8 +33,17 @@ export class AuthenService {
     return this.http.post(url, {}, {}).toPromise();
   }
 
-  async verifyToken(token: string): Promise<any> {  
+  async verifyToken(token: string): Promise<any> { 
+
+    
+
+    // ทดสอบ TWC 
+    // const url = `https://webapidev.icc.co.th:7111/salestools/authen/verify`;
+    // ------
+
     const url = `${ST_ROOT.authen}/salestools/authen/verify`;
+    console.log('url-----',url);
+    
     let headers = new HttpHeaders();
     headers = headers.set('Authorization', `Bearer ${token}`);
     return this.http.post(url, {}, { headers }).toPromise();
@@ -48,39 +57,40 @@ export class AuthenService {
 
       const url = `${ST_ROOT.authen}/salestools/authen/login`;
       const request: any = await this.http.post(url, { username, password }).toPromise();
+      console.log('request=---=',request);
       const { token } = request?.data;
 
       const verify: any = await this.verifyToken(token);
+      console.log('verify=---=',verify);
       const { profile } = verify?.data;
 
+      console.log('profile--------',profile);
       await this.storage.set('USER_TOKEN', token);
 
       let picture;// = ST_USER_PICTURE+'/'+ profile.emp_id+'/'+profile.emp_id+'.jpg';
       if(profile.type==='EMPLOYEE'){
           picture = ST_USER_PICTURE+'/'+ profile.emp_id+'/'+profile.emp_id+'.jpg';
       }else{
-          picture ='assets/images/avatar-female.svg';  
+          picture ='assets/images/avatar-female.svg';
       }
 
       await this.storage.set('USER_INFO', {...profile, picture});
-     
       this.authenticationState.next('authorized');
 
-      if(profile.type==='EMPLOYEE'){     
-        // await this.uniqueDeviceIdApi.checkUniqueDeviceId();  
+      if(profile.type==='EMPLOYEE'){
+        // await this.uniqueDeviceIdApi.checkUniqueDeviceId();
 
         //setTimeout(() => {
        //   const info = this.storage.get('USER_TOKEN');
         //  if(info){
             this.router.navigate(['/home'], {replaceUrl:true});
         //  }
-          
         //}, 1000);
-        
+
       }else{
         this.router.navigate(['/guest-home'], {replaceUrl:true});
       }
-      
+
     } catch (error) {
       console.log(error);
       const message = error?.error?.error_message || 'error!';
@@ -217,7 +227,6 @@ export class AuthenService {
     return this.http.put(url, body,  { headers }).toPromise();
   }
 
-  
   async checkUpdateMobileNotEmp(new_mobile_phone :string): Promise<any> {
 
     const url = `${ST_ROOT.authen}/salestools/authen/check_update_mobile_notemp/${new_mobile_phone}`;
@@ -227,7 +236,6 @@ export class AuthenService {
     let body = {}
     return this.http.get(url, { headers }).toPromise();
   }
-
 }
 
 
