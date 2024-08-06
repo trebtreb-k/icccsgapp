@@ -37,7 +37,7 @@ function fixCordovaFileTransferIOS(projectDir) {
     fs.writeFileSync(filePathIOS, fileContentIOS, 'utf8');
 
     console.log('Fixed cordova-plugin-file-transfer iOS');
-  } catch(e) {
+  } catch (e) {
 
   }
 }
@@ -55,12 +55,12 @@ function fixPodGoogleUtilitiesIOS(projectDir) {
 
     if (fileContent !== newFileContent) {
       fs.writeFileSync(filePath, newFileContent, 'utf8');
-      cp.exec('rm Podfile.lock', {cwd: 'platforms/ios/'}, function(error,stdout,stderr) {
+      cp.exec('rm Podfile.lock', { cwd: 'platforms/ios/' }, function (error, stdout, stderr) {
         console.error(error);
         console.log(stdout);
         console.error(stderr);
       });
-      cp.exec('pod install', {cwd: 'platforms/ios/'}, function(error,stdout,stderr) {
+      cp.exec('pod install', { cwd: 'platforms/ios/' }, function (error, stdout, stderr) {
         console.error(error);
         console.log(stdout);
         console.error(stderr);
@@ -68,7 +68,7 @@ function fixPodGoogleUtilitiesIOS(projectDir) {
     }
 
     console.log('Fixed GoogleUtilities Pod');
-  } catch(e) {
+  } catch (e) {
 
   }
 }
@@ -88,7 +88,7 @@ function fixAndroidCompatFingerPrint(projectDir) {
     }
 
     console.log('Fixed Android Finger Print');
-  } catch(e) {
+  } catch (e) {
 
   }
 }
@@ -110,7 +110,7 @@ function fixAndroidDefaultSDKVersion(projectDir) {
     }
 
     console.log('Fixed Default Android SDK Version');
-  } catch(e) {
+  } catch (e) {
 
   }
 }

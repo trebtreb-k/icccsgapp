@@ -31,7 +31,7 @@ import { GuestPlanPopoverComponent } from './pages/guest-plan/guest-plan-popover
 import { HttpClientModule } from '@angular/common/http';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { IonicRatingModule } from 'ionic4-rating';
-import { IonicStorageModule } from '@ionic/storage-angular';
+import { IonicStorageModule, Storage } from '@ionic/storage-angular';
 import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
 import { LottieModule } from 'ngx-lottie';
 import { NativeGeocoder } from '@ionic-native/native-geocoder/ngx';
@@ -112,6 +112,7 @@ const playerFactory = () => player;
     FingerprintAIO,
     StatusBar,
     DocumentViewer,
+    Storage
   ],
   bootstrap: [AppComponent],
 })
