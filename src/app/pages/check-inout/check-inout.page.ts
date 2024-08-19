@@ -8,6 +8,8 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
 import { Router } from '@angular/router';
 
+import { AlertService } from './../../services/utils/alert/alert.service';
+
 //import { AlertCheckInoutComponent } from './alert-check-inout/alert-check-inout.component';
 
 
@@ -75,7 +77,8 @@ export class CheckInoutPage implements OnInit {
               private geolocation: Geolocation,
               private platform: Platform,
               private locationAccuracy:  LocationAccuracy,
-              private checkInApi: CheckInoutService) {}
+              private checkInApi: CheckInoutService,
+              private alert: AlertService) {}
 
   async ngOnInit() {
     await this.checkMobilePlatform();
@@ -102,7 +105,7 @@ export class CheckInoutPage implements OnInit {
         height: '80px',
       },
       completedData: {
-        options: { path: this.mobilePlatform === 'ios' ? 'assets/lottiefiles/completed.json' : 'assets/lottiefiles/completed-2.json', loop: false },
+        options: { path: this.mobilePlatform === 'ios' ? 'assets/lottiefiles/completed.json' : 'assets/lottiefiles/completed.json', loop: false },
         width: '170px',
         height: '170px',
       },
@@ -302,6 +305,31 @@ export class CheckInoutPage implements OnInit {
     }
   }
 
+  async errorCheckInOut(event: any) {
+    //if (event.action === 'done') {
+      const header = 'Error Message';
+      const message = event.error.error_message;
+      const cssClass = 'alert__box--basic';
+      const buttons = [
+        {
+          text: 'ปิด',
+          handler: () => {
+            this.refreshMap()
+            //this.router.navigate(['/home']);
+          },
+        },
+      ];
+
+      const alert = await this.alertController.create({ header, message, cssClass, buttons });
+      await alert.present();
+
+      const dismiss = await alert.onDidDismiss();
+      if (dismiss.role === 'backdrop') {
+        this.router.navigate(['/home']);
+      }
+    //}
+  }
+
   async alertModeCheckInOut(location){
 
     // const modal = await this.modalController.create({
@@ -383,6 +411,7 @@ export class CheckInoutPage implements OnInit {
       }, 200);
 
     } catch (error) {
+      this.alert.basic(error.error.error_message);
       console.log(error);
     }
 
@@ -408,7 +437,7 @@ export class CheckInoutPage implements OnInit {
 
     setTimeout(() => {
       this.autoCheck = false;
-    },1000)
+    },100)
 
   }
 
@@ -536,7 +565,7 @@ export class CheckInoutPage implements OnInit {
           }
           this.statusWorkspace = 'POSTING'
 
-          await this.delayfunction();
+          //await this.delayfunction();
 
       }  // for
 
@@ -546,7 +575,11 @@ export class CheckInoutPage implements OnInit {
       }, 1000);
 
     } catch (error) {
+      //this.alert.basic(error.error.error_message);
+      this.errorCheckInOut(error)
       console.log(error);
+
+      
     }
 
 

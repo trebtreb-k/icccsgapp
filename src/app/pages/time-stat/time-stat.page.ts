@@ -185,6 +185,9 @@ export class TimeStatPage implements OnInit {
     const res = await this.timeStatApi.monthlyAdjust(period);
     this.loadDataMonthly = res.datas;
     this.loadingMonth = false;
+
+    console.log('loadMonthlyAdjust',res);
+    
   }
 
   async loadYearlyAdjust(period) {
@@ -195,6 +198,9 @@ export class TimeStatPage implements OnInit {
     this.date_yearly_adjust_vacation_year = (!res.vacation)?'':res.vacation.year;
     this.date_yearly_adjust_vacation_day  = (!res.vacation)?'':res.vacation.day;
     this.loadingYear = false;
+
+    console.log('loadYearlyAdjust',this.loadDataYearly);
+    
   }
 
 

@@ -65,6 +65,11 @@ export class WorkflowPage implements OnInit {
       await this.loading.present();
       const lists = await this.api.workflowLists();
 
+      console.log(lists);
+
+      
+      
+
       const filterAbsentCode = (datas: any[], status: string) => datas.filter((data: any) => data.workflow_status === status);
 
       const dataLists = (datas: any[]) =>

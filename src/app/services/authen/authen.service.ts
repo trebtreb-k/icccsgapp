@@ -59,11 +59,11 @@ export class AuthenService {
       const request: any = await this.http.post(url, { username, password }).toPromise();
       console.log('request=---=',request);
       const { token } = request?.data;
-
+      
       const verify: any = await this.verifyToken(token);
       console.log('verify=---=',verify);
       const { profile } = verify?.data;
-
+      // return
       console.log('profile--------',profile);
       await this.storage.set('USER_TOKEN', token);
 

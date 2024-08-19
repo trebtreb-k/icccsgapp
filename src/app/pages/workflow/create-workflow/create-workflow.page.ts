@@ -81,7 +81,9 @@ export class CreateWorkflowPage implements OnInit {
       console.log(config);
    
       const listsTypeLeave = await this.api.workflowTypeLeaverequest();
-      this.typeleaverequests = listsTypeLeave.datas;
+      
+
+      this.typeleaverequests = listsTypeLeave.datas.filter((word) => word.flag_active === "Y");
 
       console.log('listsTypeLeave',listsTypeLeave);
       console.log('typeleaverequest',this.typeleaverequests);
@@ -123,10 +125,6 @@ export class CreateWorkflowPage implements OnInit {
 
       /*************************************/
 
-
-
-
-
       const params = {
         groupcode  : 'S01',
         absentcode : form.type,
@@ -157,6 +155,8 @@ export class CreateWorkflowPage implements OnInit {
       this.loading.dismiss();
 
       this.navCtrl.back();
+
+      
     } catch (error) {
       console.log(error);
       this.alert.basic(error.error.error_message);

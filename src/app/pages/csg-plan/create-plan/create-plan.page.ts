@@ -1466,11 +1466,11 @@ export class CreatePlanPage implements OnInit {
             });
           }
         } else {
-          console.log('?????????????11111<<<<<<<<<<<<<<<<<<<<<>>>>>>>');
+          //console.log('?????????????11111<<<<<<<<<<<<<<<<<<<<<>>>>>>>');
           if (moment(i.date, 'DD/MM/YYYY').format('MM') === this.m) {
-            console.log('?????????????222222<<<<<<<<<<<<<<<<<<<<<>>>>>>>');
+            //console.log('?????????????222222<<<<<<<<<<<<<<<<<<<<<>>>>>>>');
             if (moment(i.date, 'DD/MM/YYYY').format('DD') >= this.dayStartFromD) {
-              console.log('?????????????3333333<<<<<<<<<<<<<<<<<<<<<>>>>>>>');
+              //console.log('?????????????3333333<<<<<<<<<<<<<<<<<<<<<>>>>>>>');
               this.daysConfig.push({
                 date: moment(i.date, 'DD/MM/YYYY').format('YYYY-MM-DD'),
                 cssClass: this.status === 'W1' ? 'custom-calendar workday' : this.status === 'V1' ? 'custom-calendar offday' : '',

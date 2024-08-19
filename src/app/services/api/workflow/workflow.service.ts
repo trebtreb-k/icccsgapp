@@ -25,6 +25,9 @@ export class WorkflowService {
   async workflowLists(): Promise<any> {
     const token = await this.storage.get('USER_TOKEN');
     const url = `${ST_ROOT.workflow}/salestools/leaverequest/lists`;
+    console.log(url);
+    console.log('token',token);
+    
     let headers = new HttpHeaders();
     headers = headers.set('Authorization', `Bearer ${token}`);
 

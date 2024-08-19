@@ -19,7 +19,7 @@ export class HomeService {
   async announce(): Promise<any> {
     const url = `${ST_ROOT.announce}/salestools/announce/lists`;
 
-    console.log("******");
+    console.log("***url***",url);
     const token = await this.storage.get('USER_TOKEN');
     let headers = new HttpHeaders();
     headers = headers.set('Authorization', `Bearer ${token}`);

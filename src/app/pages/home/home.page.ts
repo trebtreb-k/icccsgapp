@@ -48,96 +48,7 @@ export class HomePage implements OnInit {
     checkOut : '__:__',
   }
 
-  menus: Menus[] = [
-    {
-      id: 'CHECK-IN',
-      title: 'ลงชื่อเข้า/ออก',
-      logo: 'assets/images/menus/location.png',
-      link: 'check-inout',
-      redirect: '',
-      badge : 0,
-    },
-    {
-      id: 'SCAN-CHECKIN',
-      title: 'สแกนเข้า/ออก',
-      logo: 'assets/images/menus/qr-code-scan.png',
-      link: 'scan-check-inout',
-      redirect: '',
-      badge : 0,
-    },
-    {
-      id: 'CSG-PLAN',
-      title: 'แพลนงาน',
-      logo: 'assets/images/menus/calendar-pen.png',
-      link: 'csg-plan',
-      badge : 0,
-    },
-    {
-      id: 'TIME-STAT',
-      title: 'สถิติการทำงาน',
-      logo: 'assets/images/menus/calendar-time.png',
-      link: 'time-stat',
-      redirect: '',
-      badge : 0,
-    },
-    {
-      id: 'INCOME',
-      title: 'รายได้',
-      logo: 'assets/images/menus/thai-baht.png',
-      link: 'pincode',
-      redirect: 'income',
-      badge : 0,
-    },
-    {
-      id: 'WORKFLOW',
-      title: 'ใบลา',
-      logo: 'assets/images/menus/approve.png',
-      link: 'workflow',
-      redirect: '',
-      badge : 0,
-    },
-    {
-      id: 'QRMS-REGISTER',
-      title: 'ลงทะเบียน QRMS',
-      logo: 'assets/images/menus/calendar-time.png',
-      link: 'qrms-register',
-      redirect: '',
-      badge : 0,
-    },
-    {
-      id: 'CUSTOMER',
-      title: 'ลูกค้า',
-      logo: 'assets/images/menus/user.svg',
-      link: 'customer',
-      redirect: '',
-      badge : 0,
-    },
-    {
-      id: 'DIRECT-TO-CUSTOMER',
-      title: 'Direct to',
-      title2: 'Customer',
-      logo: 'assets/images/menus/bag.png',
-      link: 'direct-to-customer',
-      redirect: '',
-      badge : 0,
-    },
-    {
-      id: 'ANNOUNCE',
-      title: 'ประกาศ',
-      logo: 'assets/images/menus/megaphone-outline.svg',
-      link: 'announce',
-      redirect: '',
-      badge: 0,
-    },
-    {
-      id: 'PDPA_PRIVACY_LIST',
-      title: 'จัดการข้อมูลส่วนตัว',
-      logo: 'assets/images/menus/privacy.png',
-      link: '',
-      redirect: 'PDPA',
-      badge: 0,
-    },
-  ];
+  menus: Menus[];
 
   newsData: API_RESPONSE_ANNOUNCE[] = [];
 
@@ -268,31 +179,31 @@ export class HomePage implements OnInit {
 
 
     console.log(this.cheked_unique_device_id);
-    // if(!this.cheked_unique_device_id){
+    if(!this.cheked_unique_device_id){
 
-    //   try {
-    //     const res = await this.uniqueDeviceIdApi.checkUniqueDeviceId();
+      try {
+        const res = await this.uniqueDeviceIdApi.checkUniqueDeviceId();
 
-    //     if(res.result){
-    //       this.cheked_unique_device_id = true;
-    //     }else{
-    //       this.cheked_unique_device_id = false;
-    //       await this.storage.clear();
-    //       await alert('Error: '+res.error_message);
-    //       this.router.navigate(['/login', {replaceUrl:true}]);
-    //     }
-    //    // alert('res='+JSON.stringify(res))
-    //    // console.log('cheked_unique_device_id',this.cheked_unique_device_id)
-    //    // alert(this.cheked_unique_device_id)
+        if(res.result){
+          this.cheked_unique_device_id = true;
+        }else{
+          this.cheked_unique_device_id = false;
+          await this.storage.clear();
+          await alert('Error: '+res.error_message);
+          this.router.navigate(['/login', {replaceUrl:true}]);
+        }
+       // alert('res='+JSON.stringify(res))
+       // console.log('cheked_unique_device_id',this.cheked_unique_device_id)
+       // alert(this.cheked_unique_device_id)
 
-    //   } catch (e) {
-    //    // alert(JSON.stringify(e))
-    //     this.cheked_unique_device_id = false;
-    //     await this.storage.clear();
-    //     alert('Error: '+e.error?.e.error?.error_message)
-    //     this.router.navigate(['/login', {replaceUrl:true}]);
-    //   }
-    // }
+      } catch (e) {
+       // alert(JSON.stringify(e))
+        this.cheked_unique_device_id = false;
+        await this.storage.clear();
+        alert('Error: '+e.error?.e.error?.error_message)
+        this.router.navigate(['/login', {replaceUrl:true}]);
+      }
+    }
 
 
 
@@ -332,6 +243,15 @@ export class HomePage implements OnInit {
 
 
     console.log(info.menus);
+
+    // console.log(info.menus.findIndex(i => i.id === "WORKFLOW"));
+    // const i = info.menus.findIndex(i => i.id === "WORKFLOW");
+
+    // console.log(info.menus[i]);
+
+    // info.menus[i].badge = 3;
+    
+
     this.menus = info.menus;
     /*
     if(this.state){
