@@ -71,6 +71,7 @@
 
   &.workday {
     background-color: green !important;
+    
   }
 
   &.holidaySelect {
@@ -100,16 +101,16 @@
     opacity: 0.2 !important;
   }
 
-  &.workday-holiday {
+  &.workday-holiday{
     background-color: green !important;
   }
 
-  &.offday-holiday {
+  &.offday-holiday{
     // background-color: #d61c4b !important;
     background-color:  #877d7f !important;
   }
 
-  &.holiday-holiday {
+  &.holiday-holiday{
     background-color: #e8e923 !important;
   }
 
@@ -123,9 +124,17 @@
     color: #ffffff !important;
     font-weight: 400 !important;
   }
+
+
+  // .no-plan{
+  //   background-color: #040202 !important;
+  //   color: #000000 !important;
+  //   font-weight: 400 !important;
+  // }
+
 }
 
-.calendar-create-plan {
+.calendar-create-plan{
 
   small{
     color: #000000 !important;
@@ -152,6 +161,7 @@
     display:block !important;
     // padding-left:30px !important;
   }
+  
   .question-title:before small::before{
     content: '';
     background:url('https://i.stack.imgur.com/ZrSlg.jpg') !important;
@@ -183,9 +193,7 @@
     font-size: 1.3em !important;
   }
 
-
-
-  .oct {
+  .oct{
     opacity: 0.3 !important;
   }
 
@@ -209,7 +217,43 @@
 
   .expected-holiday {
     background-color: rgb(217, 4, 41) !important;
+    
   }
+
+ 
+
+  // .calendar2 .on-selected{
+    // background-color: #682e2e00 !important;
+  // }
+  .calendar1 .days-btn p {
+    opacity: 0.3 !important;
+  }
+
+  .calendar1 .custom-calendar p {
+    opacity: 1 !important;
+  }
+
+  .no-plan{
+    background-color: #77777714 !important;
+    // color: #000000 !important;
+    opacity: 1 !important;
+    // font-weight: 400 !important;
+  }
+
+  .calendar1 .no-plan p {
+    color: #000000 !important;
+    font-weight: 400 !important;
+    opacity: 1 !important;
+  }
+
+  .calendar2 .no-plan p {
+    color: #000000 !important;
+    font-weight: 400 !important;
+    opacity: 1 !important;
+  }
+
+  
+
 }
 
 .calendar-create-plan{

@@ -29,7 +29,8 @@
             <!-- <div [ngClass]="{'status__item': true, disable: status_plan === 'N' ? false : true, bb: true}"> -->
             <div [ngClass]="{'status__item': true, disable: status_plan === 'X' ? true : false, bb: true}">
               <div class="status__item--image">
-                <ion-icon [name]="status_plan === 'X' ? 'time' : status_plan === 'N' ? 'time' : 'checkmark-circle'" [color]="status_plan === 'X' ? 'warning' : status_plan === 'N' ? 'warning' : 'success'"></ion-icon>
+                <!-- <ion-icon [name]="status_plan === 'X' ? 'time' : status_plan === 'N' ? 'time' : 'checkmark-circle'" [color]="status_plan === 'X' ? 'warning' : status_plan === 'N' ? 'warning' : 'success'"></ion-icon> -->
+                <ion-icon [name]=" ( status_plan === 'X' || status_plan === 'N' || status_plan === null ) ? 'time' : 'checkmark-circle'" [color]=" ( status_plan === 'X' || status_plan === 'N' || status_plan === null ) ? 'warning' : 'success'"></ion-icon>
                 <!-- <ion-icon name="checkmark-circle" color="success"></ion-icon> -->
                 <!-- <ion-icon name="create-outline" color="primary"></ion-icon> -->
               </div>
@@ -79,8 +80,6 @@
 
       </ion-item-sliding >
     </ion-list>
-
-
   </div>
 
 
@@ -91,13 +90,25 @@
 
             <!-- [(ngModel)]="testDate" <ion-segment-button  layout="icon-top" value="WAIT" [ngStyle]="{'background-color': 'red'}"></ion-segment-button> -->
 
-
+  <div class="calendar calendar-period" style="text-align: center;margin-top: -9px;">
+    <span>Period : {{period}}</span>
+  </div>
 
   <div class="calendar calendar-plan">
 
+    
 
-    <ion-calendar *ngIf="loadData"  [type]="type" [(ngModel)]="startDate"  [options]="optionsMulti" (monthChange)="getEventForMonths($event)" [format]="'DD-MM-YYYY'">
+    <!-- ปฏิทิน 1 -->
+    <ion-calendar class="calendar1" style="padding: 0;" *ngIf="loadData"  [type]="type" [(ngModel)]="startDate"  [options]="optionsMulti" (monthChange)="changeMonth($event)" [format]="'DD-MM-YYYY'">
     </ion-calendar>
+    <!-- ปฏิทิน 1 -->
+
+
+    <!-- ปฏิทิน 2 -->
+    <ion-calendar class="calendar2" style="padding: 20px 0 0 0;" *ngIf="loadData2"  [type]="type" [(ngModel)]="startDate2"  [options]="optionsMulti2" [format]="'DD-MM-YYYY'">
+    </ion-calendar>
+    <!-- ปฏิทิน 2 -->
+
   </div>
 
   <!-- <ion-list lines="none"> (change)="getEventDate($event)"-->
@@ -175,15 +186,14 @@
   </ion-footer> -->
 
 
-
+  <ion-fab slot="fixed" vertical="bottom" horizontal="start">
+    <ion-fab-button *ngIf="status_plan === 'N'" class="fl mr-5 dt2 btn-send" (click)="presentAlert2()">
+      <ion-icon name="send-outline" ></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-
-    <ion-fab-button *ngIf="status_plan === 'N' " class="fl mr-5 dt2" (click)="presentAlert2()">
-      <ion-icon name="send-outline"></ion-icon>
-    </ion-fab-button>
-
-    <ion-fab-button class="fl dt2" (click)="createPlan()">
+    <ion-fab-button *ngIf=" status_plan === 'N' || status_plan === 'X' || status_plan === null" class="fl dt2 btn-create" (click)="createPlan()">
       <ion-icon name="create-outline"></ion-icon>
     </ion-fab-button>
 

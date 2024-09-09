@@ -8,6 +8,7 @@ import { CsgPlanService } from './../../../services/api/csg-plan/csg-plan.servic
 import { LoadingService } from './../../../services/utils/loading/loading.service';
 import { StorageService } from './../../../services/storage/storage.service';
 import { moment } from './../../../services/utils/moment/moment.service';
+import { forEach } from 'lodash';
 
 moment.locale('th');
 
@@ -23,13 +24,27 @@ export class CreatePlanPage implements OnInit {
   dayStart: any;
   dateAll: any;
   paramsMonthBefore: any;
+
   loadData: any;
+  loadData2: any;
+
+  sumOt: any;
+  dataOtH = [];
+  data = [];
+  isModalOpen = false;
+  
+
+
+  optionsMulti: any;
   optionsMulti2: any;
   dataHolidayAPI: any;
   countHolidayAPI: any;
   countSpecial: any;
   countHoliday: any;
   loadDataHoliday: any;
+
+ 
+
   dataHoliday = [];
   sss = [];
   tap = 'WorkDay';
@@ -62,6 +77,9 @@ export class CreatePlanPage implements OnInit {
   dayStartFromM: any;
   dayStartFromD: any;
   dayStartFromY: any;
+  dayEndFromM: any;
+  dayEndFromD: any;
+  dayEndFromY: any;
   MDayCheck: any;
 
   otFrom: any;
@@ -85,8 +103,12 @@ export class CreatePlanPage implements OnInit {
   dataAssigndate = [];
 
   startDate: any;
+  startDate2: any;
+
   myColorVaraible = 'red';
   focused = false;
+
+  period: any;
 
   constructor(
     private storage: StorageService,
@@ -153,6 +175,8 @@ export class CreatePlanPage implements OnInit {
 
     this.startDate = moment(this.paramsMonthBefore.monthToCreate, 'YYYYMM').format('MM-DD-YYYY');
 
+    this.period = moment(this.paramsMonthBefore.monthToCreate,'YYYYMM').format('MM/YYYY');
+
     // let myTag = this.el.nativeElement.querySelector("p");
 
     // alert("sss");
@@ -207,13 +231,15 @@ export class CreatePlanPage implements OnInit {
     console.log(this.dayStartFromY, this.dayStartFromM);
   }
 
+
+
   async getDatasCSGCreatePlan(periodplan: any, custid: any, counterid: any) {
     const dataCsgCreatePlan = [];
     // this.countHoliday = 0;
     // alert(this.countHoliday);
     // this.monthCreate = moment(events.newMonth.string).format('YYYYMM');
     this.counterid = counterid;
-    console.log('/////', custid, counterid, this.empId, periodplan);
+    console.log('\\\\\\', custid, counterid, this.empId, periodplan);
 
     // this.monthCreate = moment().format('YYYYMM');
 
@@ -234,12 +260,12 @@ export class CreatePlanPage implements OnInit {
 
     // console.log(this.dayStartFromY, this.dayStartFromM);
 
-    console.log('///////////////////////', this.daysConfig);
+    console.log('', this.daysConfig);
 
     const callApi = await this.api.getHolidayCSGPlan(periodplan);
     this.dataHolidayAPI = callApi.datas;
     console.log('----', this.dataHolidayAPI);
-    this.dateAll = callApi.datas;
+    // this.dateAll = callApi.datas;
 
     console.log(this.empId);
 
@@ -268,86 +294,154 @@ export class CreatePlanPage implements OnInit {
     console.log(this.countHolidayAPI);
     this.loadDataHoliday = this.getDataHoliDay(this.dataHolidayAPI);
 
+
+    
     const callApiGetCsgCreatePlanDetail = await this.api.getCsgCreatePlanDetail(custid, counterid, this.empId, periodplan);
-    console.log(callApiGetCsgCreatePlanDetail);
+    console.log('*****callApiGetCsgCreatePlanDetail***** ',callApiGetCsgCreatePlanDetail);
+
 
     console.log(this.saveData);
 
     console.log(this.daysConfig);
+
+    
     console.log(callApiGetCsgCreatePlanDetail.datas);
 
     console.log('?????', this.dataHoliday);
 
-    for (const data of callApiGetCsgCreatePlanDetail.datas) {
-      // console.log(data);
-      // console.log(this.dayStartFromY, this.dayStartFromM, this.dayStartFromD);
+    if (callApiGetCsgCreatePlanDetail.datas.length === 1) {
 
-      // $(".select-date-end-task-add").change(async function () {
-      //   const start = $(".select-date-start-task-add").val();
-      //   const end = $(this).val();
-      //   const days = await diffDate(start, end);
-      //   $(".project-task-day-add").val(days);
-      // });
+      //  this.startDate = moment(callApi.date_start,'DD/MM/YYYY').format('MM-DD-YYYY');
+      this.startDate = moment(periodplan,'YYYYMM').format('MM-DD-YYYY');
+    
+      console.log('this.startDate',this.startDate);
+      
+    }else{
 
-      // function diffDate(start, end) {
-      // try {
-      const date = moment(new Date()).format('DD/MM/YYYY');
-      // console.log(date);
-      let date_res = moment(data.date, 'DD-MM-YYYY');
-      let this_day = moment(date, 'DD-MM-YYYY');
+      this.startDate = moment(callApiGetCsgCreatePlanDetail.date_start,'YYYYMM').format('MM-DD-YYYY');
+    
+      console.log('this.startDate',this.startDate);
 
-      const diff = date_res.diff(this_day, 'days');
-      const days = diff;
-      // console.log(days);
-      // return days;
-      // } catch (error) {
-      //   console.error(error);
-      // }
-      // }
-      // console.log("??????",data);
-      let typecss: any;
-      if (days < 0) {
-        typecss =
-          data.worktype === 'W1'
-            ? 'custom-calendar workday oct'
-            : data.worktype === 'W2'
-            ? 'custom-calendar workholiday oct'
-            : data.worktype === 'V1'
-            ? 'custom-calendar offday oct'
-            : data.worktype === 'LE'
-            ? 'custom-calendar expected-holiday oct'
-            : '';
-      } else {
-        typecss =
-          data.worktype === 'W1'
-            ? 'custom-calendar workday'
-            : data.worktype === 'W2'
-            ? 'custom-calendar workholiday'
-            : data.worktype === 'V1'
-            ? 'custom-calendar offday'
-            : data.worktype === 'LE'
-            ? 'custom-calendar expected-holiday'
-            : '';
+      this.startDate2 = moment(callApiGetCsgCreatePlanDetail.date_end,'DD/MM/YYYY').format('MM-DD-YYYY');
+      // this.startDate2 = moment(callApi.date_end,'DD/MM/YYYY').format('YYYYMM');
+      console.log('this.startDate2',this.startDate2);
+
+    }
+
+    console.log('*****periodplan***** ',periodplan);
+    console.log('*****callApiGetCsgCreatePlanDetail***** ',callApiGetCsgCreatePlanDetail);
+
+    callApiGetCsgCreatePlanDetail.datas.forEach(element => {
+      
+      // for (const data of callApiGetCsgCreatePlanDetail.datas[0].detail) {
+ 
+      for (const data of element.detail) {
+     
+        // console.log(this.dayStartFromY, this.dayStartFromM, this.dayStartFromD);
+  
+        // $(".select-date-end-task-add").change(async function () {
+        //   const start = $(".select-date-start-task-add").val();
+        //   const end = $(this).val();
+        //   const days = await diffDate(start, end);
+        //   $(".project-task-day-add").val(days);
+        // });
+  
+        // function diffDate(start, end) {
+        // try {
+        const date = moment(new Date()).format('DD/MM/YYYY');
+        // console.log(date);
+        let date_res = moment(data.assigndate, 'DD/MM/YYYY');
+        let this_day = moment(date, 'DD/MM/YYYY');
+  
+        const diff = date_res.diff(this_day, 'days');
+        const days = diff;
+        // console.log(days);
+        // return days;
+        // } catch (error) {
+        //   console.error(error);
+        // }
+        // }
+        console.log("??????",data);
+        let typecss: any;
+
+        // data.assigndate === "20/09/2024" ? alert("ddd") : 'oct'
+        // if (days < 0) {
+        if (data.flag_disable === 'Y') {
+
+          typecss =
+            data.worktype === 'W1'
+              ? 'custom-calendar workday oct'
+              : data.worktype === 'W2'
+              ? 'custom-calendar workholiday oct'
+              : data.worktype === 'V1'
+              ? 'custom-calendar offday oct'
+              : data.worktype === 'LE'
+              ? 'custom-calendar expected-holiday oct'
+              : '';
+        } else {
+          typecss =
+            data.worktype === 'W1'
+              ? 'custom-calendar workday'
+              : data.worktype === 'W2'
+              ? 'custom-calendar workholiday'
+              : data.worktype === 'V1'
+              ? 'custom-calendar offday'
+              : data.worktype === 'LE'
+              ? 'custom-calendar expected-holiday'
+              : '';
+        }
+  
+        console.log(data);
+        console.log(data.timetype);
+  
+        console.log('typecss *****  ',typecss);
+        
+
+        
+
+        // !data.timetype
+        //   ? ''
+        //   : dataCsgCreatePlan.push({
+        //       date: moment(data.assigndate, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+        //       // "cssClass": days < 0 ? "custom-calendar workday oct" : "custom-calendar workday",
+        //       cssClass: `${typecss}`,
+        //       worktype: `${data.worktype}`,
+        //       // "subTitle": `${data.worktype} ${data.otfrom !== '' ? 'OT' : ''}`,
+        //       subTitle: `${data.workfrom === '' ? data.worktype : data.workfrom} ${data.otfrom !== '' ? 'OT' : ''}`,
+        //       timefrom: data.workfrom,
+        //       timeto: data.workto,
+        //       timeotfrom: data.otfrom,
+        //       timeotto: data.otto,
+        //       flag_disable: data.flag_disable
+        //     });
+  
+
+        dataCsgCreatePlan.push({
+          date: moment(data.assigndate, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+          // "cssClass": days < 0 ? "custom-calendar workday oct" : "custom-calendar workday",
+          cssClass: `${typecss}`,
+          worktype: `${data.worktype}`,
+          // "subTitle": `${data.worktype} ${data.otfrom !== '' ? 'OT' : ''}`,
+          subTitle: `${data.workfrom === '' ? data.worktype : data.workfrom} ${data.otfrom !== '' ? 'OT' : ''}`,
+          timefrom: data.workfrom,
+          timeto: data.workto,
+          timeotfrom: data.otfrom,
+          timeotto: data.otto,
+          flag_disable: data.flag_disable
+        });
+
+
       }
 
-      console.log(data);
+    });
 
-      !data.timetype
-        ? ''
-        : dataCsgCreatePlan.push({
-            date: moment(data.date, 'DD/MM/YYYY').format('YYYY-MM-DD'),
-            // "cssClass": days < 0 ? "custom-calendar workday oct" : "custom-calendar workday",
-            cssClass: `${typecss}`,
-            worktype: `${data.worktype}`,
-            // "subTitle": `${data.worktype} ${data.otfrom !== '' ? 'OT' : ''}`,
-            subTitle: `${data.timefrom === '' ? data.worktype : data.timefrom} ${data.otfrom !== '' ? 'OT' : ''}`,
-            timefrom: data.timefrom,
-            timeto: data.timeto,
-            timeotfrom: data.otfrom,
-            timeotto: data.otto,
-          });
-      // this.daysConfig.push({ ...data, date: moment(data.date).format('YYYY-MM-DD') });
-    }
+
+   
+
+
+    console.log("dataCsgCreatePlan ************* ",dataCsgCreatePlan);
+    
+    
     this.daysConfig = dataCsgCreatePlan;
 
     //   this.daysConfig.push({
@@ -358,9 +452,11 @@ export class CreatePlanPage implements OnInit {
     console.log('?????', this.daysConfig);
     this.dataSelectDay = this.daysConfig;
 
+
     console.log(dataCsgCreatePlan);
     console.log('?????', this.dataHoliday);
     console.log(dataCsgCreatePlan.length);
+
     for (const data of this.dataHoliday) {
       // console.log('?????',data.date);
       // console.log('?????',moment(data.date).format('YYYY-MM-DD'));
@@ -388,6 +484,8 @@ export class CreatePlanPage implements OnInit {
     }
     console.log(dataCsgCreatePlan);
 
+    
+
     let checkCountHoliday = 0;
     for (const item of dataCsgCreatePlan) {
       console.log('????', item);
@@ -402,26 +500,172 @@ export class CreatePlanPage implements OnInit {
 
     this.countHoliday = this.countHolidayAPI[0].holiday - checkCountHoliday;
 
-    console.log(this.dayStartFromY, this.dayStartFromM, this.dayStartFromD);
 
-    const callApiPlan = await this.api.getCSGPlan(this.empId, periodplan);
-    this.status_plan = callApiPlan.status_plan;
-    console.log(callApiPlan);
-    this.dataAssigndate = callApiPlan.datas;
+
+
+    this.dataAssigndate = callApiGetCsgCreatePlanDetail.datas;
+
+    console.log('dataCsgCreatePlan',dataCsgCreatePlan);
+
+    let daysConfigDatas2: any;
+    
+    let arryDatas = [];
+
+    this.dataAssigndate.forEach((datas, index) => {
+      
+      console.log(index);
+
+      if (index === 0) {
+        this.loadData = this.getDataDateM(datas.detail);
+        console.log('loadData',this.loadData)
+  
+       
+
+      }else if(index === 1){
+        this.loadData2 = this.getDataDateM(datas.detail);
+        
+        console.log('loadData2',this.loadData2)
+
+        console.log('daysConfigDatas2',daysConfigDatas2);
+
+       // disable: true,
+      }
+      
+
+      datas.detail.forEach((detail, index) => { 
+        arryDatas.push(detail);
+      });
+      
+     });
+
+     this.dateAll = arryDatas
+     // this.m = moment().format('MM');
+
+
+    console.log('******dateAll****',this.dateAll);
+    console.log('******-****',this.startDate);
+    
+
+  
+    // ----------- เพิ่มใหม่
+
+    for (let [index, item]  of this.loadData.entries()) {
+
+      const date = (moment(new Date()).format('DD/MM/YYYY'));
+      // console.log(this.loadData[index].date);
+      let date_res = moment(this.loadData[index].date, "DD-MM-YYYY");
+      let this_day = moment(date, "DD-MM-YYYY");
+
+      const diff = date_res.diff(this_day, "days");
+      const days = diff;
+
+      console.log("days ---",days);
+
+      // if (days < 0) {
+        //this.loadData[index].cssClass = days < 0 ? `${this.loadData[index].cssClass} oct` : `${this.loadData[index].cssClass}`;
+        
+     
+        
+
+        let dayss = moment(this.loadData[index].date).format("DD/MM/YYYY");
+        console.log('dayss',dayss);
+        console.log('this.dataHolidayAPI',this.dataHolidayAPI);
+
+        const i = this.dataHolidayAPI.findIndex(x => String(x.date) === String(dayss));
+
+        
+        
+        console.log(i);
+        
+
+        // this.loadData[index].disable = true;
+      // }else{
+      // }
+
+    }
+
+    console.log('loadData ****',this.loadData);
+    console.log(callApiGetCsgCreatePlanDetail);
+  
+    this.dayStartFromM = Number(moment(callApiGetCsgCreatePlanDetail.date_start, "DD/MM/YYYY").format('MM')) - 1;
+
+    this.dayStartFromD = Number(moment(callApiGetCsgCreatePlanDetail.date_start, "DD/MM/YYYY").format('DD'));
+
+    this.dayStartFromY = Number(moment(callApiGetCsgCreatePlanDetail.date_start, "DD/MM/YYYY").format('YYYY'));
+    
+    console.log('dayStartFromM',this.dayStartFromM,'dayStartFromD',this.dayStartFromD,'dayStartFromY',this.dayStartFromY);
+    
+    console.log('this.dayStartFromY',this.dayStartFromY);
+    console.log('this.dayStartFromM',this.dayStartFromM);
+    console.log('this.dayStartFromD',this.dayStartFromD);
+    console.log('this.monthCreate',this.monthCreate);
+
+    // this.startDate2 09-20-2024
+    
+    this.startDate = moment(callApiGetCsgCreatePlanDetail.date_start,'DD/MM/YYYY').format('MM-DD-YYYY');
+    this.status_plan = callApiGetCsgCreatePlanDetail.status_plan;
+    
+    // this.startDate = callApiGetCsgCreatePlanDetail.date_start
+
+
+    // ----------- เพิ่มใหม่
+    
+    console.log(this.status_plan);
+    
+
 
     // from: new Date(this.dayStartFromY, this.dayStartFromM, this.dayStartFromD),
-    this.optionsMulti2 = {
+    this.optionsMulti = {
       from: new Date(this.dayStartFromY, this.dayStartFromM, this.dayStartFromD),
-      disableWeeks: this.status_plan === 'N' ? '' : this.status_plan === 'X' ? '' : [0, 1, 2, 3, 4, 5, 6],
+      // from: new Date(2000, 0, 1),
+      // disableWeeks: this.status_plan === 'N' ? '' : this.status_plan === 'X' ? '' : [0, 1, 2, 3, 4, 5, 6],
+      disableWeeks: ( this.status_plan === 'N' || this.status_plan === 'X' || this.status_plan === null ) ? '' : [0, 1, 2, 3, 4, 5, 6],
       monthFormat: 'ปี YYYY เดือน MMM',
       monthPickerFormat: ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'],
       weekdays: ['อา', 'จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส'],
       weekStart: 0,
-      showToggleButtons: true,
-      showMonthPicker: true,
+      showToggleButtons: false,
+      showMonthPicker: false,
+      color: 'transparent',
       // pickMode: 'multi',
-      daysConfig: dataCsgCreatePlan,
+      daysConfig: this.loadData,
     };
+
+   
+
+    this.dayEndFromM = Number(moment(callApiGetCsgCreatePlanDetail.date_end, "DD/MM/YYYY").format('MM')) - 1;
+
+    this.dayEndFromD = Number(moment(callApiGetCsgCreatePlanDetail.date_end, "DD/MM/YYYY").format('DD'));
+
+    this.dayEndFromY = Number(moment(callApiGetCsgCreatePlanDetail.date_end, "DD/MM/YYYY").format('YYYY'));
+      
+    console.log('dayEndFromM',this.dayEndFromM,'dayEndFromD',this.dayEndFromD,'dayEndFromY',this.dayEndFromY);
+
+    
+
+    this.startDate2 = moment(callApiGetCsgCreatePlanDetail.date_end,'DD/MM/YYYY').format('MM-DD-YYYY');
+
+    console.log('startDate2 -----',this.startDate2);
+    
+    this.optionsMulti2 = {
+      from: new Date(this.dayStartFromY, this.dayStartFromM, this.dayStartFromD),
+      // from: new Date(this.startDate),
+      to: new Date(this.dayEndFromY, this.dayEndFromM, this.dayEndFromD),
+      disableWeeks: ( this.status_plan === 'N' || this.status_plan === 'X' || this.status_plan === null ) ? '' : [0, 1, 2, 3, 4, 5, 6],
+      // disableWeeks: [0, 1, 2, 3, 4, 5, 6],
+      monthFormat: 'ปี YYYY เดือน MMM',
+      monthPickerFormat: ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'],
+      weekdays: ['อา', 'จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส'],
+      weekStart: 0,
+      showToggleButtons: false,
+      showMonthPicker: false,
+      color: 'transparent',
+      // pickMode: 'multi',
+      daysConfig: this.loadData2,
+    };
+
+
+    
 
     this.getdetailDay(this.dataAssigndate);
 
@@ -430,6 +674,64 @@ export class CreatePlanPage implements OnInit {
     // return this.dataHoliday;
     // this.editValue()
   }
+
+
+  getDataDateM(dataApi: any) {
+    this.data = [];
+    this.sumOt = 0;
+    this.dataOtH = [];    
+
+    dataApi.forEach((e: any) => {
+      this.sumOt = this.sumOt + e.sumot;
+      const dateC = moment(e.assigndate, 'DD/MM/YYYY').format();//'MM-DD-YYYY');
+
+      console.log(e.assigndate);
+      let flag_disable = e.flag_disable === 'Y' ? 'oct': '';
+
+      this.data.push({
+        date: new Date(dateC),
+        // cssClass: e.worktype!='W1' ? 'custom-calendar danger' : 'custom-calendar normal',
+        cssClass:
+          e.worktype === 'W1'
+          ? `custom-calendar workday ${flag_disable}`
+          : e.worktype === 'V1'
+          ? `custom-calendar offday ${flag_disable}`
+          : e.worktype === 'W2'
+          ? `custom-calendar workholiday ${flag_disable}`
+          : e.worktype === 'LE'
+          ? `custom-calendar expected-holiday ${flag_disable}`
+          : ``,
+        // subTitle: `${e.worktype} ${e.otfrom !== '' ? 'OT' : ''}`,
+        subTitle: e.workfrom === '' ? `${e.worktype}` : `${e.workfrom} ${e.otfrom !== '' ? 'OT' : ''}`,
+        disable: e.flag_disable === 'Y' ? true : false
+        
+      });
+    });
+    let hour = 0;
+    hour = this.sumOt / 60;
+    let minute = 0;
+    // console.log(this.sumOt);
+
+    minute = this.sumOt % 60;
+    let date_day = 0;
+    date_day = Math.floor(hour / 8);
+
+    let date_hour = 0;
+    date_hour = hour % 8;
+
+    this.dataOtH.push({ hour, minute, date_day });
+
+    return this.data;
+    // return [
+    //   {
+    //     date: new Date('2020-04-01'),
+    //     cssClass: 'custom-calendar danger',
+    //     subTitle: '*OT',
+    //   },
+    // ];
+  }
+
+  
 
   async getUserInfo(): Promise<void> {
     const info = await this.storage.get('USER_INFO');
@@ -468,82 +770,93 @@ export class CreatePlanPage implements OnInit {
     return this.dataHoliday;
   }
 
-  getdetailDay(data: any) {
-    console.log(this.daysConfig);
+  async getdetailDay(data: any) {
+
     console.log(data);
 
-    // this.dataAssigndate = this.daysConfig;
-    // return;
     const valToMonths = [];
-    for (let index = 0; index < this.dataAssigndate.length; index++) {
-      // for (let [index, item]  of this.loadData.entries()) {
+    data.forEach((element1,index1) => {
+      console.log(element1);
+      element1.detail.forEach((element2,index2) => {
+        
+        console.log(element2.assigndate);
+        const date = (moment(new Date()).format('DD/MM/YYYY'));
+        // console.log(this.dataAssigndate[index].assigndate);
+        let date_res = moment(element2.assigndate, "DD-MM-YYYY");
+        let this_day = moment(date, "DD-MM-YYYY");
 
-      const date = moment(new Date()).format('DD/MM/YYYY');
-      console.log(this.dataAssigndate[index].assigndate);
-      let date_res = moment(this.dataAssigndate[index].assigndate, 'DD-MM-YYYY');
-      let this_day = moment(date, 'DD-MM-YYYY');
+        
+        const diff = date_res.diff(this_day, "days");
+        const days = diff;
 
-      console.log(date_res);
-      console.log(this_day);
+        console.log(days);
 
-      const diff = date_res.diff(this_day, 'days');
-      const days = diff;
+        element2.typecancel = days < 0 ? `N` : `Y`;
+        console.log(element2);
 
-      console.log(days);
+        if (element2.custid && element2.worktype) {
 
-      // if (days < 0) {
-      this.dataAssigndate[index].typecancel = days < 0 ? `N` : `Y`;
-      // }else{
-      // }
+          valToMonths.push({
+            image:
+            element2.worktype === 'W1'
+                ? 'assets/images/csg-plan/calendar_w.png'
+                : element2.worktype === 'W2'
+                ? 'assets/images/csg-plan/calendar_h.png'
+                : element2.worktype === 'V1'
+                ? 'assets/images/csg-plan/calendar_o.png'
+                : element2.worktype === 'LE'
+                ? 'assets/images/csg-plan/calendar_o3.png'
+                : 'assets/images/csg-plan/calendar_s.svg',
+            date: `${element2.date_name.trim()} ${element2.assigndate}`,
+            datadate: `${element2.assigndate}`,
+            // value: element2.workdesc,
+            value: element2.worktype === 'W1'
+                    ? 'วันทำงานปกติ'
+                    : element2.worktype === 'W2'
+                    ? 'HOLIDAY'
+                    : element2.worktype === 'V1'
+                    ? 'วันหยุดประจำสัปดาห์'
+                    : element2.worktype === 'LE'
+                    ? 'ลางาน'
+                    : '',
+            stateOt: element2.sumot !== 0 && element2.sumot != null ? 'Y' : 'N',
+            worktype: element2.worktype,
+            workfrom:
+              element2.workfrom !== ''
+                ? element2.workfrom.substring(0, 2) + '.' + element2.workfrom.substring(2, 4)
+                : element2.workfrom,
+            workto:
+              element2.workto !== ''
+                ? element2.workto.substring(0, 2) + '.' + element2.workto.substring(2, 4)
+                : element2.workto,
+            otfrom:
+              element2.otfrom !== ''
+                ? element2.otfrom.substring(0, 2) + '.' + element2.otfrom.substring(2, 4)
+                : element2.otfrom,
+            otto:
+              element2.otto !== ''
+                ? element2.otto.substring(0, 2) + '.' + element2.otto.substring(2, 4)
+                : element2.otto,
+            custid: element2.custid,
+            custname: element2.custname,
+            counterid: element2.counterid,
+            countername: element2.countername,
+            typecancel: element2.typecancel,
+            satusleave: element2.status_leave,
+          });
 
-      // }
-      console.log(this.dataAssigndate[index]);
+        }
 
-      console.log(this.counterMenu);
+       
+      });
+      
+    });
 
-      if (this.dataAssigndate[index].counterid === this.counterMenu) {
-        valToMonths.push({
-          image:
-            data[index].worktype === 'W1'
-              ? 'assets/images/csg-plan/calendar_w.png'
-              : data[index].worktype === 'W2'
-              ? 'assets/images/csg-plan/calendar_h.png'
-              : data[index].worktype === 'V1'
-              ? 'assets/images/csg-plan/calendar_o.png'
-              : data[index].worktype === 'LE'
-              ? 'assets/images/csg-plan/calendar_o3.png'
-              : 'assets/images/csg-plan/calendar_s.svg',
-          date: `${moment(data[index].assigndate, 'DD/MM/YYYY').format('dd')} ${data[index].assigndate}`,
-          value: data[index].workdesc,
-          stateOt: data[index].sumot !== 0 && data[index].sumot != null ? 'Y' : 'N',
-          worktype: data[index].worktype,
-          workfrom:
-            data[index].workfrom !== ''
-              ? data[index].workfrom.substring(0, 2) + '.' + data[index].workfrom.substring(2, 4)
-              : data[index].workfrom,
-          workto:
-            data[index].workto !== '' ? data[index].workto.substring(0, 2) + '.' + data[index].workto.substring(2, 4) : data[index].workto,
-          otfrom:
-            data[index].otfrom !== '' ? data[index].otfrom.substring(0, 2) + '.' + data[index].otfrom.substring(2, 4) : data[index].otfrom,
-          otto: data[index].otto !== '' ? data[index].otto.substring(0, 2) + '.' + data[index].otto.substring(2, 4) : data[index].otto,
-          custid: data[index].custid,
-          custname: data[index].custname,
-          counterid: data[index].counterid,
-          countername: data[index].countername,
-          typecancel: data[index].typecancel,
-        });
-      }
-    }
     console.log(valToMonths);
 
+    
+
     this.values = valToMonths;
-
-    // console.log(moment(this.values[0].date.substring(3), 'DD/MM/YYYY'));
-    // console.log(this.values[0].date.substring(3));
-
-    // const jj =  this.values.sort((a, b) => moment(b.date.substring(3), 'DD/MM/YYYY').unix() - moment(a.date.substring(3), 'DD/MM/YYYY').unix());
-    // console.log(jj);
-
     return this.values;
   }
 
@@ -590,7 +903,7 @@ export class CreatePlanPage implements OnInit {
     const valToMonths = [];
     // cssClass: e.worktype!='W1' ? 'custom-calendar danger' : 'custom-calendar normal',
     console.log(this.dataHolidayAPI);
-    this.dateAll = callApi.datas;
+    // this.dateAll = callApi.datas;
 
     for (const index in this.dataHolidayAPI.length) {
       if (
@@ -617,7 +930,7 @@ export class CreatePlanPage implements OnInit {
 
     this.getDatasCSGCreatePlan(this.monthCreate, this.custid, this.counterMenu);
 
-    // this.optionsMulti2 = {
+    // this.optionsMulti = {
     //   from: new Date(this.dayStartFromY, this.dayStartFromM, this.dayStartFromD),
     //   monthFormat: 'ปี YYYY เดือน MMM',
     //   monthPickerFormat: ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'],
@@ -645,9 +958,9 @@ export class CreatePlanPage implements OnInit {
     console.log(this.statusType);
   }
 
-  onChange2(ev: any) {
+  onChange(ev: any, no: any) {
     let checkCountHoliday = 0;
-    console.log('onChange2', ev);
+    console.log('onChange', ev);
     console.log('????', this.status);
 
     // console.log('this.countHoliday',this.countHoliday);
@@ -661,25 +974,41 @@ export class CreatePlanPage implements OnInit {
     const DCheck = moment(ev._d, 'DD/MM/YYYY').format('DD');
     console.log(MCheck, this.MDayCheck);
 
+    console.log(this.dataAssigndate);
     console.log(this.daysConfig);
-
+    
     console.log(this.values);
+  //  return
+    
 
-    if (this.daysConfig.length === 0) {
-      const init = this.dataHoliday;
-      console.log('////', this.dataHoliday);
+   
+    // this.values.forEach(element => {
+    //   console.log(moment(element.datadate, 'DD/MM/YYYY').format('YYYY-MM-DD'));
+      
+    // });
 
-      for (const x of init) {
-        this.daysConfig.push({ ...x, date: moment(x.date).format('YYYY-MM-DD') });
-      }
-    }
+    // this.daysConfig = this.values
+    
+    
+    // if (this.daysConfig.length === 0) {
+    //   const init = this.dataHoliday;
+    //   console.log('this.dataHoliday', this.dataHoliday);
+
+    //   for (const x of init) {
+    //     this.daysConfig.push({ ...x, date: moment(x.date).format('YYYY-MM-DD') });
+    //   }
+    // }
+
     console.log(this.daysConfig);
     const searchIndex = this.daysConfig.findIndex((i) => i.date === value);
+
 
     console.log(this.status);
     console.log(searchIndex);
     console.log(this.statusType);
     console.log(this.check);
+
+    
 
     // let gg = html(`<br>${searchIndex}`);
 
@@ -742,6 +1071,7 @@ export class CreatePlanPage implements OnInit {
       }
     } else if (searchIndex >= 0) {
       console.log(this.check);
+     
       this.countSelect--;
       console.log(this.daysConfig[searchIndex].cssClass, this.status);
       console.log(this.daysConfig[searchIndex]);
@@ -757,6 +1087,8 @@ export class CreatePlanPage implements OnInit {
       console.log('?????', this.daysConfig[searchIndex]);
 
       console.log('?????', this.status);
+
+      
       if (this.status === 'W1') {
         console.log('TYPE W1');
         console.log(this.daysConfig[searchIndex].cssClass);
@@ -928,6 +1260,8 @@ export class CreatePlanPage implements OnInit {
 
       console.log(this.daysConfig);
       console.log(searchIndex);
+
+      
       // if (this.values.length > 0) {
       //   const searchIndexInValue = this.values.findIndex((i) => i.date === moment(value,'YYYY-MM-DD').format('DD/MM/YYYY'));
       //   console.log(searchIndexInValue);
@@ -941,12 +1275,15 @@ export class CreatePlanPage implements OnInit {
     // console.log(this.daysConfig[searchIndex]);
 
     // this.sss = [{date: '2022-09-14', cssClass: 'custom-calendar workday', defaultSubtitle: 'W2'}];
+    // return
 
     for (const item of this.daysConfig) {
       console.log('????', item);
       if (item.worktype === 'W2' || item.worktype === 'V1') {
         checkCountHoliday++;
       }
+
+
     }
 
     console.log(this.countHoliday);
@@ -967,50 +1304,118 @@ export class CreatePlanPage implements OnInit {
     // const searchIndexInValues = this.values.findIndex((i) => i.date === moment(value,'YYYY-MM-DD').format('DD/MM/YYYY'));
 
     // console.log(searchIndexInValues);
+
+    let showData = [];
+    let showData2 = [];
+
     if (this.countHoliday < 0) {
       console.log(this.daysConfig[searchIndexInDaysConfig]);
       this.daysConfig.splice(searchIndexInDaysConfig, 1);
       this.countHoliday = 0;
+    }else{
+      let searchIndexHoliday = this.daysConfig.findIndex((i) => i.cssClass === "custom-calendar holiday");
+
+      this.daysConfig.forEach((element, index) => {
+        if (element.cssClass === "custom-calendar holiday") {
+          this.daysConfig.splice(searchIndexHoliday, 1);
+        }else{
+
+          console.log(element);
+          if (showData.length === 0) {
+            showData.push({
+              period: moment(element.date,'YYYY-MM-DD').format('YYYYMM'),
+              detail: []
+            })
+          }
+
+          let checkData = showData.findIndex((i) => i.period === moment(element.date,'YYYY-MM-DD').format('YYYYMM'))
+
+
+          console.log('checkData',checkData);
+          
+
+          if (checkData === -1) {
+            showData.push({
+              period: moment(element.date,'YYYY-MM-DD').format('YYYYMM'),
+              detail: [element]
+            })
+          }else{
+            showData[checkData].detail.push(element)
+          }
+
+        }
+
+        
+        
+        // let sss = element.filter(obj => obj.cssClass === 'oct');
+        
+        console.log(element);
+        
+        if (element.flag_disable === 'Y') {
+          this.daysConfig[index].disable = true;
+        }
+
+        
+
+      });
+      
     }
 
-    console.log('after this.daysConfig', this.daysConfig);
+    console.log('after this.daysConfig ------ ', this.daysConfig);
 
-    // this.optionsMulti2 = {
-    //   from: new Date(this.dayStartFromY, this.dayStartFromM, this.dayStartFromD),
-    //   monthFormat: 'ปี YYYY เดือน MMM',
-    //   monthPickerFormat: ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'],
-    //   weekdays: ['อา', 'จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส'],
-    //   weekStart: 0,
-    //   showToggleButtons: true,
-    //   showMonthPicker: true,
-    //   // color: '#ffffff',
-    //   // marked: true,
-    //   // pickMode: 'multi',
-    //   // disableWeeks: [0, 6],
-    //   // defaultTitle: ['111'],
-    //   // defaultSubtitle: ['11','22'],
-    //   daysConfig: this.daysConfig,
-    //   // daysConfig: this.sss,
-    // };
+    console.log('this.loadData ------ ', this.loadData);
+    console.log('this.loadData2 ------ ', this.loadData2);
+    console.log('showData ------ ', showData);
 
-    // const callApiPlan = await this.api.getCSGPlan(this.empId, this.monthCreate);
-    // this.status_plan = callApiPlan.status_plan;
-    // console.log(callApiPlan);
 
-    // from: new Date(this.dayStartFromY, this.dayStartFromM, this.dayStartFromD),
-    this.optionsMulti2 = {
+
+    this.optionsMulti = {
       from: new Date(this.dayStartFromY, this.dayStartFromM, this.dayStartFromD),
-      disableWeeks: this.status_plan === 'N' ? '' : this.status_plan === 'X' ? '' : [0, 1, 2, 3, 4, 5, 6],
+      // disableWeeks: this.status_plan === 'N' ? '' : this.status_plan === 'X' ? '' : [0, 1, 2, 3, 4, 5, 6],
+      disableWeeks: ( this.status_plan === 'N' || this.status_plan === 'X' || this.status_plan === null ) ? '' : [0, 1, 2, 3, 4, 5, 6],
       monthFormat: 'ปี YYYY เดือน MMM',
       monthPickerFormat: ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'],
       weekdays: ['อา', 'จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส'],
       weekStart: 0,
-      showToggleButtons: true,
-      showMonthPicker: true,
+      showToggleButtons: false,
+      showMonthPicker: false,
+      color: "transparent",
       // pickMode: 'multi',
-      daysConfig: this.daysConfig,
+      // daysConfig: this.daysConfig,
+      daysConfig: showData[0].detail,
     };
 
+
+    
+    
+    console.log(this.startDate);
+    console.log(this.startDate2);
+    console.log(this.dayStartFromY, this.dayStartFromM, this.dayStartFromD);
+    
+
+    if (showData.length > 1) {
+
+      this.optionsMulti2 = {
+        from: new Date(this.dayStartFromY, this.dayStartFromM, this.dayStartFromD),
+        to: new Date(this.dayEndFromY, this.dayEndFromM, this.dayEndFromD),
+        // disableWeeks: this.status_plan === 'N' ? '' : this.status_plan === 'X' ? '' : [0, 1, 2, 3, 4, 5, 6],
+        disableWeeks: ( this.status_plan === 'N' || this.status_plan === 'X' || this.status_plan === null ) ? '' : [0, 1, 2, 3, 4, 5, 6],
+        monthFormat: 'ปี YYYY เดือน MMM',
+        monthPickerFormat: ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'],
+        weekdays: ['อา', 'จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส'],
+        weekStart: 0,
+        showToggleButtons: false,
+        showMonthPicker: false,
+        color: "transparent",
+        // pickMode: 'multi',
+        // daysConfig: this.daysConfig,
+        daysConfig: showData[1].detail,
+      };
+      
+    }
+   
+
+    // return
     console.log(this.dataSelectDay);
     console.log(this.daysConfig);
     this.dataSelectDay = [];
@@ -1031,9 +1436,9 @@ export class CreatePlanPage implements OnInit {
     this.values = [];
     for (const item of this.daysConfig) {
       if (item.subTitle && item.worktype !== '') {
-        console.log('มี');
+        // console.log('มี');
 
-        console.log(moment(item.date, 'YYYY-MM-DD').format('dd'));
+        // console.log(moment(item.date, 'YYYY-MM-DD').format('dd'));
 
         this.values.push({
           image:
@@ -1065,7 +1470,7 @@ export class CreatePlanPage implements OnInit {
           counterid: `${this.counterid}`,
         });
       } else {
-        console.log('ไม่มี');
+        // console.log('ไม่มี');
       }
     }
 
@@ -1131,8 +1536,7 @@ export class CreatePlanPage implements OnInit {
           } else {
             this.monthCreate = moment().format('YYYYMM');
           }
-          console.log('ssss');
-
+         
           console.log(this.empId, this.custid);
 
           const callApi2 = await this.api.getCouterShopCSGPlan(this.empId, this.custid);
@@ -1154,7 +1558,7 @@ export class CreatePlanPage implements OnInit {
         console.log('custid', this.custid);
 
         if (ev === 'counter') {
-          console.log('////', val);
+          console.log('\\\\', val);
           console.log('>>>>', this.saveData.counter);
 
           this.saveData.counter.value = val.value;
@@ -1287,6 +1691,8 @@ export class CreatePlanPage implements OnInit {
     console.log('******-', this.dateAll);
     console.log('***/***-', this.dataSelectDay);
 
+    
+    // return
     // console.log('this.monthCreate',this.monthCreate);
     // console.log('empid', this.empId);
     // console.log('flagcount',this.flagcount);
@@ -1296,7 +1702,7 @@ export class CreatePlanPage implements OnInit {
       // console.log(dataAll);
       dataset.push({
         // flagdesc: s.type,
-        assigndate: dataAll.date,
+        assigndate: dataAll.assigndate,
         custid: this.saveData.shop.value,
         counterid: this.saveData.counter.value,
         yearmonth: this.monthCreate,
@@ -1310,14 +1716,17 @@ export class CreatePlanPage implements OnInit {
       });
     }
 
-    console.log('////', this.dataSelectDay);
-    console.log('////@@@@@', dataset);
+    console.log('------', this.dataSelectDay);
+    console.log('------@@@@@', dataset);
     for (const dataSelectDay of this.dataSelectDay) {
       console.log(dataSelectDay.day);
       if (!dataSelectDay.day) {
+
+        console.log('*** !dataSelectDay.day ***',moment(dataSelectDay.date, 'YYYY-MM-DD').format('DD/MM/YYYY'));
+        
         let obj = dataset.find((x) => x.assigndate === moment(dataSelectDay.date, 'YYYY-MM-DD').format('DD/MM/YYYY'));
         console.log(obj);
-        // console.log(dataSelectDay);
+        console.log(dataSelectDay);
         obj.timetype = !dataSelectDay.subTitle ? '' : dataSelectDay.subTitle;
         obj.worktype = !dataSelectDay.worktype ? '' : dataSelectDay.worktype;
         obj.timefrom = !dataSelectDay.timefrom ? '' : dataSelectDay.timefrom;
@@ -1327,8 +1736,11 @@ export class CreatePlanPage implements OnInit {
 
         // obj.type = dataSelectDay.type;
       } else {
+
+        console.log('*** dataSelectDay.day ***',moment(dataSelectDay.date, 'YYYY-MM-DD').format('DD/MM/YYYY'));
+
         let obj = dataset.find((x) => x.assigndate === dataSelectDay.day);
-        console.log('////', obj);
+        console.log('----', obj);
         // console.log(dataSelectDay);
         obj.timetype = !dataSelectDay.timetype ? '' : dataSelectDay.timetype;
         obj.worktype = dataSelectDay.worktype;
@@ -1343,7 +1755,9 @@ export class CreatePlanPage implements OnInit {
 
     const body = { dataset };
 
-    console.log(body);
+    console.log('body',body);
+
+    // return
 
     const call = await this.api.insertCreatePlanCSGPlan(body);
     console.log(call.error_message);
@@ -1360,10 +1774,9 @@ export class CreatePlanPage implements OnInit {
       console.log('<<<<<<<<<<<<<<<<<<ไม่มี<<<<<<');
       statusLEDay = 'N';
     }
-    this.alertSuccess(call, statusLEDay);
-    // }else{
 
-    // }
+    this.alertSuccess(call, statusLEDay);
+
 
     // this.navCtrl.back();
   }
@@ -1409,101 +1822,174 @@ export class CreatePlanPage implements OnInit {
     const fromTimeOTFrom = this.check === true ? `${this.timeOTFrom.substring('0', '2')}${this.timeOTFrom.substring('3')}` : '';
     const fromTimeOTTo = this.check === true ? `${this.timeOTTo.substring('0', '2')}${this.timeOTTo.substring('3')}` : '';
 
+
     if (callApiGetCsgCreatePlanDetail.datas.length !== 0) {
-      callApiGetCsgCreatePlanDetail.datas.forEach((i) => {
-        console.log(i);
 
-        if (i.worktype !== '') {
-          console.log(this.dayStartFromD);
+      console.log(callApiGetCsgCreatePlanDetail.datas);
+      console.log(this.dataSelectDay);
+      
+      callApiGetCsgCreatePlanDetail.datas.forEach((element) => {
+        console.log(element);
 
-          if (moment(i.date, 'DD/MM/YYYY').format('MM') === this.m) {
-            if (moment(i.date, 'DD/MM/YYYY').format('DD') >= this.dayStartFromD) {
+        element.detail.forEach(i => {
+
+          console.log(i);
+
+          if (i.flag_disable === 'Y') {
+
+            // if (i.worktype !== '') {
+              
               this.daysConfig.push({
-                date: moment(i.date, 'DD/MM/YYYY').format('YYYY-MM-DD'),
-                cssClass: this.status === 'W1' ? 'custom-calendar workday' : this.status === 'V1' ? 'custom-calendar offday' : '',
-                // subTitle: `${this.status} ${this.check === true ? 'OT' : ''}`,
-                subTitle: `${fromTimeFrom} ${this.check === true ? 'OT' : ''}`,
-                timefrom: fromTimeFrom,
-                timeto: fromTimeTo,
-                timeotfrom: this.check === true ? fromTimeOTFrom : '',
-                timeotto: this.check === true ? fromTimeOTTo : '',
-                worktype: this.status,
-              });
-            } else {
-              this.daysConfig.push({
-                date: moment(i.date, 'DD/MM/YYYY').format('YYYY-MM-DD'),
-                cssClass:
-                  i.worktype === 'W1'
-                    ? 'custom-calendar workday oct'
-                    : i.worktype === 'W2'
-                    ? 'custom-calendar workholiday oct'
-                    : i.worktype === 'V1'
-                    ? 'custom-calendar offday oct'
-                    : i.worktype === 'LE'
-                    ? 'custom-calendar expected-holiday oct'
-                    : '',
-                // subTitle: `${i.worktype} ${i.otfrom !== '' ? 'OT' : ''}`,
-                subTitle: `${i.timefrom} ${i.otfrom !== '' ? 'OT' : ''}`,
-                // subTitle: `${i.timefrom} ${this.check === true ? 'OT' : ''}`,
-                timefrom: i.timefrom,
-                timeto: i.timeto,
-                timeotfrom: i.otfrom,
-                timeotto: i.otto,
+                date: moment(i.assigndate, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+                cssClass: i.worktype === 'W1'
+                            ? 'custom-calendar workday oct'
+                            : i.worktype === 'W2'
+                            ? 'custom-calendar workholiday oct'
+                            : i.worktype === 'V1'
+                            ? 'custom-calendar offday oct'
+                            : i.worktype === 'LE'
+                            ? 'custom-calendar expected-holiday oct'
+                            : '',
+                disable: true,
+                flag_disable: i.flag_disable,
+                subTitle: i.worktype === 'LE' ? `LE` : `${i.workfrom} ${i.otfrom !== '' ? 'OT' : ''}`,
+                timefrom: i.workfrom,
+                timeto: i.workto,
+                timeotfrom: !i.otfrom ? '' : i.otfrom,
+                timeotto: !i.otto ? '' : i.otto,
                 worktype: i.worktype,
-              });
-            }
-          } else if (moment(i.date, 'DD/MM/YYYY').format('MM') > this.m) {
+              })
+
+            // }
+           
+
+          }else{
+
             this.daysConfig.push({
-              date: moment(i.date, 'DD/MM/YYYY').format('YYYY-MM-DD'),
-              cssClass: this.status === 'W1' ? 'custom-calendar workday' : this.status === 'V1' ? 'custom-calendar offday' : '',
-              // subTitle: `${this.status} ${this.check === true ? 'OT' : ''}`,
+              date: moment(i.assigndate, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+              cssClass: this.status === 'W1'
+                        ? 'custom-calendar workday'
+                        : i.worktype === 'W2'
+                        ? 'custom-calendar workholiday'
+                        : i.worktype === 'V1'
+                        ? 'custom-calendar offday'
+                        : i.worktype === 'LE'
+                        ? 'custom-calendar expected-holiday'
+                        : '',
+              disable: false,
+              flag_disable: i.flag_disable,
               subTitle: `${fromTimeFrom} ${this.check === true ? 'OT' : ''}`,
               timefrom: fromTimeFrom,
               timeto: fromTimeTo,
               timeotfrom: this.check === true ? fromTimeOTFrom : '',
               timeotto: this.check === true ? fromTimeOTTo : '',
               worktype: this.status,
-            });
+            })
+
           }
-        } else {
-          //console.log('?????????????11111<<<<<<<<<<<<<<<<<<<<<>>>>>>>');
-          if (moment(i.date, 'DD/MM/YYYY').format('MM') === this.m) {
-            //console.log('?????????????222222<<<<<<<<<<<<<<<<<<<<<>>>>>>>');
-            if (moment(i.date, 'DD/MM/YYYY').format('DD') >= this.dayStartFromD) {
-              //console.log('?????????????3333333<<<<<<<<<<<<<<<<<<<<<>>>>>>>');
-              this.daysConfig.push({
-                date: moment(i.date, 'DD/MM/YYYY').format('YYYY-MM-DD'),
-                cssClass: this.status === 'W1' ? 'custom-calendar workday' : this.status === 'V1' ? 'custom-calendar offday' : '',
-                subTitle: `${fromTimeFrom} ${this.check === true ? 'OT' : ''}`,
-                // subTitle: `${this.status} ${this.check === true ? 'OT' : ''}`,
-                timefrom: fromTimeFrom,
-                timeto: fromTimeTo,
-                timeotfrom: this.check === true ? fromTimeOTFrom : '',
-                timeotto: this.check === true ? fromTimeOTTo : '',
-                worktype: this.status,
-              });
-            }
-          } else if (moment(i.date, 'DD/MM/YYYY').format('MM') > this.m) {
-            this.daysConfig.push({
-              date: moment(i.date, 'DD/MM/YYYY').format('YYYY-MM-DD'),
-              cssClass: this.status === 'W1' ? 'custom-calendar workday' : this.status === 'V1' ? 'custom-calendar offday' : '',
-              // subTitle: `${this.status} ${this.check === true ? 'OT' : ''}`,
-              subTitle: `${fromTimeFrom} ${this.check === true ? 'OT' : ''}`,
-              timefrom: fromTimeFrom,
-              timeto: fromTimeTo,
-              timeotfrom: this.check === true ? fromTimeOTFrom : '',
-              timeotto: this.check === true ? fromTimeOTTo : '',
-              worktype: this.status,
-            });
-          }
-        }
+
+        });
+
+        
       });
+
+      console.log("ALL SELECT",this.daysConfig);
+      
+
+     
+        
+      // if (i.worktype !== '') {
+      //   console.log(this.dayStartFromD);
+
+      //   if (moment(i.assigndate, 'DD/MM/YYYY').format('MM') === this.m) {
+      //     if (moment(i.assigndate, 'DD/MM/YYYY').format('DD') >= this.dayStartFromD) {
+      //       this.daysConfig.push({
+      //         date: moment(i.assigndate, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+      //         cssClass: this.status === 'W1' ? 'custom-calendar workday' : this.status === 'V1' ? 'custom-calendar offday' : '',
+      //         // subTitle: `${this.status} ${this.check === true ? 'OT' : ''}`,
+      //         subTitle: `${fromTimeFrom} ${this.check === true ? 'OT' : ''}`,
+      //         timefrom: fromTimeFrom,
+      //         timeto: fromTimeTo,
+      //         timeotfrom: this.check === true ? fromTimeOTFrom : '',
+      //         timeotto: this.check === true ? fromTimeOTTo : '',
+      //         worktype: this.status,
+      //       });
+      //     } else {
+      //       this.daysConfig.push({
+      //         date: moment(i.assigndate, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+      //         cssClass:
+      //           i.worktype === 'W1'
+      //             ? 'custom-calendar workday oct'
+      //             : i.worktype === 'W2'
+      //             ? 'custom-calendar workholiday oct'
+      //             : i.worktype === 'V1'
+      //             ? 'custom-calendar offday oct'
+      //             : i.worktype === 'LE'
+      //             ? 'custom-calendar expected-holiday oct'
+      //             : '',
+      //         // subTitle: `${i.worktype} ${i.otfrom !== '' ? 'OT' : ''}`,
+      //         subTitle: `${i.timefrom} ${i.otfrom !== '' ? 'OT' : ''}`,
+      //         // subTitle: `${i.timefrom} ${this.check === true ? 'OT' : ''}`,
+      //         timefrom: i.timefrom,
+      //         timeto: i.timeto,
+      //         timeotfrom: i.otfrom,
+      //         timeotto: i.otto,
+      //         worktype: i.worktype,
+      //       });
+      //     }
+      //   } else if (moment(i.assigndate, 'DD/MM/YYYY').format('MM') > this.m) {
+      //     this.daysConfig.push({
+      //       date: moment(i.assigndate, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+      //       cssClass: this.status === 'W1' ? 'custom-calendar workday' : this.status === 'V1' ? 'custom-calendar offday' : '',
+      //       // subTitle: `${this.status} ${this.check === true ? 'OT' : ''}`,
+      //       subTitle: `${fromTimeFrom} ${this.check === true ? 'OT' : ''}`,
+      //       timefrom: fromTimeFrom,
+      //       timeto: fromTimeTo,
+      //       timeotfrom: this.check === true ? fromTimeOTFrom : '',
+      //       timeotto: this.check === true ? fromTimeOTTo : '',
+      //       worktype: this.status,
+      //     });
+      //   }
+      // } else {
+      //   //console.log('?????????????11111<<<<<<<<<<<<<<<<<<<<<>>>>>>>');
+      //   if (moment(i.assigndate, 'DD/MM/YYYY').format('MM') === this.m) {
+      //     //console.log('?????????????222222<<<<<<<<<<<<<<<<<<<<<>>>>>>>');
+      //     if (moment(i.assigndate, 'DD/MM/YYYY').format('DD') >= this.dayStartFromD) {
+      //       //console.log('?????????????3333333<<<<<<<<<<<<<<<<<<<<<>>>>>>>');
+      //       this.daysConfig.push({
+      //         date: moment(i.assigndate, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+      //         cssClass: this.status === 'W1' ? 'custom-calendar workday' : this.status === 'V1' ? 'custom-calendar offday' : '',
+      //         subTitle: `${fromTimeFrom} ${this.check === true ? 'OT' : ''}`,
+      //         // subTitle: `${this.status} ${this.check === true ? 'OT' : ''}`,
+      //         timefrom: fromTimeFrom,
+      //         timeto: fromTimeTo,
+      //         timeotfrom: this.check === true ? fromTimeOTFrom : '',
+      //         timeotto: this.check === true ? fromTimeOTTo : '',
+      //         worktype: this.status,
+      //       });
+      //     }
+      //   } else if (moment(i.assigndate, 'DD/MM/YYYY').format('MM') > this.m) {
+      //     this.daysConfig.push({
+      //       date: moment(i.assigndate, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+      //       cssClass: this.status === 'W1' ? 'custom-calendar workday' : this.status === 'V1' ? 'custom-calendar offday' : '',
+      //       // subTitle: `${this.status} ${this.check === true ? 'OT' : ''}`,
+      //       subTitle: `${fromTimeFrom} ${this.check === true ? 'OT' : ''}`,
+      //       timefrom: fromTimeFrom,
+      //       timeto: fromTimeTo,
+      //       timeotfrom: this.check === true ? fromTimeOTFrom : '',
+      //       timeotto: this.check === true ? fromTimeOTTo : '',
+      //       worktype: this.status,
+      //     });
+      //   }
+      // }
+
     } else {
+
       for (const i in this.dataHolidayAPI) {
         if (this.dataHolidayAPI[i].month === this.m) {
           if (this.dataHolidayAPI[i].day >= this.dayStartFromD) {
             this.daysConfig.push({
-              date: moment(this.dataHolidayAPI[i].date, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+              date: moment(this.dataHolidayAPI[i].assigndate, 'DD/MM/YYYY').format('YYYY-MM-DD'),
               cssClass: this.status === 'W1' ? 'custom-calendar workday' : this.status === 'V1' ? 'custom-calendar offday' : '',
               // subTitle: `${this.status} ${this.check === true ? 'OT' : ''}`,
               subTitle: `${this.timeFrom.substring('0', '2')}${this.timeFrom.substring('3')} ${this.check === true ? 'OT' : ''}`,
@@ -1517,7 +2003,7 @@ export class CreatePlanPage implements OnInit {
         } else {
           this.daysConfig.push({
             // date: this.moment.formatDate(this.dataHolidayAPI[i].date, 'YYYY-MM-DD', 'th', 'DD/MM/YYYY'),
-            date: moment(this.dataHolidayAPI[i].date, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+            date: moment(this.dataHolidayAPI[i].assigndate, 'DD/MM/YYYY').format('YYYY-MM-DD'),
             cssClass: this.status === 'W1' ? 'custom-calendar workday' : this.status === 'V1' ? 'custom-calendar offday' : '',
             // subTitle: `${this.status} ${this.check === true ? 'OT' : ''}`,
             subTitle: `${this.timeFrom.substring('0', '2')}${this.timeFrom.substring('3')} ${this.check === true ? 'OT' : ''}`,
@@ -1535,132 +2021,170 @@ export class CreatePlanPage implements OnInit {
     console.log(this.daysConfigAll);
     console.log('this.dataHoliday', this.dataHoliday);
     this.showAllday = [];
-    if (this.dataHoliday.length !== 0) {
-      for await (const item of this.daysConfig) {
-        this.showAllday.push(item);
-      }
-      for (const item of this.dataHoliday) {
-        const obj = this.daysConfig.find((x) => x.date === moment(item.day, 'YYYY-MM-DD').format('YYYY-MM-DD'));
-        if (!obj) {
-          console.log(item);
-          // this.showAllday.push(item);
-          this.daysConfig.push(item);
-          // const searchIndex = this.dataSelectDay.findIndex((i) => i.day === item.day);
+    // if (this.dataHoliday.length !== 0) {
+    //   for await (const item of this.daysConfig) {
+    //     this.showAllday.push(item);
+    //   }
+      
+    //   for (const item of this.dataHoliday) {
+    //     const obj = this.daysConfig.find((x) => x.date === moment(item.day, 'YYYY-MM-DD').format('YYYY-MM-DD'));
+    //     if (!obj) {
+    //       console.log(item);
+    //       // this.showAllday.push(item);
+    //       this.daysConfig.push(item);
+    //       // const searchIndex = this.dataSelectDay.findIndex((i) => i.day === item.day);
+    //     }
+    //   }
+    // }
+    // console.log(this.showAllday);
+
+    // console.log('>>>>>>>>>', this.daysConfig);
+    let searchIndexHoliday = this.daysConfig.findIndex((i) => i.cssClass === "custom-calendar holiday");
+
+    this.daysConfig.forEach((element, index) => {
+      if (element.cssClass === "custom-calendar holiday") {
+        this.daysConfig.splice(searchIndexHoliday, 1);
+      }else{
+
+        console.log(element);
+        if (this.showAllday.length === 0) {
+          this.showAllday.push({
+            period: moment(element.date,'YYYY-MM-DD').format('YYYYMM'),
+            detail: []
+          })
         }
+
+        let checkData = this.showAllday.findIndex((i) => i.period === moment(element.date,'YYYY-MM-DD').format('YYYYMM'))
+
+
+        console.log('checkData',checkData);
+        
+
+        if (checkData === -1) {
+          this.showAllday.push({
+            period: moment(element.date,'YYYY-MM-DD').format('YYYYMM'),
+            detail: [element]
+          })
+        }else{
+          this.showAllday[checkData].detail.push(element)
+        }
+
       }
-    }
-    console.log(this.showAllday);
 
-    console.log('>>>>>>>>>', this.daysConfig);
+      
+      
+      // let sss = element.filter(obj => obj.cssClass === 'oct');
+      
+      // console.log(sss);
+      
+      if (element.flag_disable === 'Y') {
+        this.daysConfig[index].disable = true;
+      }
 
+      
+
+    });
+
+
+    console.log("ALL SELECT this.showAllday",this.showAllday);
+    
+
+    // return
     // from: new Date(this.dayStartFromY, this.dayStartFromM, this.dayStartFromD),
-    this.optionsMulti2 = {
+    this.optionsMulti = {
       from: new Date(this.dayStartFromY, this.dayStartFromM, this.dayStartFromD),
-      disableWeeks: this.status_plan === 'N' ? '' : this.status_plan === 'X' ? '' : [0, 1, 2, 3, 4, 5, 6],
+      // disableWeeks: this.status_plan === 'N' ? '' : this.status_plan === 'X' ? '' : [0, 1, 2, 3, 4, 5, 6],
+      disableWeeks: ( this.status_plan === 'N' || this.status_plan === 'X' || this.status_plan === null ) ? '' : [0, 1, 2, 3, 4, 5, 6],
       monthFormat: 'ปี YYYY เดือน MMM',
       monthPickerFormat: ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'],
       weekdays: ['อา', 'จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส'],
       weekStart: 0,
-      showToggleButtons: true,
-      showMonthPicker: true,
+      showToggleButtons: false,
+      showMonthPicker: false,
+      color: "transparent",
       // pickMode: 'multi',
-      daysConfig: this.daysConfig,
+      daysConfig: this.showAllday[0].detail,
     };
 
+
+    if (callApiGetCsgCreatePlanDetail.datas.length < 1) {
+      this.optionsMulti2 = {
+        from: new Date(this.dayStartFromY, this.dayStartFromM, this.dayStartFromD),
+        to: new Date(this.dayEndFromY, this.dayEndFromM, this.dayEndFromD),
+        // disableWeeks: this.status_plan === 'N' ? '' : this.status_plan === 'X' ? '' : [0, 1, 2, 3, 4, 5, 6],
+        disableWeeks: ( this.status_plan === 'N' || this.status_plan === 'X' || this.status_plan === null ) ? '' : [0, 1, 2, 3, 4, 5, 6],
+        monthFormat: 'ปี YYYY เดือน MMM',
+        monthPickerFormat: ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'],
+        weekdays: ['อา', 'จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส'],
+        weekStart: 0,
+        showToggleButtons: false,
+        showMonthPicker: false,
+        color: "transparent",
+        // pickMode: 'multi',
+        // daysConfig: this.daysConfig,
+        daysConfig: this.showAllday[1].detail,
+      };
+    }
+    
     this.dataSelectDay = [];
     for (const item of this.daysConfig) {
-      console.log(item);
-
+      console.log(item.cssClass);
       if (item.cssClass !== 'custom-calendar holiday') {
-        const valueDay = moment(item.date, 'YYYY-MM-DD').format('DD/MM/YYYY');
-        console.log(valueDay);
-        // console.log(item);
-        // if (valueDay ) {
+        this.dataSelectDay.push(item);
+      }
+    }
+    // if (this.daysConfig.length !== this.dataSelectDay.length) {
+    // console.log(moment(this.dataSelectDay[1].date, 'DD/MM/YYYY').format('YYYY-MM-DD'));
+    // }
+    console.log(this.countHoliday);
+    console.log(this.countHolidayAPI[0].holiday);
 
-        // }
+    console.log(this.daysConfig);
+    console.log(this.values);
+    this.values = [];
+    for (const item of this.daysConfig) {
+      if (item.subTitle && item.worktype !== '') {
+        // console.log('มี');
 
-        console.log(item.date);
+        // console.log(moment(item.date, 'YYYY-MM-DD').format('dd'));
 
-        this.dataSelectDay.push({
-          day: valueDay,
-          type:
-            item.cssClass === 'custom-calendar workday'
-              ? 'W1'
-              : item.cssClass === 'custom-calendar workday oct'
-              ? 'W1'
-              : item.cssClass === 'custom-calendar offday'
-              ? 'V1'
-              : item.cssClass === 'custom-calendar workday-holiday'
-              ? 'W1'
-              : item.cssClass === 'custom-calendar offday-holiday'
-              ? 'W2'
-              : item.cssClass === 'custom-calendar expected-holiday'
-              ? 'LE'
+        this.values.push({
+          image:
+            item.worktype === 'W1'
+              ? 'assets/images/csg-plan/calendar_w.png'
+              : item.worktype === 'W2'
+              ? 'assets/images/csg-plan/calendar_h.png'
+              : item.worktype === 'V1'
+              ? 'assets/images/csg-plan/calendar_o.png'
+              : item.worktype === 'LE'
+              ? 'assets/images/csg-plan/calendar_o3.png'
               : '',
-          timetype: item.subTitle,
-          timefrom: item.timefrom,
-          timeto: item.timeto,
-          timeotfrom: item.timeotfrom,
-          timeotto: item.timeotto,
-          worktype: item.worktype,
+          date: `${moment(item.date, 'YYYY-MM-DD').format('dd')} ${moment(item.date, 'YYYY-MM-DD').format('DD/MM/YYYY')}`,
+          value:
+            item.worktype === 'W1'
+              ? 'วันทำงานปกติ'
+              : item.worktype === 'W2'
+              ? 'HOLIDAY'
+              : item.worktype === 'V1'
+              ? 'วันหยุดประจำสัปดาห์'
+              : item.worktype === 'LE'
+              ? 'ลางาน'
+              : '',
+          worktype: `${item.worktype}`,
+          workfrom: item.timefrom === '' ? '' : `${item.timefrom.substring('0', '2')}:${item.timefrom.substring('2')}`,
+          workto: item.timeto === '' ? '' : `${item.timeto.substring('0', '2')}:${item.timeto.substring('2')}`,
+          otfrom: item.timeotfrom === '' ? '' : `${item.timeotfrom.substring('0', '2')}:${item.timeotfrom.substring('2')}`,
+          otto: item.timeotto === '' ? '' : `${item.timeotto.substring('0', '2')}:${item.timeotto.substring('2')}`,
+          counterid: `${this.counterid}`,
         });
       } else {
-        console.log(item);
+        // console.log('ไม่มี');
       }
-
-      this.values = [];
-      for (const item2 of this.daysConfig) {
-        if (item2.subTitle && item.worktype !== '') {
-          // console.log('มี');
-
-          // console.log( moment(item2.date, 'YYYY-MM-DD').format('dd'));
-
-          this.values.push({
-            image:
-              item2.worktype === 'W1'
-                ? 'assets/images/csg-plan/calendar_w.png'
-                : item2.worktype === 'W2'
-                ? 'assets/images/csg-plan/calendar_h.png'
-                : item2.worktype === 'V1'
-                ? 'assets/images/csg-plan/calendar_o.png'
-                : item2.worktype === 'LE'
-                ? 'assets/images/csg-plan/calendar_o3.png'
-                : '',
-            date: `${moment(item2.date, 'YYYY-MM-DD').format('dd')} ${moment(item2.date, 'YYYY-MM-DD').format('DD/MM/YYYY')}`,
-            value:
-              item2.worktype === 'W1'
-                ? 'วันทำงานปกติ'
-                : item2.worktype === 'W2'
-                ? 'HOLIDAY'
-                : item2.worktype === 'V1'
-                ? 'วันหยุดประจำสัปดาห์'
-                : item2.worktype === 'LE'
-                ? 'ลางาน'
-                : '',
-            worktype: `${item2.worktype}`,
-            workfrom: item2.timefrom === '' ? '' : `${item2.timefrom.substring('0', '2')}:${item2.timefrom.substring('2')}`,
-            workto: item2.timeto === '' ? '' : `${item2.timeto.substring('0', '2')}:${item2.timeto.substring('2')}`,
-            otfrom: item2.timeotfrom === '' ? '' : `${item2.timeotfrom.substring('0', '2')}:${item2.timeotfrom.substring('2')}`,
-            otto: item2.timeotto === '' ? '' : `${item2.timeotto.substring('0', '2')}:${item2.timeotto.substring('2')}`,
-            counterid: `${this.counterid}`,
-          });
-        } else {
-          console.log('ไม่มี');
-        }
-      }
-
-      // console.log(moment(this.values[0].date.substring(3), 'DD/MM/YYYY'));
-      // console.log(this.values[0].date.substring(3));
-
-      const jj = this.values.sort(
-        (b, a) => moment(b.date.substring(3), 'DD/MM/YYYY').unix() - moment(a.date.substring(3), 'DD/MM/YYYY').unix()
-      );
-      // console.log(jj);
-
-      // console.log(this.values);
     }
+
     console.log(this.dataSelectDay);
     console.log(this.daysConfig);
+    console.log('this.values',this.values);
   }
 
   async reStartDays() {
@@ -1675,7 +2199,7 @@ export class CreatePlanPage implements OnInit {
 
     this.loadDataHoliday = this.getDataHoliDay(this.dataHolidayAPI);
 
-    // this.optionsMulti2 = {
+    // this.optionsMulti = {
     //   from: new Date(this.dayStartFromY, this.dayStartFromM, this.dayStartFromD),
     //   monthFormat: 'ปี YYYY เดือน MMM',
     //   monthPickerFormat: ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'],
@@ -1785,7 +2309,7 @@ export class CreatePlanPage implements OnInit {
 
     // localStorage.setItem('monthBack', this.monthCreate);
     // this.navCtrl.navigateBack(['csg-plan']);
-
+  
     const navigationExtras: NavigationExtras = {
       state: { monthFromCreate: this.paramsMonthBefore.monthToCreate },
     };

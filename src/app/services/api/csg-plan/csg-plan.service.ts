@@ -11,7 +11,13 @@ export class CsgPlanService {
   constructor(private http: HttpClient, private storage: StorageService) {}
 
   async getCSGPlan(empId: string, date: any): Promise<any> {
-    const url = `${ST_ROOT.csgplan}/salestools/csg_plan/${date}/${empId}`;
+    // ------------- ใช้ปัจจุบัน -----------
+    // const url = `${ST_ROOT.csgplan}/salestools/csg_plan/${date}/${empId}`;
+    // ------------- ใช้ปัจจุบัน -----------
+
+    // ------------- แบบใหม่ -----------
+    const url = `${ST_ROOT.csgplan}/salestools/csg_plan/data_plan_csg/${date}/${empId}`;
+    // ------------- แบบใหม่ -----------
     console.log('????--?????',url);
 
     return this.http.get(url).toPromise();
@@ -56,7 +62,8 @@ export class CsgPlanService {
   }
 
   async getCsgCreatePlanDetail(custID: any, counterID: any, csgID: any, period: any): Promise<any> {
-    const url = `${ST_ROOT.csgplan}/salestools/csg_plan/CsgCreatePlanDetail/${csgID}/${period}/${custID}/${counterID}`;
+    // const url = `${ST_ROOT.csgplan}/salestools/csg_plan/CsgCreatePlanDetail/${csgID}/${period}/${custID}/${counterID}`;
+    const url = `${ST_ROOT.csgplan}/salestools/csg_plan/CsgCreatePlanDetail/data_plan_csg/${csgID}/${period}/${custID}/${counterID}`;
     console.log(url);
     return this.http.get(url).toPromise();
   }
@@ -85,6 +92,8 @@ export class CsgPlanService {
 
   async getWorkTypeCSGPlan(): Promise<any> {
     const url = `${ST_ROOT.csgplan}/salestools/csg_plan/worktype`;
+    console.log(url);
+    
     return this.http.get(url).toPromise();
   }
 

@@ -171,4 +171,5 @@
     <allow-navigation href="http://localhost:8100" sessionid="c81f146e" />
     <hook src="scripts/postbuild.js" type="before_compile" />
     <hook src="scripts/postbuild.js" type="after_compile" />
+    <engine name="android" spec="~6.1.2" />
 </widget>

@@ -18,6 +18,7 @@ type StatusContent = 'OK' | 'LOADING' | 'NOT_FOUND' | 'COMPLETED' | 'ERROR' | 'P
   templateUrl: './csg-plan.page.html',
   styleUrls: ['./csg-plan.page.scss'],
 })
+
 export class CsgPlanPage implements OnInit {
 
   statusWorkspace: StatusContent = 'LOADING';
@@ -29,9 +30,12 @@ export class CsgPlanPage implements OnInit {
   roleMessage = '';
   public alertButtons = ['OK'];
 
+  optionsMulti2: any;
+
   type: 'string'; // 'string' | 'js-date' | 'moment' | 'time' | 'object'
 
   loadData: any;
+  loadData2: any;
 
   optionsMulti: any;
   sumOt: any;
@@ -44,9 +48,15 @@ export class CsgPlanPage implements OnInit {
   m: string;
   y: string;
   d: string;
+
   dayStartFromM: any;
   dayStartFromD: any;
   dayStartFromY: any;
+
+  dayEndFromM: any;
+  dayEndFromD: any;
+  dayEndFromY: any;
+
   monthCreate: any;
   dataHolidayAPI: any;
   dataCheckStatus: any;
@@ -64,7 +74,9 @@ export class CsgPlanPage implements OnInit {
   typeDisabled = true;
   // testDate = '08-08-2023';
 
+  period: any;
   startDate: any;
+  startDate2: any;
 
   lottiefiles = {
     loadData: {
@@ -120,16 +132,16 @@ export class CsgPlanPage implements OnInit {
 
     //  if (this.router.getCurrentNavigation().extras.state && this.router.getCurrentNavigation().extras.state.monthFromCreate) {
     //    const paramMonth = this.router.getCurrentNavigation().extras.state.monthFromCreate;
-    //    console.log('//////',paramMonth);
-    //   }
+    //    console.log('\\\',paramMonth);
+    //  }
   }
 
   async ngOnInit() {
-
+    // await this.loading.present();
     // localStorage.setItem('monthBack', moment().format('YYYYMM'));
     this.monthCreate = moment().format('YYYYMM');
     const historyState = history.state;
-    console.log('////',historyState);
+    console.log('\\\\',historyState);
 
     if (historyState.monthFromCreate) {
       this.monthCreate = historyState.monthFromCreate;
@@ -182,7 +194,7 @@ export class CsgPlanPage implements OnInit {
     const alert = await this.alertController.create({
       header: 'CSG PLAN',
       // subHeader: 'Important message',
-      message: 'ท่านต้องการยืนยันการส่งแพลนเดือนนี้ให้ CM ใช่หรือไม่',
+      message: 'ท่านต้องการยืนยันการส่งแพลน ใช่หรือไม่',
       buttons: [
         {
           text: 'ไม่',
@@ -211,7 +223,6 @@ export class CsgPlanPage implements OnInit {
   async updateWorkplanstatus(){
 
     console.log(this.monthChange);
-
 
     const body = {
         period:     this.monthChange,
@@ -252,33 +263,64 @@ export class CsgPlanPage implements OnInit {
     this.g3_color     = callApiPlan.g3_color;
     this.status_plan  = callApiPlan.status_plan;
 
-
-
   };
 
 
 
   async ionViewDidEnter() {
-    console.clear();
+    // console.clear();
+    // await this.loading.present();
     // const monthV = moment().format('YYYYMM');
     const historyState = history.state;
 
     // this.monthChange = this.monthCreate;
     console.log(historyState.monthFromCreate);
     if (historyState.monthFromCreate) {
+      
       this.startDate =  moment(historyState.monthFromCreate,'YYYYMM').format('MM-DD-YYYY');
       this.monthCreate = historyState.monthFromCreate;
     }
 
+    // this.monthCreate = '202409'
+    
+
+
+
     this.monthChange = this.monthCreate;
-
-
 
     console.log(this.monthCreate);
     // this.startDate =  moment(this.monthChange,'YYYYMM').format('MM-DD-YYYY');
+    this.startDate = moment(this.monthChange,'YYYYMM').subtract(1, 'month').format('MM-DD-YYYY');
     console.log(this.startDate);
 
-    const callApiH = await this.api.getHolidayCSGPlan(this.monthCreate);
+
+    console.log(this.monthCreate);
+   
+    this.showCalendar(this.monthCreate)
+
+
+    // if (historyState.monthFromCreate) {
+    //   console.log(historyState.monthFromCreate);
+
+    //   this.startDate =  moment(historyState.monthFromCreate,'YYYYMM').format('MM-DD-YYYY');
+    //   this.monthCreate = historyState.monthFromCreate;
+    // }
+
+  }
+
+  doRefresh(event) {
+    setTimeout(() => {
+        this.ionViewDidEnter();
+        event.target.complete();
+    }, 2000);
+  }
+
+  
+  async showCalendar(monthCalendar) {
+    
+    console.log("monthCalendar",monthCalendar);
+    
+    const callApiH = await this.api.getHolidayCSGPlan(monthCalendar);
 
     this.dataHolidayAPI = callApiH.datas;
     console.log('----',this.dataHolidayAPI);
@@ -297,104 +339,202 @@ export class CsgPlanPage implements OnInit {
     console.log(this.dayStartFromY, this.dayStartFromM);
 
     // const monthV = this.monthCreate;
-    const monthV = this.monthCreate;
+    let monthV = monthCalendar;
+    let daysConfigDatas2: any;
 
     try {
 
-
-      console.log("-----",this.empId, monthV);
-      // this.startDate =  moment(monthV,'YYYYMM').format('MM-DD-YYYY');
-
+      console.log("---**--",this.empId, monthV);
       const callApi = await this.api.getCSGPlan(this.empId, monthV);
-     // const callDayPlanApi = await this.api.getDayPlanCSGPlan(monthV, this.empId);
-     // trebTreb 16-07-2021
-    //  this.dataCheckStatus = {
-    //    F1: 'G1',
-    //    F2: '2',
-    //  };
-    console.log('???????',callApi.g1_desc);
+      
+      this.period = moment(callApi.period,'YYYYMM').format('MM/YYYY');
 
-    this.g1_desc      = callApi.g1_desc;
-    this.g1_color     = callApi.g1_color;
-    this.g2_desc      = callApi.g2_desc;
-    this.g2_color     = callApi.g2_color;
-    this.g3_desc      = callApi.g3_desc;
-    this.g3_color     = callApi.g3_color;
-    this.status_plan  = callApi.status_plan;
+      console.log('callApi ---- ',callApi);
+      console.log(callApi.datas.length);
+      
+      if (callApi.datas.length === 1) {
+
+        this.startDate = moment(callApi.date_start,'DD/MM/YYYY').format('MM-DD-YYYY');
+        // this.startDate = moment(monthCalendar,'YYYYMM').format('MM-DD-YYYY');
+      
+        console.log('this.startDate',this.startDate);
+        
+      }else{
+
+        this.startDate2 = moment(callApi.date_end,'DD/MM/YYYY').format('MM-DD-YYYY');
+        // this.startDate2 = moment(callApi.date_end,'DD/MM/YYYY').format('YYYYMM');
+        console.log('this.startDate2',this.startDate2);
+
+      }
+      
+
+     
+      console.log('???????',callApi.g1_desc);
+
+      this.g1_desc      = callApi.g1_desc;
+      this.g1_color     = callApi.g1_color;
+      this.g2_desc      = callApi.g2_desc;
+      this.g2_color     = callApi.g2_color;
+      this.g3_desc      = callApi.g3_desc;
+      this.g3_color     = callApi.g3_color;
+      this.status_plan  = callApi.status_plan;
 
       this.dataAssigndate = callApi.datas;
       console.log(this.dataAssigndate);
 
+      
+
      // this.dataAssigndate = callDayPlanApi.datas;
      // trebTreb 16-07-2021
 
+     this.dataAssigndate.forEach((datas, index) => {
+      console.log(index);
+      if (index === 0) {
+        this.loadData = this.getDataDateM(datas.detail);
+        console.log('loadData',this.loadData)
+      }else if(index === 1){
+        this.loadData2 = this.getDataDateM(datas.detail);
+        
+        console.log('loadData2',this.loadData2)
 
-      this.loadData = this.getDataDateM(this.dataAssigndate);
-      console.log('loadData',this.loadData)
+        console.log('daysConfigDatas2',daysConfigDatas2);
+        
+       // disable: true,
+      }
+      
+     });
 
-      for (let [index, item]  of this.loadData.entries()) {
+
+     
+     console.log(this.dataAssigndate.length);
+      // if (this.dataAssigndate.length === 1) {
+
+        for (let [index, item]  of this.loadData.entries()) {
+
+          const date = (moment(new Date()).format('DD/MM/YYYY'));
+          // console.log(this.loadData[index].date);
+          let date_res = moment(this.loadData[index].date, "DD-MM-YYYY");
+          let this_day = moment(date, "DD-MM-YYYY");
+
+          const diff = date_res.diff(this_day, "days");
+          const days = diff;
+
+          console.log("days ---",days);
+
+          // if (days < 0) {
+            //this.loadData[index].cssClass = days < 0 ? `${this.loadData[index].cssClass} oct` : `${this.loadData[index].cssClass}`;
+
+            let dayss = moment(this.loadData[index].date).format("DD/MM/YYYY");
+            console.log('dayss',dayss);
+            console.log('this.dataHolidayAPI',this.dataHolidayAPI);
+
+            const i = this.dataHolidayAPI.findIndex(x => String(x.date) === String(dayss));
+
+            
+            
+            console.log(i);
+            
+
+            // this.loadData[index].disable = true;
+          // }else{
+          // }
+
+        }
+
+        console.log('loadData ****',this.loadData);
+      
+        this.dayStartFromM = Number(moment(callApi.date_start, "DD/MM/YYYY").format('MM')) - 1;
+
+        this.dayStartFromD = Number(moment(callApi.date_start, "DD/MM/YYYY").format('DD'));
+
+        this.dayStartFromY = Number(moment(callApi.date_start, "DD/MM/YYYY").format('YYYY'));
+        
+        console.log('dayStartFromM',this.dayStartFromM,'dayStartFromD',this.dayStartFromD,'dayStartFromY',this.dayStartFromY);
+        
+        console.log('this.dayStartFromY',this.dayStartFromY);
+        console.log('this.dayStartFromM',this.dayStartFromM);
+        console.log('this.dayStartFromD',this.dayStartFromD);
+        console.log('this.monthCreate',this.monthCreate);
+
+        this.optionsMulti = {
+          from: new Date(2000, 0, 1),
+          // from: new Date(this.dayStartFromY, this.dayStartFromM, this.dayStartFromD),
+          // disableWeeks: [0, 1, 2, 3, 4, 5, 6],
+          monthFormat: 'ปี YYYY เดือน MMM',
+          monthPickerFormat: ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'],
+          weekdays: ['อา', 'จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส'],
+          weekStart: 0,
+          showToggleButtons: true,
+          showMonthPicker: true,
+          color: 'transparent',
+          daysConfig: this.loadData,
+        };
+
+        
+
+      // }else{
+
+
+        if (this.loadData2) {
+          
+          for (let [index, item]  of this.loadData2.entries()) {
 
             const date = (moment(new Date()).format('DD/MM/YYYY'));
             // console.log(this.loadData[index].date);
-            let date_res = moment(this.loadData[index].date, "DD-MM-YYYY");
+            let date_res = moment(this.loadData2[index].date, "DD-MM-YYYY");
             let this_day = moment(date, "DD-MM-YYYY");
-
-
-            // console.log(date_res);
-            // console.log(this_day);
-
+  
             const diff = date_res.diff(this_day, "days");
             const days = diff;
-
-            // console.log(days);
-
-            // if (days < 0) {
-              this.loadData[index].cssClass = days < 0 ? `${this.loadData[index].cssClass} oct` : `${this.loadData[index].cssClass}`;
+           // if (days < 0) {
+              // this.loadData2[index].cssClass = days < 0 ? `${this.loadData2[index].cssClass} oct` : `${this.loadData2[index].cssClass}`;
             // }else{
             // }
+  
+          }
+  
+          console.log('loadData2 ****',this.loadData2);
+  
+          this.dayEndFromM = Number(moment(callApi.date_end, "DD/MM/YYYY").format('MM')) - 1;
+  
+          this.dayEndFromD = Number(moment(callApi.date_end, "DD/MM/YYYY").format('DD'));
+  
+          this.dayEndFromY = Number(moment(callApi.date_end, "DD/MM/YYYY").format('YYYY'));
+          
+          console.log('dayEndFromM',this.dayEndFromM,'dayEndFromD',this.dayEndFromD,'dayEndFromY',this.dayEndFromY);
+  
+          this.optionsMulti2 = {
+            from: new Date(this.dayStartFromY, this.dayStartFromM, this.dayStartFromD),
+            // from: new Date(this.startDate),
+            to: new Date(this.dayEndFromY, this.dayEndFromM, this.dayEndFromD),
+            // disableWeeks: this.status_plan === 'N' ? '' : this.status_plan === 'X' ? '' : [0, 1, 2, 3, 4, 5, 6],
+            // disableWeeks: [0, 1, 2, 3, 4, 5, 6],
+            monthFormat: 'ปี YYYY เดือน MMM',
+            monthPickerFormat: ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'],
+            weekdays: ['อา', 'จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส'],
+            weekStart: 0,
+            showToggleButtons: false,
+            showMonthPicker: false,
+            color: 'transparent',
+            // pickMode: 'multi',
+            daysConfig: this.loadData2,
+          };
+        }
 
-      }
+       
 
-      this.optionsMulti = {
-        from: new Date(2000, 0, 1),
-        // from: new Date(this.dayStartFromY, this.dayStartFromM, this.dayStartFromD),
-        monthFormat: 'ปี YYYY เดือน MMM',
-        monthPickerFormat: ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'],
-        weekdays: ['อา', 'จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส'],
-        weekStart: 0,
-        showToggleButtons: true,
-        showMonthPicker: true,
-        daysConfig: this.loadData,
-      };
+      // }
+      // console.log(this.dataAssigndate);
+   
       this.getdetailDay(this.dataAssigndate);
-
-
+        // ---------- end loop get datas -----------------
 
     } catch (error) {
       this.dataAssigndate = [];
       this.dataAssigndate = [];
     }
 
-
-
-    if (historyState.monthFromCreate) {
-      console.log('////////',historyState.monthFromCreate);
-
-      this.startDate =  moment(historyState.monthFromCreate,'YYYYMM').format('MM-DD-YYYY');
-      this.monthCreate = historyState.monthFromCreate;
-    }
-
   }
-
-  doRefresh(event) {
-    setTimeout(() => {
-        this.ionViewDidEnter();
-        event.target.complete();
-    }, 2000);
-  }
-
-
-
 
   async getUserInfo(): Promise<void> {
     const info = await this.storage.get('USER_INFO');
@@ -409,30 +549,39 @@ export class CsgPlanPage implements OnInit {
   getDataDateM(dataApi: any) {
     this.data = [];
     this.sumOt = 0;
-    this.dataOtH = [];
+    this.dataOtH = [];    
+
+    console.log('dataApi',dataApi);
+    
 
     dataApi.forEach((e: any) => {
       this.sumOt = this.sumOt + e.sumot;
       const dateC = moment(e.assigndate, 'DD/MM/YYYY').format();//'MM-DD-YYYY');
 
       // console.log(e);
+      //if (e.custid) {
+        this.data.push({
+          date: new Date(dateC),
+          // cssClass: e.worktype!='W1' ? 'custom-calendar danger' : 'custom-calendar normal',
+          cssClass:
+            e.worktype === 'W1'
+            ? 'custom-calendar workday'
+            : e.worktype === 'V1'
+            ? 'custom-calendar offday'
+            : e.worktype === 'W2'
+            ? 'custom-calendar workholiday'
+            : e.worktype === 'LE'
+            ? 'custom-calendar expected-holiday'
+            : 'custom-calendar no-plan',
+          // subTitle: `${e.worktype} ${e.otfrom !== '' ? 'OT' : ''}`,
+          subTitle: e.workfrom === '' ? `${e.worktype}` : `${e.workfrom} ${e.otfrom !== '' ? 'OT' : ''}`,
+          // disable: true,
+        });
+      //}
+      
 
-      this.data.push({
-        date: new Date(dateC),
-        // cssClass: e.worktype!='W1' ? 'custom-calendar danger' : 'custom-calendar normal',
-        cssClass:
-          e.worktype === 'W1'
-          ? 'custom-calendar workday'
-          : e.worktype === 'V1'
-          ? 'custom-calendar offday'
-          : e.worktype === 'W2'
-          ? 'custom-calendar workholiday'
-          : e.worktype === 'LE'
-          ? 'custom-calendar expected-holiday'
-          : '',
-        // subTitle: `${e.worktype} ${e.otfrom !== '' ? 'OT' : ''}`,
-        subTitle: e.workfrom === '' ? `${e.worktype}` : `${e.workfrom} ${e.otfrom !== '' ? 'OT' : ''}`,
-      });
+
+
     });
     let hour = 0;
     hour = this.sumOt / 60;
@@ -460,83 +609,49 @@ export class CsgPlanPage implements OnInit {
 
 
 
-  async getEventForMonths(events: any) {
-    // console.log(events.newMonth.string);
+  async changeMonth(events: any) {
+
+    console.log("this.loadData",this.loadData);
+    console.log("this.loadData2",this.loadData2);
+    console.log("this.dataAssigndate",this.dataAssigndate);
+    
+
     const formatDate = moment(events.newMonth.string).format('YYYYMM');
-    this.startDate = moment(formatDate,'YYYYMM').format('MM-DD-YYYY');
-    console.log('////////',formatDate);
+    // this.startDate = moment(formatDate,'YYYYMM').format('MM-DD-YYYY');
+    console.log(formatDate);
 
+    
     // console.log(formatDate);
-    const monthV = moment().format('YYYYMM');
+    const monthV = formatDate;
     this.monthCreate = formatDate;
-    this.monthChange = this.monthCreate;
-    if (formatDate === monthV) {
-      const callApi = await this.api.getDayPlanCSGPlan(monthV, this.empId);
-      this.dataAssigndate = callApi.datas;
-      console.log(this.dataAssigndate);
-      this.g1_desc      = callApi.g1_desc;
-      this.g1_color     = callApi.g1_color;
-      this.g2_desc      = callApi.g2_desc;
-      this.g2_color     = callApi.g2_color;
-      this.g3_desc      = callApi.g3_desc;
-      this.g3_color     = callApi.g3_color;
-      this.status_plan  = callApi.status_plan;
 
-      this.loadData = await this.getDataDateM(this.dataAssigndate);
-      // console.log(this.loadData);
-    } else {
-      const callApi = await this.api.getDayPlanCSGPlan(formatDate, this.empId);
-      this.g1_desc      = callApi.g1_desc;
-      this.g1_color     = callApi.g1_color;
-      this.g2_desc      = callApi.g2_desc;
-      this.g2_color     = callApi.g2_color;
-      this.g3_desc      = callApi.g3_desc;
-      this.g3_color     = callApi.g3_color;
-      this.status_plan  = callApi.status_plan;
-
-      this.dataAssigndate = callApi.datas;
-      this.loadData = await this.getDataDateM(this.dataAssigndate);
-      console.log(this.loadData);
+    if (this.dataAssigndate.length === 1) {
+       // this.monthChange = this.monthCreate;
+      this.monthChange = moment(this.monthCreate,'YYYYMM').format('YYYYMM');
+    }else{
+       // this.monthChange = this.monthCreate;
+      this.monthChange = moment(this.monthCreate,'YYYYMM').add(1, 'month').format('YYYYMM');
     }
+   
 
-    for (let [index, item]  of this.loadData.entries()) {
-
-          const date = (moment(new Date()).format('DD/MM/YYYY'));
-          console.log(this.loadData[index].date);
-          let date_res = moment(this.loadData[index].date, "DD-MM-YYYY");
-          let this_day = moment(date, "DD-MM-YYYY");
+    // this.startDate = moment(this.monthChange,'YYYYMM').subtract(1, 'month').format('MM-DD-YYYY');
 
 
-          console.log(date_res);
-          console.log(this_day);
 
-          const diff = date_res.diff(this_day, "days");
-          const days = diff;
+    try {
 
-          console.log(days);
+      console.log('**changeMonth**',this.monthChange);
 
-          // if (days < 0) {
-            this.loadData[index].cssClass = days < 0 ? `${this.loadData[index].cssClass} oct` : `${this.loadData[index].cssClass}`;
-          // }else{
-          // }
+      
+      this.showCalendar(this.monthChange)
 
+        // ---------- end loop get datas -----------------
+
+    } catch (error) {
+      
+      this.dataAssigndate = [];
+      this.dataAssigndate = [];
     }
-    this.optionsMulti = {
-      from: new Date(2000, 0, 1),
-      monthFormat: 'ปี YYYY เดือน MMM',
-      monthPickerFormat: ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'],
-      weekdays: ['อา', 'จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส'],
-      weekStart: 0,
-      showToggleButtons: true,
-      showMonthPicker: true,
-      daysConfig: this.loadData,
-    };
-
-    // cssClass: e.worktype!='W1' ? 'custom-calendar danger' : 'custom-calendar normal',
-    console.log(this.dataAssigndate);
-    this.getdetailDay(this.dataAssigndate);
-
-    // this.editValue()
   }
 
   async getdetailDay(data: any) {
@@ -544,76 +659,84 @@ export class CsgPlanPage implements OnInit {
     console.log(data);
 
     const valToMonths = [];
-    for (let index = 0; index < this.dataAssigndate.length; index++) {
-      // for (let [index, item]  of this.loadData.entries()) {
 
+    data.forEach((element1,index1) => {
+      console.log(element1);
+      element1.detail.forEach((element2,index2) => {
+        
+        // console.log(element2.assigndate);
         const date = (moment(new Date()).format('DD/MM/YYYY'));
         // console.log(this.dataAssigndate[index].assigndate);
-        let date_res = moment(this.dataAssigndate[index].assigndate, "DD-MM-YYYY");
+        let date_res = moment(element2.assigndate, "DD-MM-YYYY");
         let this_day = moment(date, "DD-MM-YYYY");
 
-
-        // console.log(date_res);
-        // console.log(this_day);
-
+        
         const diff = date_res.diff(this_day, "days");
         const days = diff;
 
         // console.log(days);
 
-        // if (days < 0) {
-          this.dataAssigndate[index].typecancel = days < 0 ? `N` : `Y`;
-        // }else{
-        // }
+        element2.typecancel = days < 0 ? `N` : `Y`;
 
-    // }
-      // console.log(this.dataAssigndate[index]);
+        // element2.typecancel = `Y`;
 
-      valToMonths.push({
-        image:
-          data[index].worktype === 'W1'
-            ? 'assets/images/csg-plan/calendar_w.png'
-            : data[index].worktype === 'W2'
-            ? 'assets/images/csg-plan/calendar_h.png'
-            : data[index].worktype === 'V1'
-            ? 'assets/images/csg-plan/calendar_o.png'
-            : data[index].worktype === 'LE'
-            ? 'assets/images/csg-plan/calendar_o3.png'
-            : 'assets/images/csg-plan/calendar_s.svg',
-        date: `${data[index].date_name.trim()} ${data[index].assigndate}`,
-        value: data[index].workdesc,
-        stateOt: data[index].sumot !== 0 && data[index].sumot != null ? 'Y' : 'N',
-        worktype: data[index].worktype,
-        workfrom:
-          data[index].workfrom !== ''
-            ? data[index].workfrom.substring(0, 2) + '.' + data[index].workfrom.substring(2, 4)
-            : data[index].workfrom,
-        workto:
-          data[index].workto !== ''
-            ? data[index].workto.substring(0, 2) + '.' + data[index].workto.substring(2, 4)
-            : data[index].workto,
-        otfrom:
-          data[index].otfrom !== ''
-            ? data[index].otfrom.substring(0, 2) + '.' + data[index].otfrom.substring(2, 4)
-            : data[index].otfrom,
-        otto:
-          data[index].otto !== ''
-            ? data[index].otto.substring(0, 2) + '.' + data[index].otto.substring(2, 4)
-            : data[index].otto,
-        custid: data[index].custid,
-        custname: data[index].custname,
-        counterid: data[index].counterid,
-        countername: data[index].countername,
-        typecancel: data[index].typecancel,
-        satusleave: data[index].status_leave,
+        console.log(element2);
+        
+        if (element2.custid && element2.worktype) {
+          valToMonths.push({
+            image:
+            element2.worktype === 'W1'
+                ? 'assets/images/csg-plan/calendar_w.png'
+                : element2.worktype === 'W2'
+                ? 'assets/images/csg-plan/calendar_h.png'
+                : element2.worktype === 'V1'
+                ? 'assets/images/csg-plan/calendar_o.png'
+                : element2.worktype === 'LE'
+                ? 'assets/images/csg-plan/calendar_o3.png'
+                : 'assets/images/csg-plan/calendar_s.svg',
+            date: `${element2.date_name.trim()} ${element2.assigndate}`,
+            value: element2.workdesc,
+            stateOt: element2.sumot !== 0 && element2.sumot != null ? 'Y' : 'N',
+            worktype: element2.worktype,
+            workfrom:
+              element2.workfrom !== ''
+                ? element2.workfrom.substring(0, 2) + '.' + element2.workfrom.substring(2, 4)
+                : element2.workfrom,
+            workto:
+              element2.workto !== ''
+                ? element2.workto.substring(0, 2) + '.' + element2.workto.substring(2, 4)
+                : element2.workto,
+            otfrom:
+              element2.otfrom !== ''
+                ? element2.otfrom.substring(0, 2) + '.' + element2.otfrom.substring(2, 4)
+                : element2.otfrom,
+            otto:
+              element2.otto !== ''
+                ? element2.otto.substring(0, 2) + '.' + element2.otto.substring(2, 4)
+                : element2.otto,
+            custid: element2.custid,
+            custname: element2.custname,
+            counterid: element2.counterid,
+            countername: element2.countername,
+            typecancel: element2.typecancel,
+            satusleave: element2.status_leave,
+          });
+        }
+
+        
+        
+
       });
-    }
+      
+    });
+
     console.log(valToMonths);
 
     this.values = valToMonths;
-
+    this.loading.dismiss();
     return this.values;
   }
+
 
   onChanges($event: any) {
     // console.log($event);
@@ -640,14 +763,13 @@ export class CsgPlanPage implements OnInit {
       });
 
 
-    // console.log('////',this.dataSelectDay);
-    console.log('////@@@@@',dataset);
+    console.log(dataset);
     // }
 
     const body = { dataset };
 
-    // console.log(body);
-
+    console.log(body);
+      // return
       const call = await this.api.insertCreatePlanCSGPlan(body);
       console.log(call.error_message);
       console.log(call);
@@ -703,12 +825,13 @@ export class CsgPlanPage implements OnInit {
     // await this.loading.present();
 
     // this.router.navigate(['csg-plan/create-plan']);
+
     const navigationExtras: NavigationExtras = {
       state: {monthToCreate: this.monthChange}
     };
 
     console.log(this.monthChange);
-
+    this.monthCreate = this.monthChange
 
     this.router.navigate(['csg-plan/create-plan'], navigationExtras);
   }

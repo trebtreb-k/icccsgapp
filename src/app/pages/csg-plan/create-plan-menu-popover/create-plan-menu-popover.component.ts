@@ -73,16 +73,12 @@ export class CreatePlanMenuPopoverComponent implements OnInit {
     }else if(this.type === 'worktype'){
       const callApi = await this.api.getWorkTypeCSGPlan();
       this.dataWorkTypeAPI = callApi.datas;
-      console.log(this.dataWorkTypeAPI);
+      console.log('********',this.dataWorkTypeAPI);
     }else{
       const callApi = !this.custID ? '' : !this.counterID ? '' : await this.api.getTimeTypeCounterCSGPlan(this.custID,this.counterID);
       this.dataTimeTypeAPI = callApi.datas;
       console.log(this.dataTimeTypeAPI);
     }
-
-
-
-
     console.log(this.dataTimeTypeAPI);
   }
 

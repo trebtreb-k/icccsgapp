@@ -20,11 +20,13 @@
 ::ng-deep .days-btn {
   &.next-month-day {
     opacity: 0 !important;
+    display: none !important;
   }
 }
 ::ng-deep .days-btn {
   &.last-month-day {
     opacity: 0 !important;
+    display: none !important;
   }
 }
 .calendar {

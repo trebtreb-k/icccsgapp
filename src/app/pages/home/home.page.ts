@@ -19,6 +19,7 @@ import { environment as env } from './../../../environments/environment';
 import { moment } from './../../services/utils/moment/moment.service';
 import { CsgPlanService } from './../../services/api/csg-plan/csg-plan.service';
 
+
 moment.locale('th');
 
 interface Menus {
@@ -198,10 +199,18 @@ export class HomePage implements OnInit {
 
       } catch (e) {
        // alert(JSON.stringify(e))
-        this.cheked_unique_device_id = false;
-        await this.storage.clear();
-        alert('Error: '+e.error?.e.error?.error_message)
-        this.router.navigate(['/login', {replaceUrl:true}]);
+
+      //  ------ คนทดสอบ
+        if (this.user.emp_id === '90536' || this.user.emp_id === '46291') {
+          //alert('treb')
+        }  else{
+
+          this.cheked_unique_device_id = false;
+          await this.storage.clear();
+          alert('Error: '+e.error?.e.error?.error_message)
+          this.router.navigate(['/login', {replaceUrl:true}]);
+
+        }
       }
     }
 

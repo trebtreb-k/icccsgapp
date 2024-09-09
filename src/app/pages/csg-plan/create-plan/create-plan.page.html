@@ -61,7 +61,7 @@
         <ion-label>
           ประเภทวันที่เลือก
           <span *ngIf="saveData.worktype.value" style="float: right">
-            <div  style="background-color: '#{{saveData.worktype.color}}'; width: 20px; height: 20px; border-radius: 50%; float: left;"></div> <span style="margin-left: 10px;">{{saveData.worktype.name}}</span>
+            <div style="background-color: #{{saveData.worktype.color}}; width: 20px; height: 20px; border-radius: 50%; float: left;"></div> <span style="margin-left: 10px;">{{saveData.worktype.name}}</span>
           </span>
         </ion-label>
       </ion-item>
@@ -102,7 +102,7 @@
               displayFormat="HH:mm"
               minuteValues="0,15,30,45"
               [value]="timeTo"
-              [min]="timeFrom"
+              [min]=""
               (ionChange)="timeToClick($event)"
               >
             </ion-datetime>
@@ -157,6 +157,9 @@
     <!-- </ion-grid> -->
 
   </ion-card>
+
+  
+
   <div style="height: 10px"></div>
 
 
@@ -174,11 +177,15 @@
 
   <!-- <div style="height: 400px" *ngIf="saveData.shop.value !== null && saveData.counter.value !== null && saveData.timetype.value !== null" > -->
     <!-- justify-content: flex-end; -->
+    <div class="calendar calendar-period" style="text-align: center;margin-top: 0px;background-color: white;margin-bottom: 10px;">
+      <span>Period : {{period}}</span>
+    </div>
+
   <div style="height: 400px" *ngIf="saveData.shop.value !== null && saveData.counter.value !== null">
     <div
       style=" background-color: white; position: relative; z-index: 99999; display: flex; width: 93%; margin-left: 15px; ">
-      <ion-button *ngIf="status=='W1'" (click)="selectAll()" color="primary" [disabled]="status_plan === 'N' ? false : status_plan === 'X' ? false : true">เลือกวันทำงานทั้งหมด</ion-button>
-      <ion-button *ngIf="status=='W1'" (click)="reStartDays()" color="light" style="margin: auto; margin-right: 0px;width: 15%;" [disabled]="status_plan === 'N' ? false : status_plan === 'X' ? false : true"><img src="../../../../assets/images/csg-plan/refresh-button.png" alt="" style="width: 40px;"></ion-button>
+      <ion-button *ngIf="status=='W1'" (click)="selectAll()" color="primary" [disabled]=" ( status_plan === 'N' || status_plan === 'X' || status_plan === null ) ? false : true">เลือกวันทำงานทั้งหมด</ion-button>
+      <ion-button *ngIf="status=='W1'" (click)="reStartDays()" color="light" style="margin: auto; margin-right: 0px;width: 15%;" [disabled]="( status_plan === 'N' || status_plan === 'X' || status_plan === null ) ? false : true"><img src="../../../../assets/images/csg-plan/refresh-button.png" alt="" style="width: 40px;"></ion-button>
 
       <div *ngIf="status=='V1'">
         <ion-label
@@ -203,17 +210,35 @@
         (change)="onChange2($event)"
       ></ion-calendar>
     </div> -->
+    
+    <!-- *ngIf="loadDataHoliday" -->
+    
 
-    <div class="calendar calendar-create-plan ">
+    <div class="calendar calendar-create-plan " >
+      <!-- ปฏิทิน 1 -->
       <ion-calendar
-        *ngIf="loadDataHoliday"
+        *ngIf="loadData"
         [(ngModel)]="startDate"
+        [type]="type"
+        [options]="optionsMulti"
+        [format]="'DD-MM-YYYY'"
+        (monthChange)="getHolidayForMonths($event)"
+        (change)="onChange($event,1)"
+        style="padding: 0;" ></ion-calendar>
+      <!-- ปฏิทิน 1 -->
+
+      <!-- ปฏิทิน 2 -->
+      <ion-calendar
+        *ngIf="loadData2"
+        [(ngModel)]="startDate2"
         [type]="type"
         [options]="optionsMulti2"
         [format]="'DD-MM-YYYY'"
         (monthChange)="getHolidayForMonths($event)"
-        (change)="onChange2($event)"
-      ></ion-calendar>
+        (change)="onChange($event,2)"
+        style="padding: 25px 0 0 0;" ></ion-calendar>
+      <!-- ปฏิทิน 2 -->
+      
     </div>
 
     <div class="card-list">
@@ -277,7 +302,7 @@
 
 
 
-<ion-footer *ngIf="saveData.shop.value&&saveData.counter.value&&timeFrom&&timeTo !== null && dataSelectDay.length !== 0 && (status_plan === 'N' || status_plan === 'X')">
+<ion-footer *ngIf="saveData.shop.value&&saveData.counter.value&&timeFrom&&timeTo !== null && dataSelectDay.length !== 0 && (status_plan === 'N' || status_plan === 'X' || status_plan === null)">
   <ion-toolbar style="text-align: center">
 
     <!-- <ion-button (click)="cancelPlan()">
