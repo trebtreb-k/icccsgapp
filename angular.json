@@ -32,7 +32,13 @@
               }
             ],
             "styles": [{ "input": "src/theme/variables.scss" }, { "input": "src/global.scss" }],
-            "scripts": []
+            "scripts": [],
+            "allowedCommonJsDependencies": [
+              "angular2-chartjs",
+              "lodash",
+              "ion2-calendar",
+              "crypto-js"
+            ]
           },
           "configurations": {
             "production": {

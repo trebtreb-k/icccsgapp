@@ -131,7 +131,7 @@ ion-content {
         display: flex;
         flex-flow: column nowrap;
         align-items: center;
-        justify-content: start;//center;
+        justify-content: flex-start;//center;
         margin: 6px 0;
 
         width: $size;
