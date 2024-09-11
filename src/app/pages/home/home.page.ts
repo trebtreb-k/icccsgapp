@@ -462,9 +462,10 @@ export class HomePage implements OnInit {
     /***********************************/
 
     fcmListenToNotifications() {
+
       this.platform.ready().then(() => {
+
         this.fcm.getToken();
-  
   
         try {
           this.fcm.listenToNotifications().subscribe((data) => {

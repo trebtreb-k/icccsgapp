@@ -91,6 +91,6 @@ filesToUpdate.forEach(file => {
   updateDeploymentTarget(filePath, newVersion);
 });
 
-fixIosFirebase(path.join(__dirname, '../plugins'));
-fixIosFirebase2(path.join(__dirname, '../platforms/ios'));
+// fixIosFirebase(path.join(__dirname, '../plugins'));
+// fixIosFirebase2(path.join(__dirname, '../platforms/ios'));
 fixAndroidPermission(path.join(__dirname, '../platforms/android/app/src'));

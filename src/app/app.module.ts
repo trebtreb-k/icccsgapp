@@ -19,8 +19,7 @@ import { CsgPlanModalComponent } from './pages/csg-plan/csg-plan-modal/csg-plan-
 import { CsgPlanPopoverComponent } from './pages/csg-plan/csg-plan-popover/csg-plan-popover.component';
 import { CustomerTransactionDetailComponent } from './pages/customer/customer-transaction-detail/customer-transaction-detail.component';
 import { EmailComposer } from '@ionic-native/email-composer/ngx';
-import { FCM } from 'cordova-plugin-fcm-with-dependecy-updated-12/ionic/ngx';
-// import { FCM } from 'cordova-plugin-fcm-with-dependecy-updated/ionic/ngx';
+import { FCM } from 'cordova-plugin-fcm-with-dependecy-updated/ionic/ngx';
 // import { FCM } from '@ionic-native/fcm/ngx';
 import { File } from '@ionic-native/file/ngx';
 import { FileOpener } from '@ionic-native/file-opener/ngx';

@@ -135,8 +135,8 @@ filesToUpdate.forEach(file => {
   updateDeploymentTarget(filePath, newVersion);
 });
 
-fixIosFirebase(path.join(__dirname, '../plugins'));
-fixIosFirebase2(path.join(__dirname, '../platforms/ios'));
+// fixIosFirebase(path.join(__dirname, '../plugins'));
+// fixIosFirebase2(path.join(__dirname, '../platforms/ios'));
 fixAndroidPhotoViewer(path.join(__dirname, '../platforms/android'));
 fixAndroidBarcodeScanner(path.join(__dirname, '../platforms/android'));
 fixAndroidPermission(path.join(__dirname, '../platforms/android/app/src'));
