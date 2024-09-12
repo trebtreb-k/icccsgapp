@@ -2,8 +2,8 @@ module.exports = function (ctx) {
   // Use console.log(ctx); to print the context to the console when running 'ionic build/serve'
 
   var projectDir = ctx.project.dir;
-  fixCordovaFileTransferIOS(projectDir);
-  fixPodGoogleUtilitiesIOS(projectDir);
+  // fixCordovaFileTransferIOS(projectDir);
+  // fixPodGoogleUtilitiesIOS(projectDir);
   fixAndroidCompatFingerPrint(projectDir);
   fixAndroidDefaultSDKVersion(projectDir);
 
@@ -12,6 +12,7 @@ module.exports = function (ctx) {
 function fixCordovaFileTransferIOS(projectDir) {
   var fs = require('fs');
   try {
+    console.log(`Fixing "cordova-plugin-file-transfer" for ios`);
 
     var filePath = projectDir + '/plugins/cordova-plugin-file-transfer/src/ios/CDVFileTransfer.m';
 
@@ -36,7 +37,6 @@ function fixCordovaFileTransferIOS(projectDir) {
 
     fs.writeFileSync(filePathIOS, fileContentIOS, 'utf8');
 
-    console.log('Fixed cordova-plugin-file-transfer iOS');
   } catch (e) {
 
   }
@@ -46,28 +46,35 @@ function fixPodGoogleUtilitiesIOS(projectDir) {
   var fs = require('fs');
   var cp = require('child_process');
   try {
+    console.log(`Fixing "GoogleUtilities" for ios`);
 
     var filePath = projectDir + '/platforms/ios/Podfile';
 
     var fileContent = fs.readFileSync(filePath, 'utf8');
 
-    newFileContent = fileContent.replace("pod 'Firebase/Messaging', '~> 7.4.0'\nend", "pod 'Firebase/Messaging', '~> 7.4.0'\n\tpod 'GoogleUtilities', '7.12.0'\nend");
+    newFileContent = fileContent.replace(
+      "pod 'Firebase/Messaging', '~> 7.4.0'\nend",
+      "pod 'Firebase/Messaging', '~> 7.4.0'\n\tpod 'GoogleUtilities', '7.12.0'\nend"
+    );
 
     if (fileContent !== newFileContent) {
       fs.writeFileSync(filePath, newFileContent, 'utf8');
-      cp.exec('rm Podfile.lock', { cwd: 'platforms/ios/' }, function (error, stdout, stderr) {
-        console.error(error);
-        console.log(stdout);
-        console.error(stderr);
-      });
-      cp.exec('pod install', { cwd: 'platforms/ios/' }, function (error, stdout, stderr) {
-        console.error(error);
-        console.log(stdout);
-        console.error(stderr);
+      cp.exec('rm -rf Pods', { cwd: 'platforms/ios/' }, function (error, stdout, stderr) {
+        if (error) {
+          console.error(error);
+        }
+        cp.exec('rm Podfile.lock', { cwd: 'platforms/ios/' }, function (error, stdout, stderr) {
+          if (error) {
+            console.error(error);
+          }
+          cp.exec('pod install', { cwd: 'platforms/ios/' }, function (error, stdout, stderr) {
+            if (error) {
+              console.error(error);
+            }
+          });
+        });
       });
     }
-
-    console.log('Fixed GoogleUtilities Pod');
   } catch (e) {
 
   }
@@ -76,18 +83,21 @@ function fixPodGoogleUtilitiesIOS(projectDir) {
 function fixAndroidCompatFingerPrint(projectDir) {
   var fs = require('fs');
   try {
+    console.log('Fixing "cordova-plugin-fingerprint-aio" for android');
 
     var filePath = projectDir + '/platforms/android/cordova-plugin-fingerprint-aio/salestools-build.gradle';
 
     var fileContent = fs.readFileSync(filePath, 'utf8');
 
-    newFileContent = fileContent.replace("dependencies {\n    implementation \"androidx.biometric:biometric", "dependencies {\n    implementation \"androidx.appcompat:appcompat:1.2.0\"\n    implementation \"androidx.biometric:biometric");
+    newFileContent = fileContent.replace(
+      "dependencies {\n    implementation \"androidx.biometric:biometric",
+      "dependencies {\n    implementation \"androidx.appcompat:appcompat:1.2.0\"\n    implementation \"androidx.biometric:biometric"
+    );
 
     if (fileContent !== newFileContent) {
       fs.writeFileSync(filePath, newFileContent, 'utf8');
     }
 
-    console.log('Fixed Android Finger Print');
   } catch (e) {
 
   }
@@ -96,6 +106,7 @@ function fixAndroidCompatFingerPrint(projectDir) {
 function fixAndroidDefaultSDKVersion(projectDir) {
   var fs = require('fs');
   try {
+    console.log('Fixing default version of target SDK, compile SDK and build tools for android');
 
     var filePath = projectDir + '/platforms/android/build.gradle';
 
@@ -108,9 +119,9 @@ function fixAndroidDefaultSDKVersion(projectDir) {
     if (fileContent !== newFileContent) {
       fs.writeFileSync(filePath, newFileContent, 'utf8');
     }
-
-    console.log('Fixed Default Android SDK Version');
   } catch (e) {
 
   }
 }
+
+console.log('BEFORE BUILD');

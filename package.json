@@ -175,7 +175,8 @@
       "cordova-plugin-media": {},
       "cordova-plugin-camera": {
         "ANDROIDX_CORE_VERSION": "1.6.+"
-      }
+      },
+      "mx.ferreyra.callnumber": {}
     },
     "platforms": [
       "android",

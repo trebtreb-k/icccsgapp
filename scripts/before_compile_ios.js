@@ -3,6 +3,8 @@ const path = require('path');
 
 function updateDeploymentTarget(filePath, newVersion) {
   try {
+    console.log(`Updating "IPHONEOS_DEPLOYMENT_TARGET" in "${filePath}" to 12.0`);
+
     // Read the file content
     let fileContent = fs.readFileSync(filePath, 'utf8');
 
@@ -14,14 +16,12 @@ function updateDeploymentTarget(filePath, newVersion) {
 
     // Write the updated content back to the file
     fs.writeFileSync(filePath, updatedContent, 'utf8');
-
-    console.log(`Updated ${filePath} successfully.`);
   } catch (error) {
-    console.error(`Error updating ${filePath}:`, error);
+    // console.error(`Error updating ${filePath}:`, error);
   }
 }
 
-function fixIosFirebase(projectDir) {
+function fixIosFirebasePlugin(projectDir) {
   const filePath = path.join(projectDir, 'cordova-plugin-fcm-with-dependecy-updated/plugin.xml');
   try {
     // Read the file content
@@ -34,14 +34,12 @@ function fixIosFirebase(projectDir) {
 
     // Write the updated content back to the file
     fs.writeFileSync(filePath, updatedContent, 'utf8');
-
-    console.log(`Updated ${filePath} successfully.`);
   } catch (error) {
-    console.error(`Error updating ${filePath}:`, error);
+    // console.error(`Error updating ${filePath}:`, error);
   }
 }
 
-function fixIosFirebase2(projectDir) {
+function fixIOSFirebaseInfo(projectDir) {
   const filePath = path.join(projectDir, 'ICCCSG APP/ICCCSG APP-Info.plist');
   try {
     // Read the file content
@@ -53,30 +51,10 @@ function fixIosFirebase2(projectDir) {
 
     // Write the updated content back to the file
     fs.writeFileSync(filePath, updatedContent, 'utf8');
-
-    console.log(`Updated ${filePath} successfully.`);
   } catch (error) {
-    console.error(`Error updating ${filePath}:`, error);
+    // console.error(`Error updating ${filePath}:`, error);
   }
   
-}
-
-function fixAndroidPermission(projectDir) {
-  const filePath = path.join(projectDir, 'main/AndroidManifest.xml');
-  try {
-    // Read the file content
-    let fileContent = fs.readFileSync(filePath, 'utf8');
-
-    // Replace the old deployment target version with the new version
-    let updatedContent = fileContent.replace(`<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="32" />`, '').replace(`<uses-permission android:maxSdkVersion="32" android:name="android.permission.WRITE_EXTERNAL_STORAGE" />`, '');
-
-    // Write the updated content back to the file
-    fs.writeFileSync(filePath, updatedContent, 'utf8');
-
-    console.log(`Updated ${filePath} successfully.`);
-  } catch (error) {
-    console.error(`Error updating ${filePath}:`, error);
-  }
 }
 
 const projectDir = path.join(__dirname, '../platforms/ios');
@@ -90,7 +68,7 @@ filesToUpdate.forEach(file => {
   const filePath = path.join(projectDir, file);
   updateDeploymentTarget(filePath, newVersion);
 });
+console.log('AFTER BUILD');
 
-// fixIosFirebase(path.join(__dirname, '../plugins'));
-// fixIosFirebase2(path.join(__dirname, '../platforms/ios'));
-fixAndroidPermission(path.join(__dirname, '../platforms/android/app/src'));
+// fixIosFirebasePlugin(path.join(__dirname, '../plugins'));
+// fixIOSFirebaseInfo(path.join(__dirname, '../platforms/ios'));
