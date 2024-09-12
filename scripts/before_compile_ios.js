@@ -3,7 +3,7 @@ const path = require('path');
 
 function updateDeploymentTarget(filePath, newVersion) {
   try {
-    console.log(`Updating "IPHONEOS_DEPLOYMENT_TARGET" to 12.0`);
+    console.log(`Updating "IPHONEOS_DEPLOYMENT_TARGET" in "${filePath}" to 12.0`);
 
     // Read the file content
     let fileContent = fs.readFileSync(filePath, 'utf8');
@@ -21,7 +21,7 @@ function updateDeploymentTarget(filePath, newVersion) {
   }
 }
 
-function fixIosFirebase(projectDir) {
+function fixIosFirebasePlugin(projectDir) {
   const filePath = path.join(projectDir, 'cordova-plugin-fcm-with-dependecy-updated/plugin.xml');
   try {
     // Read the file content
@@ -39,7 +39,7 @@ function fixIosFirebase(projectDir) {
   }
 }
 
-function fixIosFirebase2(projectDir) {
+function fixIOSFirebaseInfo(projectDir) {
   const filePath = path.join(projectDir, 'ICCCSG APP/ICCCSG APP-Info.plist');
   try {
     // Read the file content
@@ -70,5 +70,5 @@ filesToUpdate.forEach(file => {
 });
 console.log('AFTER BUILD');
 
-// fixIosFirebase(path.join(__dirname, '../plugins'));
-// fixIosFirebase2(path.join(__dirname, '../platforms/ios'));
+// fixIosFirebasePlugin(path.join(__dirname, '../plugins'));
+// fixIOSFirebaseInfo(path.join(__dirname, '../platforms/ios'));

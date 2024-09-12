@@ -1,4 +1,5 @@
 import { AuthenService } from './../authen/authen.service';
+// import { FCM } from 'cordova-plugin-fcm-with-android-12-fix-v3/ionic/ngx';
 import { FCM } from 'cordova-plugin-fcm-with-dependecy-updated/ionic/ngx';
 // import { FCM } from '@ionic-native/fcm/ngx';
 import { Injectable } from '@angular/core';
@@ -38,7 +39,7 @@ export class FcmService {
     // let token = await  this.fcm.getToken();
     // console.log('xxxxxxxxxxxxx')
     //  await this.authenApi.updateFirebaseToken('x123456', 'android');
-    
+
     this.fcm.requestPushPermission().then(async (result) => {
       this.token = await this.fcm.getToken();
 

@@ -5,6 +5,6 @@
   },
   "type": "angular",
   "hooks": {
-    "build:before": "./scripts/prebuild.js"
+    "build:before": "./scripts/before_build.js"
   }
 }
