@@ -8,7 +8,6 @@ import { CsgPlanService } from './../../../services/api/csg-plan/csg-plan.servic
 import { LoadingService } from './../../../services/utils/loading/loading.service';
 import { StorageService } from './../../../services/storage/storage.service';
 import { moment } from './../../../services/utils/moment/moment.service';
-import { forEach } from 'lodash';
 
 moment.locale('th');
 
@@ -1894,94 +1893,6 @@ export class CreatePlanPage implements OnInit {
       });
 
       console.log("ALL SELECT",this.daysConfig);
-      
-
-     
-        
-      // if (i.worktype !== '') {
-      //   console.log(this.dayStartFromD);
-
-      //   if (moment(i.assigndate, 'DD/MM/YYYY').format('MM') === this.m) {
-      //     if (moment(i.assigndate, 'DD/MM/YYYY').format('DD') >= this.dayStartFromD) {
-      //       this.daysConfig.push({
-      //         date: moment(i.assigndate, 'DD/MM/YYYY').format('YYYY-MM-DD'),
-      //         cssClass: this.status === 'W1' ? 'custom-calendar workday' : this.status === 'V1' ? 'custom-calendar offday' : '',
-      //         // subTitle: `${this.status} ${this.check === true ? 'OT' : ''}`,
-      //         subTitle: `${fromTimeFrom} ${this.check === true ? 'OT' : ''}`,
-      //         timefrom: fromTimeFrom,
-      //         timeto: fromTimeTo,
-      //         timeotfrom: this.check === true ? fromTimeOTFrom : '',
-      //         timeotto: this.check === true ? fromTimeOTTo : '',
-      //         worktype: this.status,
-      //       });
-      //     } else {
-      //       this.daysConfig.push({
-      //         date: moment(i.assigndate, 'DD/MM/YYYY').format('YYYY-MM-DD'),
-      //         cssClass:
-      //           i.worktype === 'W1'
-      //             ? 'custom-calendar workday oct'
-      //             : i.worktype === 'W2'
-      //             ? 'custom-calendar workholiday oct'
-      //             : i.worktype === 'V1'
-      //             ? 'custom-calendar offday oct'
-      //             : i.worktype === 'LE'
-      //             ? 'custom-calendar expected-holiday oct'
-      //             : '',
-      //         // subTitle: `${i.worktype} ${i.otfrom !== '' ? 'OT' : ''}`,
-      //         subTitle: `${i.timefrom} ${i.otfrom !== '' ? 'OT' : ''}`,
-      //         // subTitle: `${i.timefrom} ${this.check === true ? 'OT' : ''}`,
-      //         timefrom: i.timefrom,
-      //         timeto: i.timeto,
-      //         timeotfrom: i.otfrom,
-      //         timeotto: i.otto,
-      //         worktype: i.worktype,
-      //       });
-      //     }
-      //   } else if (moment(i.assigndate, 'DD/MM/YYYY').format('MM') > this.m) {
-      //     this.daysConfig.push({
-      //       date: moment(i.assigndate, 'DD/MM/YYYY').format('YYYY-MM-DD'),
-      //       cssClass: this.status === 'W1' ? 'custom-calendar workday' : this.status === 'V1' ? 'custom-calendar offday' : '',
-      //       // subTitle: `${this.status} ${this.check === true ? 'OT' : ''}`,
-      //       subTitle: `${fromTimeFrom} ${this.check === true ? 'OT' : ''}`,
-      //       timefrom: fromTimeFrom,
-      //       timeto: fromTimeTo,
-      //       timeotfrom: this.check === true ? fromTimeOTFrom : '',
-      //       timeotto: this.check === true ? fromTimeOTTo : '',
-      //       worktype: this.status,
-      //     });
-      //   }
-      // } else {
-      //   //console.log('?????????????11111<<<<<<<<<<<<<<<<<<<<<>>>>>>>');
-      //   if (moment(i.assigndate, 'DD/MM/YYYY').format('MM') === this.m) {
-      //     //console.log('?????????????222222<<<<<<<<<<<<<<<<<<<<<>>>>>>>');
-      //     if (moment(i.assigndate, 'DD/MM/YYYY').format('DD') >= this.dayStartFromD) {
-      //       //console.log('?????????????3333333<<<<<<<<<<<<<<<<<<<<<>>>>>>>');
-      //       this.daysConfig.push({
-      //         date: moment(i.assigndate, 'DD/MM/YYYY').format('YYYY-MM-DD'),
-      //         cssClass: this.status === 'W1' ? 'custom-calendar workday' : this.status === 'V1' ? 'custom-calendar offday' : '',
-      //         subTitle: `${fromTimeFrom} ${this.check === true ? 'OT' : ''}`,
-      //         // subTitle: `${this.status} ${this.check === true ? 'OT' : ''}`,
-      //         timefrom: fromTimeFrom,
-      //         timeto: fromTimeTo,
-      //         timeotfrom: this.check === true ? fromTimeOTFrom : '',
-      //         timeotto: this.check === true ? fromTimeOTTo : '',
-      //         worktype: this.status,
-      //       });
-      //     }
-      //   } else if (moment(i.assigndate, 'DD/MM/YYYY').format('MM') > this.m) {
-      //     this.daysConfig.push({
-      //       date: moment(i.assigndate, 'DD/MM/YYYY').format('YYYY-MM-DD'),
-      //       cssClass: this.status === 'W1' ? 'custom-calendar workday' : this.status === 'V1' ? 'custom-calendar offday' : '',
-      //       // subTitle: `${this.status} ${this.check === true ? 'OT' : ''}`,
-      //       subTitle: `${fromTimeFrom} ${this.check === true ? 'OT' : ''}`,
-      //       timefrom: fromTimeFrom,
-      //       timeto: fromTimeTo,
-      //       timeotfrom: this.check === true ? fromTimeOTFrom : '',
-      //       timeotto: this.check === true ? fromTimeOTTo : '',
-      //       worktype: this.status,
-      //     });
-      //   }
-      // }
 
     } else {
 
@@ -2107,7 +2018,7 @@ export class CreatePlanPage implements OnInit {
     };
 
 
-    if (callApiGetCsgCreatePlanDetail.datas.length < 1) {
+    if (callApiGetCsgCreatePlanDetail.datas.length > 1) {
       this.optionsMulti2 = {
         from: new Date(this.dayStartFromY, this.dayStartFromM, this.dayStartFromD),
         to: new Date(this.dayEndFromY, this.dayEndFromM, this.dayEndFromD),

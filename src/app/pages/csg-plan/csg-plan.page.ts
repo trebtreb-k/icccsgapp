@@ -137,7 +137,7 @@ export class CsgPlanPage implements OnInit {
   }
 
   async ngOnInit() {
-    // await this.loading.present();
+    await this.loading.present();
     // localStorage.setItem('monthBack', moment().format('YYYYMM'));
     this.monthCreate = moment().format('YYYYMM');
     const historyState = history.state;
@@ -197,13 +197,6 @@ export class CsgPlanPage implements OnInit {
       message: 'ท่านต้องการยืนยันการส่งแพลน ใช่หรือไม่',
       buttons: [
         {
-          text: 'ไม่',
-          role: 'cancel',
-          handler: () => {
-            this.handlerMessage = 'Alert canceled';
-          },
-        },
-        {
           text: 'ยืนยัน',
           role: 'confirm',
           handler: () => {
@@ -214,6 +207,14 @@ export class CsgPlanPage implements OnInit {
             // this.handlerMessage = 'Alert confirmed';
           },
         },
+        {
+          text: 'ไม่',
+          cssClass: 'c-red',
+          role: 'cancel',
+          handler: () => {
+            this.handlerMessage = 'Alert canceled';
+          },
+        }
       ],
     });
 
@@ -298,7 +299,7 @@ export class CsgPlanPage implements OnInit {
    
     this.showCalendar(this.monthCreate)
 
-
+    
     // if (historyState.monthFromCreate) {
     //   console.log(historyState.monthFromCreate);
 
@@ -528,7 +529,7 @@ export class CsgPlanPage implements OnInit {
    
       this.getdetailDay(this.dataAssigndate);
         // ---------- end loop get datas -----------------
-
+        this.loading.dismiss();
     } catch (error) {
       this.dataAssigndate = [];
       this.dataAssigndate = [];
@@ -733,7 +734,7 @@ export class CsgPlanPage implements OnInit {
     console.log(valToMonths);
 
     this.values = valToMonths;
-    this.loading.dismiss();
+    // this.loading.dismiss();
     return this.values;
   }
 
