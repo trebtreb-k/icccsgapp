@@ -28,9 +28,12 @@ function fixIosFirebasePlugin(projectDir) {
     let fileContent = fs.readFileSync(filePath, 'utf8');
 
     // Replace the old deployment target version with the new version
-    let updatedContent = fileContent.replace(`<config-file target="*-Info.plist" parent="FirebaseAppDelegateProxyEnabled">
+    let updatedContent = fileContent.replace(
+      `<config-file target="*-Info.plist" parent="FirebaseAppDelegateProxyEnabled">
 			<false/>
-		</config-file>`, '');
+		</config-file>`,
+      ''
+    );
 
     // Write the updated content back to the file
     fs.writeFileSync(filePath, updatedContent, 'utf8');
@@ -46,15 +49,18 @@ function fixIOSFirebaseInfo(projectDir) {
     let fileContent = fs.readFileSync(filePath, 'utf8');
 
     // Replace the old deployment target version with the new version
-    let updatedContent = fileContent.replace(`<key>FirebaseAppDelegateProxyEnabled</key>
-	<false/>`, '');
+    let updatedContent = fileContent.replace(
+      `<key>FirebaseAppDelegateProxyEnabled</key>
+	<false/>`,
+      ''
+    );
 
     // Write the updated content back to the file
     fs.writeFileSync(filePath, updatedContent, 'utf8');
   } catch (error) {
     // console.error(`Error updating ${filePath}:`, error);
   }
-  
+
 }
 
 const projectDir = path.join(__dirname, '../platforms/ios');
@@ -71,4 +77,4 @@ filesToUpdate.forEach(file => {
 console.log('AFTER BUILD');
 
 // fixIosFirebasePlugin(path.join(__dirname, '../plugins'));
-// fixIOSFirebaseInfo(path.join(__dirname, '../platforms/ios'));
+fixIOSFirebaseInfo(path.join(__dirname, '../platforms/ios'));

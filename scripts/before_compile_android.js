@@ -77,8 +77,61 @@ function fixAndroidPermission(projectDir) {
   }
 }
 
+function fixAndroidCDVThemes(projectDir) {
+  const filePath = path.join(projectDir, 'app/src/main/res/values/themes.xml');
+  try {
+    console.log(`Fixing SplashScreen CDV for android`);
+
+    // Read the file content
+    let fileContent = fs.readFileSync(filePath, 'utf8');
+
+    // Replace the old deployment target version with the new version
+    updatedContent = fileContent.replace(
+      `<item name="windowSplashScreenAnimatedIcon">@drawable/ic_cdv_splashscreen</item>`, 
+      '<item name="windowSplashScreenAnimatedIcon">@color/cdv_splashscreen_background</item>'
+    );
+
+    // Write the updated content back to the file
+    fs.writeFileSync(filePath, updatedContent, 'utf8');
+  } catch (error) {
+    // console.error(`Error updating ${filePath}:`, error);
+  }
+}
+
+
+function fixAndroidPostNotificationPermission(projectDir) {
+
+  // Path to AndroidManifest.xml
+  const filePath = path.join(projectDir, 'app/src/main/AndroidManifest.xml');
+
+  // Read the file
+  fs.readFile(filePath, 'utf8', function (err, data) {
+    if (err) {
+      throw new Error('Unable to read AndroidManifest.xml: ' + err);
+    }
+
+    // Add permission if not present
+    if (data.indexOf('android.permission.POST_NOTIFICATIONS') === -1) {
+      var result = data.replace(
+        /<manifest[\s\S]*?>/,
+        '$&\n    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />'
+      );
+
+      // Write the modified manifest back
+      fs.writeFile(filePath, result, 'utf8', function (err) {
+        if (err) {
+          throw new Error('Unable to write into AndroidManifest.xml: ' + err);
+        }
+        console.log('POST_NOTIFICATIONS permission added to AndroidManifest.xml');
+      });
+    }
+  });
+};
+
 const projectDir = path.join(__dirname, '../platforms/android');
 
 fixAndroidPhotoViewer(projectDir);
 fixAndroidBarcodeScanner(projectDir);
 fixAndroidPermission(projectDir);
+fixAndroidCDVThemes(projectDir);
+fixAndroidPostNotificationPermission(projectDir);
