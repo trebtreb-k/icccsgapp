@@ -3,8 +3,5 @@
   "integrations": {
     "cordova": {}
   },
-  "type": "angular",
-  "hooks": {
-    "build:before": "./scripts/before_build.js"
-  }
+  "type": "angular"
 }

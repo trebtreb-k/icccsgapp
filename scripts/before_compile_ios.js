@@ -21,27 +21,6 @@ function updateDeploymentTarget(filePath, newVersion) {
   }
 }
 
-function fixIosFirebasePlugin(projectDir) {
-  const filePath = path.join(projectDir, 'cordova-plugin-fcm-with-dependecy-updated/plugin.xml');
-  try {
-    // Read the file content
-    let fileContent = fs.readFileSync(filePath, 'utf8');
-
-    // Replace the old deployment target version with the new version
-    let updatedContent = fileContent.replace(
-      `<config-file target="*-Info.plist" parent="FirebaseAppDelegateProxyEnabled">
-			<false/>
-		</config-file>`,
-      ''
-    );
-
-    // Write the updated content back to the file
-    fs.writeFileSync(filePath, updatedContent, 'utf8');
-  } catch (error) {
-    // console.error(`Error updating ${filePath}:`, error);
-  }
-}
-
 function fixIOSFirebaseInfo(projectDir) {
   const filePath = path.join(projectDir, 'ICCCSG APP/ICCCSG APP-Info.plist');
   try {
@@ -74,7 +53,5 @@ filesToUpdate.forEach(file => {
   const filePath = path.join(projectDir, file);
   updateDeploymentTarget(filePath, newVersion);
 });
-console.log('AFTER BUILD');
 
-// fixIosFirebasePlugin(path.join(__dirname, '../plugins'));
 fixIOSFirebaseInfo(path.join(__dirname, '../platforms/ios'));

@@ -98,7 +98,6 @@ function fixAndroidCDVThemes(projectDir) {
   }
 }
 
-
 function fixAndroidPostNotificationPermission(projectDir) {
 
   // Path to AndroidManifest.xml
@@ -128,6 +127,29 @@ function fixAndroidPostNotificationPermission(projectDir) {
   });
 };
 
+function fixAndroidCompatFingerPrint(projectDir) {
+  var fs = require('fs');
+  try {
+    console.log('Fixing "cordova-plugin-fingerprint-aio" for android');
+
+    var filePath = projectDir + '/platforms/android/cordova-plugin-fingerprint-aio/salestools-build.gradle';
+
+    var fileContent = fs.readFileSync(filePath, 'utf8');
+
+    newFileContent = fileContent.replace(
+      "dependencies {\n    implementation \"androidx.biometric:biometric",
+      "dependencies {\n    implementation \"androidx.appcompat:appcompat:1.2.0\"\n    implementation \"androidx.biometric:biometric"
+    );
+
+    if (fileContent !== newFileContent) {
+      fs.writeFileSync(filePath, newFileContent, 'utf8');
+    }
+
+  } catch (e) {
+
+  }
+}
+
 const projectDir = path.join(__dirname, '../platforms/android');
 
 fixAndroidPhotoViewer(projectDir);
@@ -135,3 +157,4 @@ fixAndroidBarcodeScanner(projectDir);
 fixAndroidPermission(projectDir);
 fixAndroidCDVThemes(projectDir);
 fixAndroidPostNotificationPermission(projectDir);
+fixAndroidCompatFingerPrint(projectDir);

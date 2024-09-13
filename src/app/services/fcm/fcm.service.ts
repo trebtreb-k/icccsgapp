@@ -1,6 +1,7 @@
 import { AuthenService } from './../authen/authen.service';
 // import { FCM } from 'cordova-plugin-fcm-with-android-12-fix-v3/ionic/ngx';
 import { FCM } from 'cordova-plugin-fcm-with-dependecy-updated/ionic/ngx';
+// import { FCM } from 'cordova-plugin-fcm-with-dependecy-updated-12/ionic/ngx';
 // import { FCM } from '@ionic-native/fcm/ngx';
 import { Injectable } from '@angular/core';
 //import { Firebase } from '@ionic-native/firebase/ngx';

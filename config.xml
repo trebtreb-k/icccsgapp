@@ -61,7 +61,6 @@
         <splash density="port-xhdpi" src="resources/android/splash/drawable-port-xhdpi-screen.png" />
         <splash density="port-xxhdpi" src="resources/android/splash/drawable-port-xxhdpi-screen.png" />
         <splash density="port-xxxhdpi" src="resources/android/splash/drawable-port-xxxhdpi-screen.png" />
-        <hook src="scripts/after_prepare_android.js" type="after_prepare" />
         <hook src="scripts/before_compile_android.js" type="before_compile" />
     </platform>
     <platform name="ios">
@@ -180,8 +179,6 @@
     <plugin name="cordova-plugin-ionic-webview" spec="^4.0.0" />
     <plugin name="cordova-plugin-ionic-keyboard" spec="^2.0.5" />
     <allow-navigation href="*" />
-    <hook src="scripts/before_prepare.js" type="before_prepare" />
-    <hook src="scripts/after_prepare.js" type="after_prepare" />
     <engine name="android" />
     <engine name="ios" />
 </widget>
