@@ -21,6 +21,7 @@ export class CreatePlanMenuPopoverComponent implements OnInit {
   otherShop: any;
   otherCounters: any;
   empID: any;
+  period: any;
   counterID: any;
   selectedIndex: any;
   selectedIndexC: any;
@@ -33,6 +34,7 @@ export class CreatePlanMenuPopoverComponent implements OnInit {
     private navParams: NavParams,
   ) {
     const type = this.navParams.get('props').type;
+    const period = this.navParams.get('props').period;
     const counters = this.navParams.get('props').dataCounter;
     const custid = this.navParams.get('props').custid;
     const counterid = this.navParams.get('props2').counterid;
@@ -46,6 +48,7 @@ export class CreatePlanMenuPopoverComponent implements OnInit {
 
     this.dataCounterAPI = counters;
     this.type = type;
+    this.period = period;
     this.custID = custid;
     this.counterID = counterid;
     this.dataTimeTypeAPI = counterid;
@@ -62,12 +65,14 @@ export class CreatePlanMenuPopoverComponent implements OnInit {
     // const callApi = await this.api.getShopCounterCSGPlan(this.empID);
     if(this.type === 'counter'){
       console.log(this.custID);
-        const callApi = !this.custID ? '' : await this.api.getCouterShopCSGPlan(this.empID,this.custID);
+        const callApi = !this.custID ? '' : await this.api.getCouterShopCSGPlan(this.empID,this.period,this.custID);
         this.dataCounterAPI = callApi.datas;
 
         console.log(this.dataCounterAPI);
     }else if(this.type === 'shop'){
-      const callApi = await this.api.getShopCSGPlan(this.empID);
+
+      console.log(this.period);
+      const callApi = await this.api.getShopCSGPlan(this.empID,this.period);
       this.dataShopCounterAPI = callApi.datas;
       console.log(this.dataShopCounterAPI);
     }else if(this.type === 'worktype'){
@@ -84,7 +89,10 @@ export class CreatePlanMenuPopoverComponent implements OnInit {
 
   async getUserInfo(): Promise<void> {
     const info = await this.storage.get('USER_INFO');
+    console.log(info);
+    
     this.empID = info?.emp_id;
+
   }
 
   meClicked(event: any, data: any, type: string) {

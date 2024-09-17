@@ -1502,7 +1502,7 @@ export class CreatePlanPage implements OnInit {
       cssClass: 'popoverMenu',
       componentProps: {
         // props: { type: ev, dataCounter: !this.counters ? '' : this.counters },
-        props: { type: ev, dataCounter: !this.counters ? '' : this.counters, custid: !this.custid ? '' : this.custid },
+        props: { type: ev, dataCounter: !this.counters ? '' : this.counters, custid: !this.custid ? '' : this.custid, period: this.monthCreate},
         props2: { counterid: !this.counterMenu ? '' : this.counterMenu },
         props3: { time_from: '', time_to: '' },
         props4: { worktype: '', worktypename: '', worktypecolor: '' },
@@ -1538,7 +1538,7 @@ export class CreatePlanPage implements OnInit {
          
           console.log(this.empId, this.custid);
 
-          const callApi2 = await this.api.getCouterShopCSGPlan(this.empId, this.custid);
+          const callApi2 = await this.api.getCouterShopCSGPlan(this.empId, this.monthCreate, this.custid);
           console.log(callApi2);
           console.log(callApi2.datas.length);
 

@@ -43,14 +43,14 @@ export class CsgPlanService {
     return this.http.get(url).toPromise();
   }
 
-  async getShopCSGPlan(empid: any): Promise<any> {
-    const url = `${ST_ROOT.csgplan}/salestools/csg_plan/custid/storecsg/${empid}`;
+  async getShopCSGPlan(empid: any,period: any): Promise<any> {
+    const url = `${ST_ROOT.csgplan}/salestools/csg_plan/csgcreateplan/custid/storecsg?empid=${empid}&period=${period}`;
     console.log(url);
     return this.http.get(url).toPromise();
   }
 
-  async getCouterShopCSGPlan(empid: any, custID: any,): Promise<any> {
-    const url = `${ST_ROOT.csgplan}/salestools/csg_plan/custid/counterstore/${empid}/${custID}`;
+  async getCouterShopCSGPlan(empid: any, period: any, custID: any,): Promise<any> {
+    const url = `${ST_ROOT.csgplan}/salestools/csg_plan/csgcreateplan/custid/counterstore?empid=${empid}&period=${period}&custid=${custID}`;
     console.log(url);
     return this.http.get(url).toPromise();
   }

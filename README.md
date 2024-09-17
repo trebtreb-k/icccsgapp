@@ -3,7 +3,7 @@
 Building with [Ionic Framework](https://ionicframework.com/) and integrations with [Angular](https://ionicframework.com/docs/angular/overview)
 
 ## Requirements
-- Node.js (<= v16)
+- Node.js (== v20)
 
 ## Prepare
 To install the Ionic CLI globally, run the following command:
@@ -13,7 +13,7 @@ npm install -g @ionic/cli
 
 To install Cordova globally, run the following command:
 ```
-npm install -g cordova
+npm install -g cordova@12
 ```
 
 ## Installation
@@ -25,7 +25,7 @@ npm install
 To build the project, run the following commands:
 ```
 ionic build
-cordova prepare
+ionic cordova prepare
 ```
 
 ## Development
