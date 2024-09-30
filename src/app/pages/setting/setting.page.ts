@@ -205,10 +205,13 @@ export class SettingPage implements OnInit {
         saveToPhotoAlbum: false,
         correctOrientation: true
     };
-
+    
+    
     // Get the data of an image
     try {
       const resCamera = await  this.camera.getPicture(options);
+
+      
       const imagePath = resCamera;
       const resCrop  = await this.cropImage(imagePath);
 

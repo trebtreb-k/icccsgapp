@@ -1,5 +1,5 @@
 import { AlertController, NavController, PopoverController } from '@ionic/angular';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
 
 import { CreatePlanMenuPopoverComponent } from './../create-plan-menu-popover/create-plan-menu-popover.component';
@@ -9,6 +9,7 @@ import { LoadingService } from './../../../services/utils/loading/loading.servic
 import { StorageService } from './../../../services/storage/storage.service';
 import { moment } from './../../../services/utils/moment/moment.service';
 
+
 moment.locale('th');
 
 @Component({
@@ -16,6 +17,7 @@ moment.locale('th');
   templateUrl: './create-plan.page.html',
   styleUrls: ['./create-plan.page.scss'],
 })
+
 export class CreatePlanPage implements OnInit {
   check = false;
   dateMulti: string[];
@@ -102,12 +104,17 @@ export class CreatePlanPage implements OnInit {
   dataAssigndate = [];
 
   startDate: any;
+  
   startDate2: any;
+
+  startDate3: any;
+
 
   myColorVaraible = 'red';
   focused = false;
 
   period: any;
+  
 
   constructor(
     private storage: StorageService,
@@ -117,13 +124,17 @@ export class CreatePlanPage implements OnInit {
     private navCtrl: NavController,
     private csgPlanPopover: PopoverController,
     private alertController: AlertController,
-    private loading: LoadingService
+    private loading: LoadingService,
+    private ref: ChangeDetectorRef
   ) {
     const state = this.router.getCurrentNavigation().extras.state;
     console.log(state);
     this.paramsMonthBefore = state;
+
+    
   }
 
+  
   async checkEvent(ev) {
     console.log(ev);
     console.log(this.eventcheck);
@@ -157,6 +168,8 @@ export class CreatePlanPage implements OnInit {
     this.check = this.eventcheck.detail.checked === true ? true : false;
     console.log(this.check);
   }
+  
+  
 
   async ngOnInit() {
     // await this.loading.dismiss();
@@ -228,9 +241,22 @@ export class CreatePlanPage implements OnInit {
     this.dayStartFromY = +this.y;
     // const dayStartFrom = this.dayStart.substr(0, 5) + monthC + this.dayStart.substr(4);
     console.log(this.dayStartFromY, this.dayStartFromM);
+
+    
   }
 
+  changeValueFromOutsideAngular(){
 
+    this.startDate3 = moment('202406','YYYYMM').format('MM-DD-YYYY');
+    
+    alert(this.startDate)
+
+    this.startDate = new Date(2024, 0, 1)
+
+
+    //alert(this.startDate3);
+    this.ref.detectChanges();
+  }
 
   async getDatasCSGCreatePlan(periodplan: any, custid: any, counterid: any) {
     const dataCsgCreatePlan = [];
@@ -601,8 +627,11 @@ export class CreatePlanPage implements OnInit {
 
     // this.startDate2 09-20-2024
     
+    
     this.startDate = moment(callApiGetCsgCreatePlanDetail.date_start,'DD/MM/YYYY').format('MM-DD-YYYY');
     this.status_plan = callApiGetCsgCreatePlanDetail.status_plan;
+
+    this.startDate = new Date(this.dayStartFromY, this.dayStartFromM, this.dayStartFromD)
     
     // this.startDate = callApiGetCsgCreatePlanDetail.date_start
 
@@ -611,12 +640,12 @@ export class CreatePlanPage implements OnInit {
     
     console.log(this.status_plan);
     
-
-
+    
+    
     // from: new Date(this.dayStartFromY, this.dayStartFromM, this.dayStartFromD),
     this.optionsMulti = {
       from: new Date(this.dayStartFromY, this.dayStartFromM, this.dayStartFromD),
-      // from: new Date(2000, 0, 1),
+      //from: new Date(2000, 0, 1),
       // disableWeeks: this.status_plan === 'N' ? '' : this.status_plan === 'X' ? '' : [0, 1, 2, 3, 4, 5, 6],
       disableWeeks: ( this.status_plan === 'N' || this.status_plan === 'X' || this.status_plan === null ) ? '' : [0, 1, 2, 3, 4, 5, 6],
       monthFormat: 'ปี YYYY เดือน MMM',
@@ -644,6 +673,17 @@ export class CreatePlanPage implements OnInit {
 
     this.startDate2 = moment(callApiGetCsgCreatePlanDetail.date_end,'DD/MM/YYYY').format('MM-DD-YYYY');
 
+    // this.startDate2 = moment(callApi.date_end,'DD/MM/YYYY').format('YYYYMM');
+    console.log('this.startDate2',this.startDate2);
+
+    this.dayEndFromM = Number(moment(callApiGetCsgCreatePlanDetail.date_end, "DD/MM/YYYY").format('MM')) - 1;
+
+    this.dayEndFromD = Number(moment(callApiGetCsgCreatePlanDetail.date_end, "DD/MM/YYYY").format('DD'));
+
+    this.dayEndFromY = Number(moment(callApiGetCsgCreatePlanDetail.date_end, "DD/MM/YYYY").format('YYYY'));
+
+    this.startDate2 = new Date(this.dayEndFromY, this.dayEndFromM, this.dayEndFromD)
+
     console.log('startDate2 -----',this.startDate2);
     
     this.optionsMulti2 = {
@@ -663,11 +703,13 @@ export class CreatePlanPage implements OnInit {
       daysConfig: this.loadData2,
     };
 
-
+    
     
 
     this.getdetailDay(this.dataAssigndate);
 
+   
+    
     // await this.ssasds(datasTest);
     // this.values = valToMonths;
     // return this.dataHoliday;
@@ -856,6 +898,9 @@ export class CreatePlanPage implements OnInit {
     
 
     this.values = valToMonths;
+    
+    //this.changeValueFromOutsideAngular()
+
     return this.values;
   }
 
@@ -1572,6 +1617,9 @@ export class CreatePlanPage implements OnInit {
           console.log(this.monthCreate, this.custid, this.counterMenu);
 
           this.getDatasCSGCreatePlan(this.monthCreate, this.custid, this.counterMenu);
+
+          
+
         }
 
         if (ev === 'timetype') {
@@ -2125,13 +2173,15 @@ export class CreatePlanPage implements OnInit {
     // this.dataSelectDay = [];
 
     this.getDatasCSGCreatePlan(this.monthCreate, this.custid, this.counterMenu);
+
+
   }
 
   async presentAlertConfirm() {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
-      header: 'ยืนยันการสร้างแผลนหรือไม่',
-      message: 'ข้อมูลต่างๆที่ท่านแผลนไว้จะถูกบันทึกและ จะนำไปแสดงในหน้าแสดงผลด้านหน้าในทันทีหากกดยืนยัน!!',
+      header: 'ยืนยันการสร้างแพลนหรือไม่',
+      message: 'ข้อมูลต่างๆที่ท่านแพลนไว้จะถูกบันทึกและ จะนำไปแสดงในหน้าแสดงผลด้านหน้าในทันทีหากกดยืนยัน!!',
       buttons: [
         {
           text: 'ปิด',
@@ -2161,7 +2211,7 @@ export class CreatePlanPage implements OnInit {
     // datas.error_message = 'ERROR';
     const alert = await this.alertController.create({
       cssClass: 'alert_success',
-      // header: 'ยืนยันการสร้างแผลนหรือไม่',
+      // header: 'ยืนยันการสร้างแพลนหรือไม่',
       message: `<img src="${
         datas.error_message === 'SUCCESS'
           ? `../../../../assets/images/csg-plan/success.svg " alt="g-maps" style="border-radius: 2px"> <br> บันทึกการสร้างสำเร็จ <br> ${

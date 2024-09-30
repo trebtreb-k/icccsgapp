@@ -48,7 +48,8 @@ export class TimeStatPage implements OnInit {
 
     //  this.loadYearlyAdjust('2021');
      this.loadYearlyAdjust(this.viewTitleYear);
-     this.loadMonthlyAdjust(this.viewTitleYear);
+     let period =  moment(this.viewTitleMonth, 'MMMM YYYY').format('MM/YYYY');
+     this.loadMonthlyAdjust(period);
   }
 
 
@@ -182,9 +183,14 @@ export class TimeStatPage implements OnInit {
   /****************************************/
   async loadMonthlyAdjust(period) {
     this.loadingMonth = true;
+
+    console.log('period',period);
     const res = await this.timeStatApi.monthlyAdjust(period);
     this.loadDataMonthly = res.datas;
     this.loadingMonth = false;
+
+    
+    
 
     console.log('loadMonthlyAdjust',res);
     

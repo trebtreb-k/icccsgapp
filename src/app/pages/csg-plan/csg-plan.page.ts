@@ -137,12 +137,11 @@ export class CsgPlanPage implements OnInit {
   }
 
   async ngOnInit() {
-    await this.loading.present();
+    //await this.loading.present();
     // localStorage.setItem('monthBack', moment().format('YYYYMM'));
     this.monthCreate = moment().format('YYYYMM');
     const historyState = history.state;
     console.log('\\\\',historyState);
-
     if (historyState.monthFromCreate) {
       this.monthCreate = historyState.monthFromCreate;
     }
@@ -272,15 +271,10 @@ export class CsgPlanPage implements OnInit {
     // console.clear();
     // await this.loading.present();
     // const monthV = moment().format('YYYYMM');
+    
     const historyState = history.state;
 
-    // this.monthChange = this.monthCreate;
-    console.log(historyState.monthFromCreate);
-    if (historyState.monthFromCreate) {
-      
-      this.startDate =  moment(historyState.monthFromCreate,'YYYYMM').format('MM-DD-YYYY');
-      this.monthCreate = historyState.monthFromCreate;
-    }
+   
 
     // this.monthCreate = '202409'
     
@@ -292,20 +286,37 @@ export class CsgPlanPage implements OnInit {
     console.log(this.monthCreate);
     // this.startDate =  moment(this.monthChange,'YYYYMM').format('MM-DD-YYYY');
     this.startDate = moment(this.monthChange,'YYYYMM').subtract(1, 'month').format('MM-DD-YYYY');
+
+    this.dayStartFromM = Number(moment(this.monthChange,'YYYYMM').format('MM')) - 1;
+
+    this.dayStartFromD = Number(moment(this.monthChange,'YYYYMM').format('DD'));
+
+    this.dayStartFromY = Number(moment(this.monthChange,'YYYYMM').format('YYYY'));
+
+    this.startDate = new Date(this.dayStartFromY, this.dayStartFromM, this.dayStartFromD)
+
     console.log(this.startDate);
+
+     // this.monthChange = this.monthCreate;
+     console.log(historyState.monthFromCreate);
+     if (historyState.monthFromCreate) {
+       
+       this.startDate =  moment(historyState.monthFromCreate,'YYYYMM').format('MM-DD-YYYY');
+       this.monthCreate = historyState.monthFromCreate;
+ 
+       this.dayStartFromM = Number(moment(historyState.monthFromCreate,'YYYYMM').format('MM')) - 1;
+ 
+       this.dayStartFromD = Number(moment(historyState.monthFromCreate,'YYYYMM').format('DD'));
+ 
+       this.dayStartFromY = Number(moment(historyState.monthFromCreate,'YYYYMM').format('YYYY'));
+ 
+       this.startDate = new Date(this.dayStartFromY, this.dayStartFromM, this.dayStartFromD)
+     }
 
 
     console.log(this.monthCreate);
    
     this.showCalendar(this.monthCreate)
-
-    
-    // if (historyState.monthFromCreate) {
-    //   console.log(historyState.monthFromCreate);
-
-    //   this.startDate =  moment(historyState.monthFromCreate,'YYYYMM').format('MM-DD-YYYY');
-    //   this.monthCreate = historyState.monthFromCreate;
-    // }
 
   }
 
@@ -356,15 +367,41 @@ export class CsgPlanPage implements OnInit {
       if (callApi.datas.length === 1) {
 
         this.startDate = moment(callApi.date_start,'DD/MM/YYYY').format('MM-DD-YYYY');
+
+        this.dayStartFromM = Number(moment(callApi.date_start, "DD/MM/YYYY").format('MM')) - 1;
+
+        this.dayStartFromD = Number(moment(callApi.date_start, "DD/MM/YYYY").format('DD'));
+
+        this.dayStartFromY = Number(moment(callApi.date_start, "DD/MM/YYYY").format('YYYY'));
+
+        this.startDate = new Date(this.dayStartFromY, this.dayStartFromM, this.dayStartFromD)
         // this.startDate = moment(monthCalendar,'YYYYMM').format('MM-DD-YYYY');
       
         console.log('this.startDate',this.startDate);
         
       }else{
 
+        this.startDate = moment(callApi.date_start,'DD/MM/YYYY').format('MM-DD-YYYY');
+
+        this.dayStartFromM = Number(moment(callApi.date_start, "DD/MM/YYYY").format('MM')) - 1;
+
+        this.dayStartFromD = Number(moment(callApi.date_start, "DD/MM/YYYY").format('DD'));
+
+        this.dayStartFromY = Number(moment(callApi.date_start, "DD/MM/YYYY").format('YYYY'));
+
+        this.startDate = new Date(this.dayStartFromY, this.dayStartFromM, this.dayStartFromD)
+
         this.startDate2 = moment(callApi.date_end,'DD/MM/YYYY').format('MM-DD-YYYY');
         // this.startDate2 = moment(callApi.date_end,'DD/MM/YYYY').format('YYYYMM');
         console.log('this.startDate2',this.startDate2);
+
+        this.dayEndFromM = Number(moment(callApi.date_end, "DD/MM/YYYY").format('MM')) - 1;
+
+        this.dayEndFromD = Number(moment(callApi.date_end, "DD/MM/YYYY").format('DD'));
+
+        this.dayEndFromY = Number(moment(callApi.date_end, "DD/MM/YYYY").format('YYYY'));
+
+        this.startDate2 = new Date(this.dayEndFromY, this.dayEndFromM, this.dayEndFromD)
 
       }
       
@@ -529,7 +566,7 @@ export class CsgPlanPage implements OnInit {
    
       this.getdetailDay(this.dataAssigndate);
         // ---------- end loop get datas -----------------
-        this.loading.dismiss();
+        //this.loading.dismiss();
     } catch (error) {
       this.dataAssigndate = [];
       this.dataAssigndate = [];
@@ -746,6 +783,13 @@ export class CsgPlanPage implements OnInit {
   async cancelPlan(v) {
 
     console.log(moment(v.date, 'DDMMYYYY').format('YYYYMM'));
+
+    console.log(this.period);
+
+    console.log(this.monthChange);
+    
+    
+
     const dataset = [];
       console.log(v);
         dataset.push({
@@ -753,7 +797,7 @@ export class CsgPlanPage implements OnInit {
         assigndate: v.date,
         custid: v.custid,
         counterid: v.counterid,
-        yearmonth: moment(v.date, 'DDMMYYYY').format('YYYYMM'),
+        yearmonth: moment(this.monthChange, 'YYYYMM').format('YYYYMM'),
         csgid: this.empId,
         timetype: '',
         timefrom: '',
@@ -801,6 +845,10 @@ export class CsgPlanPage implements OnInit {
       setTimeout(() => {
         alert.dismiss();
         // this.router.navigate(['csg-plan']);
+        //history.pushState('monthFromCreate','',this.monthChange);
+
+        this.monthCreate = this.monthChange;
+
         this.ionViewDidEnter();
       }, 2000);
     }else{

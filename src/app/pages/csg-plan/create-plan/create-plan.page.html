@@ -213,12 +213,12 @@
     
     <!-- *ngIf="loadDataHoliday" -->
     
-
     <div class="calendar calendar-create-plan " >
       <!-- ปฏิทิน 1 -->
       <ion-calendar
         *ngIf="loadData"
         [(ngModel)]="startDate"
+        mode="ios"
         [type]="type"
         [options]="optionsMulti"
         [format]="'DD-MM-YYYY'"

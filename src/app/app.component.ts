@@ -47,13 +47,29 @@ export class AppComponent {
       if (info.type === 'EMPLOYEE') {
        // alert(token)
         const verify: any = await this.authen.verifyToken(token);
+
+        console.log('verify',verify);
+        
+
         const { profile } = verify?.data;
+
+        console.log('profile',profile);
+
+
+
         let picture;// = ST_USER_PICTURE+'/'+ profile.emp_id+'/'+profile.emp_id+'.jpg';
         if(profile.type==='EMPLOYEE'){
             picture = ST_USER_PICTURE+'/'+ profile.emp_id+'/'+profile.emp_id+'.jpg';
         }else{
             picture ='assets/images/avatar-female.svg';  
-        }  
+        }
+        
+        console.log('profile',profile);
+
+        console.log('picture',picture);
+        
+        
+
         await this.storage.set('USER_INFO', {...profile, picture});
        
 

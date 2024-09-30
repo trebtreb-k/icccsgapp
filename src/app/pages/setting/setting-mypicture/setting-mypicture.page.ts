@@ -10,6 +10,7 @@ export class SettingMypicturePage implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    
   }
 
 }

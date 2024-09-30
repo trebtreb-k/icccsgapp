@@ -61,7 +61,7 @@
     "cordova-res": "^0.15.4",
     "crypto-js": "^4.1.1",
     "install": "^0.13.0",
-    "ion2-calendar": "^3.0.0-rc.0",
+    "ion2-calendar": "^3.5.0",
     "ionic4-rating": "^1.0.9",
     "ionicons": "^5.5.3",
     "lodash": "^4.17.21",
@@ -102,14 +102,14 @@
     "cordova-plugin-crop": "^0.4.0",
     "cordova-plugin-email-composer": "^0.9.2",
     "cordova-plugin-fcm-with-dependecy-updated": "github:YaroslavG/cordova-plugin-fcm-with-dependecy-updated",
-    "cordova-plugin-file": "^6.0.2",
+    "cordova-plugin-file": "^8.1.0",
     "cordova-plugin-file-transfer": "^2.0.0",
     "cordova-plugin-firebase": "^2.0.5",
     "cordova-plugin-geolocation": "^4.1.0",
     "cordova-plugin-inappbrowser": "^5.0.0",
     "cordova-plugin-ionic-keyboard": "^2.2.0",
     "cordova-plugin-ionic-webview": "^4.2.1",
-    "cordova-plugin-media": "^5.0.4",
+    "cordova-plugin-media": "^7.0.0",
     "cordova-plugin-nativegeocoder": "^3.4.1",
     "cordova-plugin-request-location-accuracy": "^2.3.0",
     "cordova-plugin-splashscreen": "^4.1.0",
@@ -153,7 +153,6 @@
         "LOCATION_WHEN_IN_USE_DESCRIPTION": "Use geocoder service"
       },
       "com-sarriaroman-photoviewer": {},
-      "cordova-plugin-file": {},
       "phonegap-plugin-barcodescanner": {
         "ANDROID_SUPPORT_V4_VERSION": "27.+"
       },
@@ -173,7 +172,6 @@
       },
       "cordova-plugin-inappbrowser": {},
       "call-number": {},
-      "cordova-plugin-media": {},
       "cordova-plugin-camera": {
         "ANDROIDX_CORE_VERSION": "1.6.+"
       },
@@ -185,7 +183,14 @@
         "ANDROID_GOOGLE_SERVICES_VERSION": "4.3.4",
         "ANDROID_GRADLE_TOOLS_VERSION": "4.1.0",
         "IOS_FIREBASE_MESSAGING_VERSION": "~> 7.4.0"
-      }
+      },
+      "cordova-plugin-file": {
+        "ANDROIDX_WEBKIT_VERSION": "1.4.0"
+      },
+      "cordova-plugin-media": {
+        "KEEP_AVAUDIOSESSION_ALWAYS_ACTIVE": "NO"
+      },
+      "cordova-plugin-file-transfer": {}
     },
     "platforms": [
       "android",
