@@ -70,6 +70,10 @@ export class CustomerViewPage implements OnInit {
     this.router.navigate([`customer/customer-transaction`], { state: { ...this.state } });
   }
 
+  viewUpdateDetail(data: any): void {
+    this.router.navigate([`customer/customer-transaction-update`], { state: { ...this.state } });
+  }
+
   async onRateChange(ev: any, customer_id: any): Promise<void> {
     this.process(ev);
 

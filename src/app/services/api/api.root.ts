@@ -70,6 +70,21 @@ const SALESTOOLS_CUSTOMER: RootServer = {
   },
 };
 
+
+const SALESTOOLS_CUSTOMER_TRANSACTION: RootServer = {
+  production: {
+    protocol: 'https',
+    domain: 'salestoolsapi.icc.co.th',
+    port: 7119,
+  },
+  development: {
+    protocol: 'https',
+    domain: 'webapidev.icc.co.th',
+    port: 7119,
+  },
+};
+
+
 const SALESTOOLS_HISHER: RootServer = {
   production: {
     protocol: 'https',
@@ -223,6 +238,7 @@ const ST_ROOT = {
   authen: current(SALESTOOLS_AUTHEN),
   device: current(SALESTOOLS_DEVICE),
   customer: current(SALESTOOLS_CUSTOMER),
+  customer_transaction: current(SALESTOOLS_CUSTOMER_TRANSACTION),
   product: current(SALESTOOLS_PRODUCT),
   stores: current(SALESTOOLS_STORES),
   checkin: current(SALESTOOLS_CHECKIN),

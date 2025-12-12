@@ -1,0 +1,77 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+
+    <ion-title>อัปเดตประวัติการซื้อ</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button (click)="selectDate()">
+        <ion-icon slot="icon-only" name="options-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+
+
+  <div class="show-text" style="display:flex; justify-content:space-between;">
+    <p>{{ filter }}</p>
+
+    <p>ข้อมูลทั้งหมด {{ initHeaders?.length | number }} รายการ <br> รายการที่เลือก {{ selectedItems?.length || 0 }} รายการ</p>
+  </div>
+  
+</ion-header>
+
+
+<ion-content>
+
+  <ion-list lines="none" class="searchbar animated slideInDown">
+    <ion-item>
+      <ion-searchbar debounce="500" (ionInput)="searchTrans($event)" placeholder="ค้นหา " animated></ion-searchbar>
+    </ion-item>
+  </ion-list>
+
+  <div class="card-list">
+    <div class="not-found animated fadeIn delay-1s" *ngIf="headers.length === 0">
+      <img src="assets/images/customer/search.svg" alt="" />
+      <p>ไม่พบใบเสร็จ</p>
+    </div>
+    <ion-list class="animated fadeIn" lines="none" *ngIf="headers.length > 0">
+      <ion-item-sliding *ngFor="let header of headers">
+        <!-- <ion-item (click)="selectTrans(header)"> -->
+        <ion-item >
+          <!--  -->
+          <!-- ① Checkbox -->
+          <ion-checkbox
+            slot="start"
+            [(ngModel)]="header.checked"
+            (ionChange)="onCheckChange(header)"
+            class="custom-checkbox"
+          ></ion-checkbox>
+          <ion-thumbnail slot="start">
+            <img src="assets/images/customer/receipt.png"/>  <!--https://image.flaticon.com/icons/svg/1546/1546478.svg-->
+          </ion-thumbnail>
+          <ion-label>
+            
+            <h3><span class="label">วันที่</span>&nbsp; <span class="value date-value">{{ header?.tran_date }}</span></h3>
+            <h3><span class="label">เลขที่เอกสาร</span>&nbsp; {{ header?.doc_no }}</h3>
+            <h3><span class="label">ร้านค้า</span>&nbsp; {{ header?.cust_id }} {{ header?.counter_id }}</h3>
+            <h3><span class="label">จำนวนเงิน</span>&nbsp; {{ header?.amount | number }}</h3>
+          </ion-label>
+        </ion-item>
+      </ion-item-sliding>
+    </ion-list>
+
+
+    
+  </div>
+
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-button expand="block" color="dark" class="big-btn" [disabled]="this.selectedItems.length === 0" (click)="onSaveUpdate()">
+      อัปเดต
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>

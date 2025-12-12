@@ -60,6 +60,8 @@ export class DetialPage implements OnInit {
 
       const fetch = await this.api.getIncomeDetail(this.period);
 
+
+
       this.nameLth = this.profile.name.length;
       this.detail = fetch;
       this.cardHeader = await this.detail.data.filter(
@@ -79,6 +81,7 @@ export class DetialPage implements OnInit {
   async getUserInfo(): Promise<void> {
     const info = await this.storage.get('USER_INFO');
     this.profile = info;
+
   }
 
   async alertConfirmRequestSlip() {

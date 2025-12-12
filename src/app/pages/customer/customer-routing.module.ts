@@ -28,6 +28,10 @@ const routes: Routes = [
     path: 'customer-transaction',
     loadChildren: () => import('./customer-transaction/customer-transaction.module').then( m => m.CustomerTransactionPageModule)
   },
+  {
+    path: 'customer-transaction-update',
+    loadChildren: () => import('./customer-transaction-update/customer-transaction-update.module').then( m => m.CustomerTransactionUpdatePageModule)
+  },
    /*
   {
     path: 'customer-edit',

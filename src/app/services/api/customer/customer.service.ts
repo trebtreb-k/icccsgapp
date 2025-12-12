@@ -43,11 +43,26 @@ export class CustomerService {
     const url = `${ST_ROOT.customer}/salestools/customers/updateRatingCustomer`;
     return this.http.patch(url, body).toPromise();
   }
+  async updateCustomerTranSaction(body: any,empId: string): Promise<any> {
+    const url = `${ST_ROOT.customer_transaction}/transaction/customer/${empId}`;
+    return this.http.put(url, body).toPromise();
+
+  }
 
   async getTransHeader(customerId: string, hisherId: string, date: string, row: number): Promise<any> {
     const param = `customer_id=${customerId}&member_id=${hisherId}&last_date=${date}&r_end=${row}`;
 
     const url = `${ST_ROOT.customer}/salestools/transactions/header/?${param}`;
+    return this.http.get(url).toPromise();
+  }
+
+  async getTransByEmpId(customerId: string ,countDate: string): Promise<any> {
+    let param = customerId;
+        param = '99191';
+    
+    const url = `${ST_ROOT.customer_transaction}/transaction/customer/${param}?day=${countDate}`;
+    
+
     return this.http.get(url).toPromise();
   }
 
