@@ -46,7 +46,7 @@ export class CustomerTransactionUpdatePage implements OnInit {
     }
   
     async ngOnInit() {
-      this.cusId = this.state.customer_id;
+      this.cusId = this.state.emp_id;
       this.hhId = this.state.hh_id;
   
       await this.getTransHeader('1', 1);
@@ -119,6 +119,13 @@ export class CustomerTransactionUpdatePage implements OnInit {
             icon: 'remove',
             handler: () => {
               this.getTransHeader('7', 50);
+            },
+          },
+          {
+            text: '14 วัน',
+            icon: 'remove',
+            handler: () => {
+              this.getTransHeader('14', 50);
             },
           },
           {
