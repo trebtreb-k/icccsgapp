@@ -58,7 +58,6 @@ export class CustomerService {
 
   async getTransByEmpId(customerId: string ,countDate: string): Promise<any> {
     let param = customerId;
-        param = '99191';
     
     const url = `${ST_ROOT.customer_transaction}/transaction/customer/${param}?day=${countDate}`;
     
