@@ -48,7 +48,7 @@
 
             <!-- <div [ngClass]="{'status__item': true, disable: status_plan === 'A' ? false : status_plan === 'W' ? false : true, bb: true}"> -->
             <!-- <div [ngClass]="{'status__item': true, disable: status_plan === 'A' ? false : status_plan === 'W' ? false : true, bb: true}"> -->
-            <div [ngClass]="{'status__item': true, disable: status_plan === 'X' ? true : status_plan === 'N' ? true : false, bb: true}" (click)="status_plan === 'X' ? '' : status_plan === 'N' ? '' : approverDetail(monthCreate,empId,'A')">
+            <div [ngClass]="{'status__item': true, disable: status_plan === 'X' ? true : status_plan === 'N' ? true : status_plan === null ? true : false, bb: true}" (click)="status_plan === 'X' ? '' : status_plan === 'N' ? '' : approverDetail(monthCreate,empId,'A')">
               <div class="status__item--image">
                 <!-- <ion-icon name="time" color="warning"></ion-icon> -->
                 <!-- <ion-icon [name]="status_plan === 'A' ? 'time' : status_plan === 'W' ? 'time' : status_plan === 'X' ? 'time' : 'checkmark-circle'" [color]="status_plan === 'N' ? 'warning' : status_plan === 'W' ? 'warning' :status_plan === 'X' ? 'warning' : 'success'"></ion-icon> -->
