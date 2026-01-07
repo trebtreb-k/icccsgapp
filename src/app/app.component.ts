@@ -20,9 +20,12 @@ export class AppComponent {
     private statusBar: StatusBar,
     private platform: Platform
   ) {
+    console.log('[App Constructor] App component initialized!');
+
     this.watchAuthorization();
 
     this.platform.ready().then(() => {
+      console.log('[App Constructor] Platform ready!');
       this.statusBar.overlaysWebView(false);
       this.statusBar.backgroundColorByHexString('#f7928b');
     });
@@ -30,6 +33,7 @@ export class AppComponent {
 
   async watchAuthorization(): Promise<void> {
     try {
+      console.log('[App Init] Starting authorization check...');
       await this.storage.createStorage();
 
       const token = await this.storage.get('USER_TOKEN');
@@ -37,7 +41,7 @@ export class AppComponent {
 
       const authen = token && info ? 'authorized' : 'unauthorized';
 
-      console.log(authen);
+      console.log('[App Init] Auth status:', authen);
 
       if (authen === 'unauthorized') {
         throw new Error('unauthorized');
@@ -46,14 +50,15 @@ export class AppComponent {
       // this.router.navigate(['/customer']);
       if (info.type === 'EMPLOYEE') {
        // alert(token)
+        console.log('[App Init] Verifying employee token...');
         const verify: any = await this.authen.verifyToken(token);
 
-        console.log('verify',verify);
-        
+        console.log('[App Init] Verify response:', verify);
+
 
         const { profile } = verify?.data;
 
-        console.log('profile',profile);
+        console.log('[App Init] Profile:', profile);
 
 
 
@@ -61,25 +66,26 @@ export class AppComponent {
         if(profile.type==='EMPLOYEE'){
             picture = ST_USER_PICTURE+'/'+ profile.emp_id+'/'+profile.emp_id+'.jpg';
         }else{
-            picture ='assets/images/avatar-female.svg';  
+            picture ='assets/images/avatar-female.svg';
         }
-        
-        console.log('profile',profile);
 
-        console.log('picture',picture);
-        
-        
+        console.log('[App Init] Picture URL:', picture);
+
+
 
         await this.storage.set('USER_INFO', {...profile, picture});
-       
 
+        console.log('[App Init] Navigating to /home');
         this.router.navigate(['/home']);
       } else {
+        console.log('[App Init] Navigating to /guest-home');
         this.router.navigate(['/guest-home']);
       }
 
       this.authen.nextAuthenticated('authorized');
     } catch (error) {
+      console.error('[App Init] Error during authorization:', error);
+      console.log('[App Init] Navigating to /login');
       this.router.navigate(['/login']);
       this.authen.nextAuthenticated('unauthorized');
     }
