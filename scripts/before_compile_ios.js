@@ -27,36 +27,145 @@ function fixIOSFirebaseInfo(projectDir) {
     // Read the file content
     let fileContent = fs.readFileSync(filePath, 'utf8');
 
-    // Replace the old deployment target version with the new version
-    let updatedContent = fileContent.replace(
-      `<key>FirebaseAppDelegateProxyEnabled</key>
-	<false/>`,
-      ''
-    );
-
-    // Write the updated content back to the file
-    fs.writeFileSync(filePath, updatedContent, 'utf8');
+    // Check if FirebaseAppDelegateProxyEnabled already exists
+    if (!fileContent.includes('FirebaseAppDelegateProxyEnabled')) {
+      // Add FirebaseAppDelegateProxyEnabled before the closing </dict>
+      let updatedContent = fileContent.replace(
+        '</dict>\n</plist>',
+        '\t<key>FirebaseAppDelegateProxyEnabled</key>\n\t<string>YES</string>\n</dict>\n</plist>'
+      );
+      // Write the updated content back to the file
+      fs.writeFileSync(filePath, updatedContent, 'utf8');
+      console.log('FirebaseAppDelegateProxyEnabled added to App-Info.plist');
+    }
   } catch (error) {
-    // console.error(`Error updating ${filePath}:`, error);
+    console.error(`Error updating ${filePath}:`, error);
+  }
+}
+
+function fixAppDelegateAvailability(projectDir) {
+  const filePath = path.join(projectDir, 'App/AppDelegate.swift');
+  try {
+    // Read the file content
+    let fileContent = fs.readFileSync(filePath, 'utf8');
+
+    // Check if @available is already added
+    if (!fileContent.includes('@available(iOS 13.0, *)')) {
+      // Add @available annotation before the function
+      let updatedContent = fileContent.replace(
+        'extension AppDelegate {\n    open override func application(',
+        'extension AppDelegate {\n    @available(iOS 13.0, *)\n    open override func application('
+      );
+      // Write the updated content back to the file
+      fs.writeFileSync(filePath, updatedContent, 'utf8');
+      console.log('@available(iOS 13.0, *) added to AppDelegate.swift');
+    }
+  } catch (error) {
+    console.error(`Error updating ${filePath}:`, error);
+  }
+}
+
+function fixInAppBrowserFoundation(projectDir) {
+  const filePath = path.join(projectDir, 'App/Plugins/cordova-plugin-inappbrowser/CDVInAppBrowserOptions.h');
+  try {
+    // Read the file content
+    let fileContent = fs.readFileSync(filePath, 'utf8');
+
+    // Check if Foundation import is already added
+    if (!fileContent.includes('#import <Foundation/Foundation.h>')) {
+      // Add Foundation import after the license header
+      let updatedContent = fileContent.replace(
+        ' */\n\n\n@interface CDVInAppBrowserOptions',
+        ' */\n\n#import <Foundation/Foundation.h>\n\n@interface CDVInAppBrowserOptions'
+      );
+      // Write the updated content back to the file
+      fs.writeFileSync(filePath, updatedContent, 'utf8');
+      console.log('Foundation import added to CDVInAppBrowserOptions.h');
+    }
+  } catch (error) {
+    console.error(`Error updating ${filePath}:`, error);
+  }
+}
+
+function fixFileTransferImport(projectDir) {
+  const filePath = path.join(projectDir, 'App/Plugins/cordova-plugin-file-transfer/CDVFileTransfer.m');
+  try {
+    // Read the file content
+    let fileContent = fs.readFileSync(filePath, 'utf8');
+
+    let updated = false;
+
+    // Check if CDVFile import is already added
+    if (!fileContent.includes('#import "../cordova-plugin-file/CDVFile.h"')) {
+      // Add CDVFile import after CDVLocalFilesystem import
+      fileContent = fileContent.replace(
+        '#import "CDVLocalFilesystem.h"',
+        '#import "CDVLocalFilesystem.h"\n#import "../cordova-plugin-file/CDVFile.h"'
+      );
+      updated = true;
+      console.log('CDVFile import added to CDVFileTransfer.m');
+    }
+
+    // Fix filesystemForURL cast
+    if (fileContent.includes('[[self.commandDelegate getCommandInstance:@"File"] filesystemForURL:sourceURL]')) {
+      fileContent = fileContent.replace(
+        '        fs = [[self.commandDelegate getCommandInstance:@"File"] filesystemForURL:sourceURL];',
+        '        CDVFile* filePlugin = (CDVFile*)[self.commandDelegate getCommandInstance:@"File"];\n        fs = [filePlugin filesystemForURL:sourceURL];'
+      );
+      updated = true;
+      console.log('Fixed filesystemForURL cast in CDVFileTransfer.m');
+    }
+
+    // Fix fileSystemURLforLocalPath cast
+    if (fileContent.includes('[[self.commandDelegate getCommandInstance:@"File"] fileSystemURLforLocalPath:target]')) {
+      fileContent = fileContent.replace(
+        '        targetURL = [[self.commandDelegate getCommandInstance:@"File"] fileSystemURLforLocalPath:target].url;',
+        '        CDVFile* filePlugin = (CDVFile*)[self.commandDelegate getCommandInstance:@"File"];\n        targetURL = [filePlugin fileSystemURLforLocalPath:target].url;'
+      );
+      updated = true;
+      console.log('Fixed fileSystemURLforLocalPath cast in CDVFileTransfer.m');
+    }
+
+    // Write the updated content back to the file if changes were made
+    if (updated) {
+      fs.writeFileSync(filePath, fileContent, 'utf8');
+    }
+  } catch (error) {
+    console.error(`Error updating ${filePath}:`, error);
   }
 }
 
 function copyGoogleServiceInfo() {
   const sourcePath = path.join(__dirname, '../GoogleService-Info.plist');
-  const destPath = path.join(__dirname, '../platforms/ios/App/Resources/Resources/GoogleService-Info.plist');
 
-  try {
-    // Ensure destination directory exists
-    const destDir = path.dirname(destPath);
-    if (!fs.existsSync(destDir)) {
-      fs.mkdirSync(destDir, { recursive: true });
+  // Copy to multiple locations to ensure Firebase can find it
+  const destPaths = [
+    path.join(__dirname, '../platforms/ios/App/Resources/Resources/GoogleService-Info.plist'),
+    path.join(__dirname, '../platforms/ios/App/GoogleService-Info.plist'),
+    path.join(__dirname, '../platforms/ios/ICCCSG APP/Resources/GoogleService-Info.plist')
+  ];
+
+  let successCount = 0;
+  destPaths.forEach(destPath => {
+    try {
+      // Ensure destination directory exists
+      const destDir = path.dirname(destPath);
+      if (!fs.existsSync(destDir)) {
+        fs.mkdirSync(destDir, { recursive: true });
+      }
+
+      // Copy the file
+      fs.copyFileSync(sourcePath, destPath);
+      successCount++;
+    } catch (error) {
+      console.error(`Error copying GoogleService-Info.plist to ${destPath}:`, error.message);
     }
+  });
 
-    // Copy the file
-    fs.copyFileSync(sourcePath, destPath);
-    console.log('GoogleService-Info.plist copied successfully');
-  } catch (error) {
-    console.error('Error copying GoogleService-Info.plist:', error);
+  if (successCount > 0) {
+    console.log(`GoogleService-Info.plist copied to ${successCount} location(s)`);
+  } else {
+    console.error('Failed to copy GoogleService-Info.plist to any location');
   }
 }
 
@@ -73,4 +182,7 @@ filesToUpdate.forEach(file => {
 });
 
 fixIOSFirebaseInfo(path.join(__dirname, '../platforms/ios'));
+fixAppDelegateAvailability(path.join(__dirname, '../platforms/ios'));
+fixInAppBrowserFoundation(path.join(__dirname, '../platforms/ios'));
+fixFileTransferImport(path.join(__dirname, '../platforms/ios'));
 copyGoogleServiceInfo();
