@@ -70,7 +70,6 @@ const SALESTOOLS_CUSTOMER: RootServer = {
   },
 };
 
-
 const SALESTOOLS_CUSTOMER_TRANSACTION: RootServer = {
   production: {
     protocol: 'https',
@@ -83,7 +82,6 @@ const SALESTOOLS_CUSTOMER_TRANSACTION: RootServer = {
     port: 7119,
   },
 };
-
 
 const SALESTOOLS_HISHER: RootServer = {
   production: {
@@ -150,7 +148,6 @@ const SALESTOOLS_STORES: RootServer = {
   },
 };
 
-
 const SALESTOOLS_CHECKIN: RootServer = {
   production: {
     protocol: 'https',
@@ -203,7 +200,6 @@ const FIREBASE_OTP: RootServer = {
   },
 };
 
-
 const PDPA: RootServer = {
   production: {
     protocol: 'https',
@@ -230,7 +226,6 @@ const PDPA_WEB: RootServer = {
   },
 };
 
-
 // :: +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ ::
 
 const ST_ROOT = {
@@ -247,7 +242,7 @@ const ST_ROOT = {
   income: current(SALESTOOLS_INCOME),
   hisher: current(SALESTOOLS_HISHER),
   pdpa: current(PDPA),
-  pdpa_web: current(PDPA_WEB)
+  pdpa_web: current(PDPA_WEB),
 };
 
 const HH_ROOT = {
@@ -261,4 +256,4 @@ const FB_ROOT = {
 
 // :: +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ ::
 
-export { ST_ROOT, HH_ROOT, FB_ROOT, ST_USER_PICTURE, ST_SLIP_URL};
+export { ST_ROOT, HH_ROOT, FB_ROOT, ST_USER_PICTURE, ST_SLIP_URL };
