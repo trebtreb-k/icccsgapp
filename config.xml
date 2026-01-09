@@ -17,10 +17,11 @@
     <preference name="FadeSplashScreenDuration" value="300" />
     <preference name="SplashShowOnlyFirstTime" value="false" />
     <preference name="SplashScreen" value="screen" />
-    <preference name="AutoHideSplashScreen" value="true" />
-    <preference name="SplashScreenDelay" value="3000" />
+    <preference name="AutoHideSplashScreen" value="false" />
+    <preference name="SplashScreenDelay" value="0" />
     <preference name="SplashScreenBackgroundColor" value="#fc979d" />
     <preference name="WKWebViewOnly" value="true" />
+    <preference name="InspectableWebview" value="true" />
     <preference name="GOOGLE_MAPS_ANDROID_API_KEY" value="AIzaSyBM3SMkAo3C6Vq4ccP8ufrNMPkQ1O4ssp0" />
     <preference name="GOOGLE_MAPS_IOS_API_KEY" value="AIzaSyBM3SMkAo3C6Vq4ccP8ufrNMPkQ1O4ssp0" />
     <preference name="SwiftVersion" value="5.0" />
@@ -65,6 +66,9 @@
         <hook src="scripts/before_compile_android.js" type="before_compile" />
     </platform>
     <platform name="ios">
+        <preference name="deployment-target" value="13.0" />
+        <preference name="scheme" value="app" />
+        <preference name="hostname" value="localhost" />
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
         <icon height="57" src="resources/ios/icon/icon.png" width="57" />
@@ -173,6 +177,9 @@
         </edit-config>
         <edit-config file="*-Info.plist" mode="merge" target="NSFaceIDUsageDescription">
             <string>Face ID is required for secure authentication and biometric login</string>
+        </edit-config>
+        <edit-config file="*-Info.plist" mode="merge" target="InspectableWebview">
+            <true />
         </edit-config>
         <hook src="scripts/before_compile_ios.js" type="before_compile" />
     </platform>
