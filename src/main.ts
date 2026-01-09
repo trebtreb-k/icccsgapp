@@ -9,6 +9,29 @@ if (environment.production) {
   enableProdMode();
 }
 
-platformBrowserDynamic()
-  .bootstrapModule(AppModule)
-  .catch((err) => console.log(err));
+const bootstrap = () => {
+  platformBrowserDynamic()
+    .bootstrapModule(AppModule)
+    .catch((err) => console.error('[Bootstrap] Error:', err));
+};
+
+// Function to start the app
+const startApp = () => {
+  if (typeof (window as any).cordova !== 'undefined') {
+    document.addEventListener(
+      'deviceready',
+      () => {
+        bootstrap();
+      },
+      false
+    );
+  } else {
+  }
+};
+
+// Wait for DOM to be ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', startApp);
+} else {
+  startApp();
+}
