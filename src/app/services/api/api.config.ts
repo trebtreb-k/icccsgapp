@@ -25,18 +25,9 @@ const combine = (req: RootUrl): string => {
     : `${protocol}://${random(response(domain))}:${random(response(port))}`;
 };
 
-let alertShown = false;
 const current = (param: RootServer): string => {
   const mode = env.production ? 'production' : 'development';
   const url = env.production ? combine(param.production) : combine(param.development);
-  console.log(`[API Config] Mode: ${mode}, URL: ${url}`);
-  console.warn(`🔥 API Mode: ${mode}`);
-  console.error(`🌐 API URL: ${url}`);
-
-  if (!alertShown) {
-    alert(`API Mode: ${mode}\nURL: ${url}`);
-    alertShown = true;
-  }
 
   return url;
 };
