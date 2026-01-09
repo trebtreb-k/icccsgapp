@@ -8,20 +8,19 @@ import { StorageService } from './../../../services/storage/storage.service';
 import { UniqueDeviceID } from '@ionic-native/unique-device-id/ngx';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UniqueDeviceIdService {
-
   mobilePlatform: string;
 
-  constructor(private http: HttpClient,
-              private storage: StorageService,
-              private uniqueDeviceId: UniqueDeviceID,
-              private platform: Platform,
-              private toastController :ToastController,
-              private router: Router) {
-
-  }
+  constructor(
+    private http: HttpClient,
+    private storage: StorageService,
+    private uniqueDeviceId: UniqueDeviceID,
+    private platform: Platform,
+    private toastController: ToastController,
+    private router: Router
+  ) {}
 
   // getPermission(){
   //   this.androidPermissions.checkPermission(
@@ -51,39 +50,31 @@ export class UniqueDeviceIdService {
     }
   }
 
-  async checkUniqueDeviceId(): Promise <any> {
-
+  async checkUniqueDeviceId(): Promise<any> {
     try {
-        await this.platform.ready();
-        await this.checkMobilePlatform();
-        const userInfo = await this.storage.get('USER_INFO');
+      await this.platform.ready();
+      await this.checkMobilePlatform();
+      const userInfo = await this.storage.get('USER_INFO');
 
       //  await this.updateUniqueDeviceId('112233445566', userInfo.mobile_phone, this.mobilePlatform);
 
-       // alert(this.mobilePlatform)
-       
-       if (this.mobilePlatform === 'android' || this.mobilePlatform === 'ios') {
+      // alert(this.mobilePlatform)
 
+      if (this.mobilePlatform === 'android' || this.mobilePlatform === 'ios') {
+        const uuid = await this.uniqueDeviceId.get();
 
-           const uuid = await this.uniqueDeviceId.get();
-           
-           const res = await this.updateUniqueDeviceId(uuid, userInfo.mobile_phone, this.mobilePlatform);
+        const res = await this.updateUniqueDeviceId(uuid, userInfo.mobile_phone, this.mobilePlatform);
 
-           if(res.result){
-             return { result : true };
-           }else{
-             return { result : false, error_message : res.error_message};
-           }
+        if (res.result) {
+          return { result: true };
+        } else {
+          return { result: false, error_message: res.error_message };
+        }
+      } else {
+        return { result: true };
+      }
 
-       } else {
-        
-           return { result : true };
-       }
-
-
-
-       /*
-
+      /*
         if (this.mobilePlatform === 'android' || this.mobilePlatform === 'ios') {
             this.uniqueDeviceId
             .get()
@@ -95,58 +86,52 @@ export class UniqueDeviceIdService {
             .catch((error: any) => {
                 console.log('++++++++++++ ', error);
                 console.log('Platform = ' + this.mobilePlatform);
-                alert('Error: '+error.error_message);
+                // alert('Error: '+error.error_message);
+                console.error('Error: '+error.error_message);
             });
         }
         */
-
     } catch (e) {
       //  await alert('e='+JSON.stringify(e))
-
       //  await alert(e.error.error_message);
-
       //  console.log('Error',e.error?.e.error?.error_message)
       //  alert('Error: '+e.error?.e.error?.error_message);
-        return { result : false, error_message : e.error.error_message} //e.error?.e.error?.error_message };
+      return { result: false, error_message: e.error.error_message }; //e.error?.e.error?.error_message };
     }
   }
 
-
   async callUpdateUniqueDeviceId(device_id, mobile_phone, platform) {
     try {
-        await this.updateUniqueDeviceId(device_id, mobile_phone, platform);
+      await this.updateUniqueDeviceId(device_id, mobile_phone, platform);
     } catch (e) {
-        console.log('Error',e.error.error_message)
-        await this.storage.clear();
-        alert('Error: '+e.error.error_message);
-       // this.presentToast(e.error.error_message);
-
-        this.router.navigate(['/login',{replace:true}]);
+      console.log('Error', e.error.error_message);
+      await this.storage.clear();
+      alert('Error: ' + e.error.error_message);
+      // this.presentToast(e.error.error_message);
+      this.router.navigate(['/login', { replace: true }]);
     }
   }
 
   async presentToast(message) {
     const toast = await this.toastController.create({
       message: message,
-      duration: 500
+      duration: 500,
     });
     toast.present();
   }
 
   /********** DEVICE **********/
   async updateUniqueDeviceId(device_id, mobile_phone, platform): Promise<any> {
-    const url = `${ST_ROOT.device }/salestools/authen/unique_device_id`;
+    const url = `${ST_ROOT.device}/salestools/authen/unique_device_id`;
     const body = {
-      device_id    : device_id,
-      mobile_phone : mobile_phone,
-      platform     : platform,
-    }
+      device_id: device_id,
+      mobile_phone: mobile_phone,
+      platform: platform,
+    };
     let headers = new HttpHeaders();
     const token = await this.storage.get('USER_TOKEN');
     headers = headers.set('Authorization', `Bearer ${token}`);
-    return this.http.put(url,  body, { headers }).toPromise();
+    return this.http.put(url, body, { headers }).toPromise();
   }
   /********** DEVICE **********/
-
-
 }
