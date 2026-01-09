@@ -190,7 +190,8 @@ export class HomePage implements OnInit {
         }else{
           this.cheked_unique_device_id = false;
           await this.storage.clear();
-          await alert('Error: '+res.error_message);
+          // await alert('Error: '+res.error_message);
+          console.error('Error: '+res.error_message);
           this.router.navigate(['/login', {replaceUrl:true}]);
         }
        // alert('res='+JSON.stringify(res))
@@ -207,7 +208,8 @@ export class HomePage implements OnInit {
 
           this.cheked_unique_device_id = false;
           await this.storage.clear();
-          alert('Error: '+e.error?.e.error?.error_message)
+          // alert('Error: '+e.error?.e.error?.error_message)
+          console.error('Error: '+e.error?.e.error?.error_message);
           this.router.navigate(['/login', {replaceUrl:true}]);
 
         }
