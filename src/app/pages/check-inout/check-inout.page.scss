@@ -7,13 +7,61 @@ $content-height: 80%; //350px;
 ion-content {
   .section__location {
     position: relative;
-    height: 110%;
-    margin: 3px;
-    margin-top: 0;
-    border-radius: 8px;
-    
-    .section__location_current_latlong{
-      text-align: center;
+    height: auto;
+    padding: 15px;
+    background: #ffffff;
+
+    .location-card {
+      background: #ffffff;
+      border: 1px solid #e5e5e5;
+      border-radius: 12px;
+      padding: 18px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+
+      .location-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 14px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #f0f0f0;
+
+        .location-icon {
+          font-size: 22px;
+          color: #1a73e8;
+          margin-right: 8px;
+        }
+
+        .location-title {
+          font-size: 0.95rem;
+          font-weight: 600;
+          color: #202124;
+        }
+      }
+
+      .location-coords {
+        display: flex;
+        align-items: center;
+        padding: 6px 0;
+
+        .coords-label {
+          font-size: 0.85rem;
+          font-weight: 600;
+          color: #5f6368;
+          min-width: 40px;
+          margin-right: 8px;
+        }
+
+        .coords-value {
+          font-size: 0.9rem;
+          font-family: 'SF Mono', 'Courier New', monospace;
+          color: #202124;
+          background: #f8f9fa;
+          padding: 6px 10px;
+          border-radius: 6px;
+          flex: 1;
+          border: 1px solid #e8eaed;
+        }
+      }
     }
 
     .section__location--map {
