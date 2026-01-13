@@ -4,15 +4,12 @@ import { AlertController, ModalController, Platform } from '@ionic/angular';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 
 import { CheckInoutService } from './../../services/api/check-inout/check-inout.service';
-import { Geolocation } from '@ionic-native/geolocation/ngx';
-import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
+import { Geolocation } from '@capacitor/geolocation';
 import { Router } from '@angular/router';
 
 import { AlertService } from './../../services/utils/alert/alert.service';
 
 //import { AlertCheckInoutComponent } from './alert-check-inout/alert-check-inout.component';
-
-
 
 declare let google: any;
 
@@ -20,7 +17,7 @@ type StatusContent = 'OK' | 'LOADING' | 'NOT_FOUND' | 'COMPLETED' | 'ERROR' | 'P
 
 interface DataLocation {
   title: string | null | undefined;
-  subTitle?:  string | null | undefined;
+  subTitle?: string | null | undefined;
   brandName?: string | null | undefined;
   latitude: number | null | undefined;
   longitude: number | null | undefined;
@@ -50,7 +47,6 @@ export class CheckInoutPage implements OnInit {
   workspaceLocation: DataLocation[];
   locationsSelected: any[] = [];
 
-
   countdownExpire = 60;
   countdownCompleted = 3;
 
@@ -59,33 +55,31 @@ export class CheckInoutPage implements OnInit {
   mobilePlatform: string;
   lottiefiles: any;
 
-
-
   result = {
-    type         : '',
-    title        : '',
-    ship_no      : '',
-    ship_name    : '',
-    counter_id   : '',
-    counter_name : '',
-    time_stamp   : ''
+    type: '',
+    title: '',
+    ship_no: '',
+    ship_name: '',
+    counter_id: '',
+    counter_name: '',
+    time_stamp: '',
   };
 
-  constructor(private router: Router,
-              private alertController: AlertController,
-              private modalController: ModalController,
-              private geolocation: Geolocation,
-              private platform: Platform,
-              private locationAccuracy:  LocationAccuracy,
-              private checkInApi: CheckInoutService,
-              private alert: AlertService) {}
+  constructor(
+    private router: Router,
+    private alertController: AlertController,
+    private modalController: ModalController,
+    private platform: Platform,
+    private checkInApi: CheckInoutService,
+    private alert: AlertService
+  ) {}
 
   async ngOnInit() {
     await this.checkMobilePlatform();
     this.initMap();
   }
 
-  async refreshMap(){
+  async refreshMap() {
     this.initMap();
   }
 
@@ -105,7 +99,10 @@ export class CheckInoutPage implements OnInit {
         height: '80px',
       },
       completedData: {
-        options: { path: this.mobilePlatform === 'ios' ? 'assets/lottiefiles/completed.json' : 'assets/lottiefiles/completed.json', loop: false },
+        options: {
+          path: this.mobilePlatform === 'ios' ? 'assets/lottiefiles/completed.json' : 'assets/lottiefiles/completed.json',
+          loop: false,
+        },
         width: '170px',
         height: '170px',
       },
@@ -129,10 +126,9 @@ export class CheckInoutPage implements OnInit {
 
   async initMap(): Promise<void> {
     try {
-
       this.myLocation = await this.getMyLocation();
-     // alert( this.myLocation.latitude.toString())
-      this.currentLocation = this.myLocation.latitude.toString()+' , '+this.myLocation.longitude.toString();
+      // alert( this.myLocation.latitude.toString())
+      this.currentLocation = this.myLocation.latitude.toString() + ' , ' + this.myLocation.longitude.toString();
       //31-03-2022 this.showMap(this.myLocation);
 
       this.workspaceLocation = await this.getWorkLocation();
@@ -140,7 +136,7 @@ export class CheckInoutPage implements OnInit {
       // for (const location of this.workspaceLocation) {
       //    this.addMarker(location);
       // }
-     //(this.workspaceLocation.length)
+      //(this.workspaceLocation.length)
       this.statusWorkspace = 'OK';
     } catch (error) {
       if (error.name === 'MY_LOCATION' && error.message === 'NOT_FOUND') {
@@ -153,88 +149,76 @@ export class CheckInoutPage implements OnInit {
   async getMyLocation(): Promise<DataLocation> {
     return new Promise(async (resolve, reject) => {
       try {
+        console.log('call getCurrentPosition');
 
-       // console.log('this.locationAccuracy.canRequest()')
-      // alert('1')
-       // const canRequest = await this.locationAccuracy.canRequest();
+        // Check permission first
+        const permissions = await Geolocation.checkPermissions();
+        console.log('Current permissions:', permissions);
 
-       // if(canRequest){
-       //   console.log('canRequest')
-       //   alert('2')
-          // the accuracy option will be ignored by iOS
-       //   await this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY)
+        if (permissions.location === 'denied') {
+          console.log('Permission denied, requesting...');
+          const request = await Geolocation.requestPermissions();
+          console.log('Permission request result:', request);
 
+          if (request.location === 'denied') {
+            throw new Error('Location permission denied');
+          }
+        }
 
-       //alert('3')
+        // Request location with proper options
+        const options = {
+          enableHighAccuracy: true,
+          timeout: 15000, // 15 seconds
+          maximumAge: 0, // Don't use cached location
+        };
 
-          console.log('call getCurrentPosition');
-          const resp = await this.geolocation.getCurrentPosition({enableHighAccuracy: true});
+        // console.log('Requesting location with options:', options);
 
-          //resp.coords.latitude = 13.686262;
-          //resp.coords.longitude = 100.526466;
+        const position = await Geolocation.getCurrentPosition(options);
 
-          resolve({
-            title: 'My Location',
-            latitude: resp.coords.latitude,
-            longitude: resp.coords.longitude,
-            icon: { url: 'assets/images/check-inout/my-marker.svg', scaledSize: new google.maps.Size(52, 52) },
-          });
+        // console.log('Location acquired:', position.coords.latitude, position.coords.longitude);
 
-        //}
-
+        resolve({
+          title: 'My Location',
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+          icon: { url: 'assets/images/check-inout/my-marker.svg', scaledSize: null },
+        });
       } catch (error) {
-        alert('err');
-        console.log(error);
+        console.error('Location error:', error);
+        console.error('Error message:', error.message);
         reject({ name: 'MY_LOCATION', message: 'NOT_FOUND' });
       }
     });
   }
 
   async getWorkLocation(): Promise<DataLocation[]> {
-    return new Promise(async(resolve, reject) => {
-
+    return new Promise(async (resolve, reject) => {
       const response = await this.checkInApi.getLocationNearMe(this.myLocation.latitude.toString(), this.myLocation.longitude.toString());
 
       let datas = [];
 
-      response.datas.forEach(data => {
+      response.datas.forEach((data) => {
         datas.push({
-          title     : data.location_name,
-          subTitle  : data.custid+' '+data.location_name,
-          brandName : data.brand_name,
-          latitude  : data.lat,
-          longitude : data.lng,
-          storeId   : data.storeid,
-          branchId  : data.branchid,
-          counterId : data.counterid,
-          custId    : data.custid,
-          icon: { url: 'assets/images/check-inout/work-marker.svg', scaledSize: new google.maps.Size(52, 52) }
-        })
-      });
-      console.log(datas)
-
-
-
-      if(datas.length > 0){
-        resolve(datas);
-      }else{
-        reject({name:'MY_LOCATION' , message : 'NOT_FOUND'})
-      }
-
-     // return;
-
-
-   /*
-      setTimeout(() => {
-        resolve({
-          title: 'ICC Location',
-          latitude: 13.686192,
-          longitude: 100.526157,
-          icon: { url: 'assets/images/check-inout/work-marker.svg', scaledSize: new google.maps.Size(52, 52) },
+          title: data.location_name,
+          subTitle: data.custid + ' ' + data.location_name,
+          brandName: data.brand_name,
+          latitude: data.lat,
+          longitude: data.lng,
+          storeId: data.storeid,
+          branchId: data.branchid,
+          counterId: data.counterid,
+          custId: data.custid,
+          icon: { url: 'assets/images/check-inout/work-marker.svg', scaledSize: null },
         });
+      });
+      console.log(datas);
 
-        // reject({ name: 'WORKSPACE_LOCATION', message: 'NOT_FOUND' });
-      }, 1500);*/
+      if (datas.length > 0) {
+        resolve(datas);
+      } else {
+        reject({ name: 'MY_LOCATION', message: 'NOT_FOUND' });
+      }
     });
   }
 
@@ -252,7 +236,7 @@ export class CheckInoutPage implements OnInit {
     const animation = google.maps.Animation.BOUNCE;
     const mapMarker = new google.maps.Marker({ ...location, position, animation });
     mapMarker.setMap(this.map);
-    console.log('add',latitude+' , '+longitude)
+    console.log('add', latitude + ' , ' + longitude);
   }
 
   refresh() {
@@ -307,31 +291,30 @@ export class CheckInoutPage implements OnInit {
 
   async errorCheckInOut(event: any) {
     //if (event.action === 'done') {
-      const header = 'Error Message';
-      const message = event.error.error_message;
-      const cssClass = 'alert__box--basic';
-      const buttons = [
-        {
-          text: 'ปิด',
-          handler: () => {
-            this.refreshMap()
-            //this.router.navigate(['/home']);
-          },
+    const header = 'Error Message';
+    const message = event.error.error_message;
+    const cssClass = 'alert__box--basic';
+    const buttons = [
+      {
+        text: 'ปิด',
+        handler: () => {
+          this.refreshMap();
+          //this.router.navigate(['/home']);
         },
-      ];
+      },
+    ];
 
-      const alert = await this.alertController.create({ header, message, cssClass, buttons });
-      await alert.present();
+    const alert = await this.alertController.create({ header, message, cssClass, buttons });
+    await alert.present();
 
-      const dismiss = await alert.onDidDismiss();
-      if (dismiss.role === 'backdrop') {
-        this.router.navigate(['/home']);
-      }
+    const dismiss = await alert.onDidDismiss();
+    if (dismiss.role === 'backdrop') {
+      this.router.navigate(['/home']);
+    }
     //}
   }
 
-  async alertModeCheckInOut(location){
-
+  async alertModeCheckInOut(location) {
     // const modal = await this.modalController.create({
     //   component: AlertCheckInoutComponent,
     //   cssClass: 'my-custom-class'
@@ -340,7 +323,7 @@ export class CheckInoutPage implements OnInit {
 
     let alert = await this.alertController.create({
       header: 'Check In / Out',
-      message : location.subTitle+'<br>'+location.brandName,
+      message: location.subTitle + '<br>' + location.brandName,
       buttons: [
         {
           text: 'Check In',
@@ -348,117 +331,115 @@ export class CheckInoutPage implements OnInit {
           handler: () => {
             console.log('Check In');
             this.checkInOut({
-              storeid     : location.storeId,
-              branchid    : location.branchId,
-              counterid   : location.counterId,
-              custid      : location.custId,
-              custname    : location.subTitle.replace(location.custId,''),
-              countername : location.brandName,
-              lat         : location.latitude,
-              lng         : location.longitude,
-              type        : 'I'
+              storeid: location.storeId,
+              branchid: location.branchId,
+              counterid: location.counterId,
+              custid: location.custId,
+              custname: location.subTitle.replace(location.custId, ''),
+              countername: location.brandName,
+              lat: location.latitude,
+              lng: location.longitude,
+              type: 'I',
             });
-          }
+          },
         },
         {
           text: 'Check Out',
           cssClass: 'alert__button--danger2',
           handler: () => {
-            console.log('Check Out ',location);
+            console.log('Check Out ', location);
             this.checkInOut({
-              storeid     : location.storeId,
-              branchid    : location.branchId,
-              counterid   : location.counterId,
-              custid      : location.custId,
-              custname    : location.subTitle.replace(location.custId,''),
-              countername : location.brandName,
-              lat         : location.latitude,
-              lng         : location.longitude,
-              type        : 'O'
+              storeid: location.storeId,
+              branchid: location.branchId,
+              counterid: location.counterId,
+              custid: location.custId,
+              custname: location.subTitle.replace(location.custId, ''),
+              countername: location.brandName,
+              lat: location.latitude,
+              lng: location.longitude,
+              type: 'O',
             });
-          }
+          },
         },
-      ]
+      ],
     });
     await alert.present();
-
   }
 
-
-  async checkInOut(param:any){
+  async checkInOut(param: any) {
     try {
-      console.log(param)
-      this.statusWorkspace = 'LOADING'
+      console.log(param);
+      this.statusWorkspace = 'LOADING';
+      const res = await this.checkInApi.postCheckInOut(
+        param.storeid,
+        param.branchid,
+        param.counterid,
+        param.custid,
+        param.lat,
+        param.lng,
+        param.type
+      );
 
-       const res = await this.checkInApi.postCheckInOut(
-                          param.storeid, param.branchid, param.counterid, param.custid,
-                          param.lat, param.lng, param.type);
-
-      console.log('param',param)
+      console.log('param', param);
 
       this.result = {
-        type         : param.type,
-        title        : (param.type=='I')?'ลงทะเบียนเข้าเรียบร้อย' : 'ลงทะเบียนออกเรียบร้อย',
-        ship_no      : res.data.shop.id,
-        ship_name    : param.custname,
-        counter_id   : res.data.counter.id,
-        counter_name : param.countername,
-        time_stamp   : res.data.time_stamp
-      }
+        type: param.type,
+        title: param.type == 'I' ? 'ลงทะเบียนเข้าเรียบร้อย' : 'ลงทะเบียนออกเรียบร้อย',
+        ship_no: res.data.shop.id,
+        ship_name: param.custname,
+        counter_id: res.data.counter.id,
+        counter_name: param.countername,
+        time_stamp: res.data.time_stamp,
+      };
 
       setTimeout(() => {
         this.statusWorkspace = 'COMPLETED';
       }, 200);
-
     } catch (error) {
-      this.alert.basic(error.error.error_message);
-      console.log(error);
+      this.statusWorkspace = 'ERROR';
+      this.alert.basic(error?.error?.error_message || 'เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง');
+      setTimeout(() => {
+        this.statusWorkspace = 'OK';
+      }, 2000);
     }
-
   }
 
-
-
   checkEventAll($event) {
-    console.log($event.target.checked)
+    console.log($event.target.checked);
     this.autoCheck = true;
-    if($event.target.checked){
-      this.locationsSelected = []
+    if ($event.target.checked) {
+      this.locationsSelected = [];
 
-      this.workspaceLocation.forEach(location => {
-        this.locationsSelected.push({ ...location, isCheck: true, all:'Y' });
+      this.workspaceLocation.forEach((location) => {
+        this.locationsSelected.push({ ...location, isCheck: true, all: 'Y' });
       });
-
-    }else{
+    } else {
       this.locationsSelected = [];
     }
 
-    console.log('this.locationsSelected',this.locationsSelected)
+    console.log('this.locationsSelected', this.locationsSelected);
 
     setTimeout(() => {
       this.autoCheck = false;
-    },100)
-
+    }, 100);
   }
 
   isCheck(location: any) {
-
-    const index = this.locationsSelected.findIndex((p: any) => (p.custId===location.custId && p.counterId===location.counterId ) );
-    return index
+    const index = this.locationsSelected.findIndex((p: any) => p.custId === location.custId && p.counterId === location.counterId);
+    return index;
   }
 
+  checkEvent(location: any, $event) {
+    console.log($event);
+    if (this.autoCheck === true) {
+      return;
+    }
 
-  checkEvent(location: any,  $event) {
-
-    console.log( $event)
-    if(this.autoCheck===true){return;}
-
-    const index = this.locationsSelected.findIndex((p: any) => (p.custId===location.custId && p.counterId===location.counterId ) );
-
+    const index = this.locationsSelected.findIndex((p: any) => p.custId === location.custId && p.counterId === location.counterId);
 
     if (index < 0) {
       this.locationsSelected.push({ ...location, isCheck: true });
-      location.isCheck = true
+      location.isCheck = true;
     } else {
       this.locationsSelected[index].isCheck = !this.locationsSelected[index].isCheck;
     }
@@ -466,128 +447,112 @@ export class CheckInoutPage implements OnInit {
     const locations = this.locationsSelected.filter((p: any) => p.isCheck);
     this.locationsSelected = locations;
 
-    console.log(this.locationsSelected)
+    console.log(this.locationsSelected);
   }
 
-
-  async alertModeAction(){
-
+  async alertModeAction() {
     let message = '';
-    if(this.locationsSelected.length==1){
-       message = this.locationsSelected[0].subTitle+'<br>'+this.locationsSelected[0].brandName;
-    }else{
-       message = 'จำนวน '+ this.locationsSelected.length + ' เค้าเตอร์';
+    if (this.locationsSelected.length == 1) {
+      message = this.locationsSelected[0].subTitle + '<br>' + this.locationsSelected[0].brandName;
+    } else {
+      message = 'จำนวน ' + this.locationsSelected.length + ' เค้าเตอร์';
     }
-
 
     let alert = await this.alertController.create({
       header: 'Check In / Out',
-      message : message,
+      message: message,
       buttons: [
         {
           text: 'Check In',
           cssClass: 'alert__button--success2',
           handler: async () => {
-            console.log('Check In ',this.locationsSelected);
-            await this.checkInOutLocations('I', this.locationsSelected) ;
-          }
+            console.log('Check In ', this.locationsSelected);
+            await this.checkInOutLocations('I', this.locationsSelected);
+          },
         },
         {
           text: 'Check Out',
           cssClass: 'alert__button--danger2',
           handler: async () => {
-              console.log('Check Out ',this.locationsSelected);
-              await this.checkInOutLocations('O', this.locationsSelected) ;
-          }
+            console.log('Check Out ', this.locationsSelected);
+            await this.checkInOutLocations('O', this.locationsSelected);
+          },
         },
-      ]
+      ],
     });
     await alert.present();
-
   }
 
-
-  async delayfunction():Promise<any> {
+  async delayfunction(): Promise<any> {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
-         return resolve({});
+        return resolve({});
       }, 100);
     });
   }
 
-
-  async checkInOutLocations(type:string , locationsSelected:any){
+  async checkInOutLocations(type: string, locationsSelected: any) {
     try {
-      console.log(locationsSelected)
+      console.log(locationsSelected);
 
-      this.statusWorkspace = 'LOADING'
+      this.statusWorkspace = 'LOADING';
       console.log('xxxxxxxxxxxxxxxxxxxxxxxxx');
-      let i=0;
-      for(let location of locationsSelected) {
+      let i = 0;
+      for (let location of locationsSelected) {
+        if (type === 'I') {
+          console.log('Check In ', location);
+        } else {
+          console.log('Check Out ', location);
+        }
 
-          if(type==='I'){
-            console.log('Check In ',location);
-          }else{
-            console.log('Check Out ',location);
-          }
+        i++;
+        console.log('i=', i);
 
+        const param = {
+          storeid: location.storeId,
+          branchid: location.branchId,
+          counterid: location.counterId,
+          custid: location.custId,
+          custname: location.subTitle.replace(location.custId, ''),
+          countername: location.brandName,
+          lat: location.latitude,
+          lng: location.longitude,
+          type: type,
+        };
+        console.log('param', param);
 
-          i++;
-          console.log('i=',i);
+        const res = await this.checkInApi.postCheckInOut(
+          param.storeid,
+          param.branchid,
+          param.counterid,
+          param.custid,
+          param.lat,
+          param.lng,
+          param.type
+        );
 
-          const param = {
-            storeid     : location.storeId,
-            branchid    : location.branchId,
-            counterid   : location.counterId,
-            custid      : location.custId,
-            custname    : location.subTitle.replace(location.custId,''),
-            countername : location.brandName,
-            lat         : location.latitude,
-            lng         : location.longitude,
-            type        : type
-          };
-          console.log('param',param)
+        this.result = {
+          type: param.type,
+          title: param.type == 'I' ? 'ลงทะเบียนเข้า...' : 'ลงทะเบียนออก...',
+          ship_no: param.custid,
+          ship_name: param.custname,
+          counter_id: param.counterid,
+          counter_name: param.countername,
+          time_stamp: moment().format('YYYY-MM-DD HH:mm:ss'), //res.data.time_stamp
+        };
+        this.statusWorkspace = 'POSTING';
 
-
-          const res = await this.checkInApi.postCheckInOut(
-                          param.storeid, param.branchid, param.counterid, param.custid,
-                          param.lat, param.lng, param.type);
-
-
-          this.result = {
-            type         : param.type,
-            title        : (param.type=='I')?'ลงทะเบียนเข้า...' : 'ลงทะเบียนออก...',
-            ship_no      : param.custid,
-            ship_name    : param.custname,
-            counter_id   : param.counterid,
-            counter_name : param.countername,
-            time_stamp   : moment().format('YYYY-MM-DD HH:mm:ss')  //res.data.time_stamp
-          }
-          this.statusWorkspace = 'POSTING'
-
-          //await this.delayfunction();
-
-      }  // for
+        //await this.delayfunction();
+      } // for
 
       setTimeout(() => {
-        console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaa', );
+        console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaa');
         this.statusWorkspace = 'COMPLETED';
       }, 1000);
-
     } catch (error) {
       //this.alert.basic(error.error.error_message);
-      this.errorCheckInOut(error)
+      this.errorCheckInOut(error);
       console.log(error);
-
-      
     }
-
-
-
   }
-
-
-
-
-
 }
