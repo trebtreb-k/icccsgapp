@@ -54,6 +54,8 @@
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>We use your location for full functionality of certain app features.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>We use your location to help you check in/out at work locations.</string>
 	<key>NSFaceIDUsageDescription</key>
 	<string>Face ID is required for secure authentication and biometric login</string>
 	<key>LSApplicationQueriesSchemes</key>
