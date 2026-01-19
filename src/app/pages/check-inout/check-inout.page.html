@@ -17,17 +17,10 @@
 <ion-content fullscreen="true">
   <div class="section__location">
     <div class="location-card">
-      <div class="location-header">
-        <ion-icon name="location-outline" class="location-icon"></ion-icon>
+      <ion-icon name="navigate-circle" class="location-icon"></ion-icon>
+      <div class="location-info">
         <span class="location-title">ตำแหน่งปัจจุบัน</span>
-      </div>
-      <div class="location-coords">
-        <span class="coords-label">Lat:</span>
-        <span class="coords-value">{{myLocation?.latitude | number:'1.6-6'}}</span>
-      </div>
-      <div class="location-coords">
-        <span class="coords-label">Lng:</span>
-        <span class="coords-value">{{myLocation?.longitude | number:'1.6-6'}}</span>
+        <span class="location-coords">{{myLocation?.latitude | number:'1.6-6'}}, {{myLocation?.longitude | number:'1.6-6'}}</span>
       </div>
     </div>
   </div>
@@ -35,32 +28,27 @@
 
 <ion-footer class="ion-no-border" *ngIf="statusWorkspace === 'OK'">
   <div class="section__content">
-    <div class="section__timeout">
-      <div class="section__timeout--check">
-        <ion-checkbox style="margin-top: 11px" color="dark" slot="start" (ionChange)="checkEventAll($event)"></ion-checkbox>
-        <p style="margin-top: -0px">All</p>
+    <div class="section__header">
+      <div class="header-left">
+        <label class="check-all">
+          <ion-checkbox color="dark" (ionChange)="checkEventAll($event)"></ion-checkbox>
+          <span>เลือกทั้งหมด</span>
+        </label>
       </div>
-      <div class="section__timeout--text">
-        <p *ngIf="workspaceLocation.length===0">ไม่พบตำแหน่ง Location</p>
-        <p>
-          หมดเวลา
-          <strong>
-            <countdown [config]="{ leftTime: countdownExpire, format: 's' }" (event)="expireCountdown($event)"></countdown>
-          </strong>
-          วินาที
-        </p>
-      </div>
-      <div class="section__timeout--button">
-        <button
-          class="btn btn-primary"
-          style="padding: 15px; height: 55px"
-          [disabled]="!locationsSelected.length"
-          (click)="alertModeAction()"
-        >
+      <div class="header-right">
+        <div class="countdown-box" *ngIf="workspaceLocation.length > 0">
+          <ion-icon name="time-outline"></ion-icon>
+          <span>
+            <countdown [config]="{ leftTime: countdownExpire, format: 's' }" (event)="expireCountdown($event)"></countdown>s
+          </span>
+        </div>
+        <button class="btn-checkinout" [disabled]="!locationsSelected.length" (click)="alertModeAction()">
+          <ion-icon name="checkmark-circle-outline"></ion-icon>
           Check In/Out
         </button>
       </div>
     </div>
+    <p class="no-location" *ngIf="workspaceLocation.length===0">ไม่พบตำแหน่ง Location</p>
 
     <div class="section__info" *ngFor="let location of workspaceLocation; let i = index">
       <div class="section__info--check">
